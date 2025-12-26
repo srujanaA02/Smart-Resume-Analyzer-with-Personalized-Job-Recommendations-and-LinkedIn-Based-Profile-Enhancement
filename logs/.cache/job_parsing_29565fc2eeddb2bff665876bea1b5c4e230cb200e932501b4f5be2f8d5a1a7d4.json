@@ -1,0 +1,26 @@
+{
+  "summary": "We're looking for a skilled software engineer to develop and maintain our logistics network, optimize backend code, and troubleshoot technical issues.",
+  "responsibilities": [
+    "Build scalable backend systems using Java and Go Lang for optimal performance.",
+    "Develop and maintain Spring Boot applications to enhance Swiggy's logistics network.",
+    "Optimize backend code to improve Swiggy's food and grocery delivery efficiency.",
+    "Integrate software solutions ensuring reliability in Swiggy's 500+ city operations.",
+    "Troubleshoot and resolve technical issues to maintain system stability and performance.",
+    "Collaborate with team to implement software updates within 15 days or immediately.",
+    "Review code for quality assurance aligning with Swiggy's industry standards.",
+    "Create documentation for backend solutions enhancing team collaboration and project clarity."
+  ],
+  "required_skills": [
+    "Java",
+    "Go Lang",
+    "Spring Boot",
+    "Product development",
+    "Collaboration"
+  ],
+  "qualifications": [
+    "Bachelor's/Master's degree in Computer Science or related field",
+    "2+ years of experience with Java and Spring Boot"
+  ],
+  "salary_range": null,
+  "benefits": []
+}

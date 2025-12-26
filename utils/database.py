@@ -529,3 +529,66 @@ def get_score_statistics(user_id: int) -> Optional[dict]:
     }
 
 
+
+def save_job_listings(user_id, jobs_data):
+    """
+    Save multiple job listings to the database.
+    jobs_data: list of dicts with keys: job_title, company_name, location, job_description, job_url, match_percentage
+    """
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    saved_count = 0
+    
+    try:
+        for job in jobs_data:
+            # Check for duplicates based on URL and User ID
+            cursor.execute(
+                "SELECT id FROM job_recommendations WHERE user_id = ? AND job_url = ?", 
+                (user_id, job.get('job_url'))
+            )
+            if cursor.fetchone():
+                continue
+
+            cursor.execute("""
+                INSERT INTO job_recommendations 
+                (user_id, job_title, company_name, location, job_description, job_url, match_percentage)
+                VALUES (?, ?, ?, ?, ?, ?, ?)
+            """, (
+                user_id,
+                job.get('job_title'),
+                job.get('company_name'),
+                job.get('location'),
+                job.get('job_description'),
+                job.get('job_url'),
+                job.get('match_percentage', 0.0)
+            ))
+            saved_count += 1
+            
+        conn.commit()
+        logger.info(f"Saved {saved_count} new job listings for user {user_id}")
+        return saved_count
+    except Exception as e:
+        logger.error(f"Error saving job listings: {e}")
+        return 0
+    finally:
+        conn.close()
+
+def get_job_recommendations(user_id, limit=20):
+    """Retrieve job recommendations for a user."""
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    try:
+        cursor.execute("""
+            SELECT job_title, company_name, location, job_url, job_description, match_percentage, scraping_date
+            FROM job_recommendations 
+            WHERE user_id = ? 
+            ORDER BY scraping_date DESC 
+            LIMIT ?
+        """, (user_id, limit))
+        rows = cursor.fetchall()
+        return [dict(row) for row in rows]
+    except Exception as e:
+        logger.error(f"Error retrieving job recommendations: {e}")
+        return []
+    finally:
+        conn.close()

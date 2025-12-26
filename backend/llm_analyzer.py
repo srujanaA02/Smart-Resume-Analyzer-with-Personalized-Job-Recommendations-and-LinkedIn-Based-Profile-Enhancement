@@ -798,8 +798,41 @@ Return ONLY valid JSON, no additional text."""
                 return {"error": "Failed to parse industry skills response"}
                 
         except Exception as e:
-            logger.error(f"Error getting industry skills: {e}")
+            logger.error(f"Error fetching industry skills: {e}")
             return {"error": str(e)}
+
+    def parse_job_description(self, job_text: str) -> Dict[str, Any]:
+        """
+        Parse unstructured job description into structured data.
+        """
+        logger.info("Parsing job description...")
+        
+        prompt = f"""You are an expert HR assistant. Parse the following job description into structured JSON data.
+
+Job Description:
+{job_text}
+
+Extract the following fields:
+- summary: A brief summary of the role (2-3 sentences).
+- responsibilities: List of key responsibilities.
+- required_skills: List of required technical and soft skills.
+- qualifications: List of educational and experience qualifications.
+- salary_range: Salary range if mentioned (e.g. "$100k - $120k"), else null.
+- benefits: List of benefits if mentioned.
+
+Return ONLY valid JSON with this structure:
+{{
+    "summary": "...",
+    "responsibilities": ["...", "..."],
+    "required_skills": ["...", "..."],
+    "qualifications": ["...", "..."],
+    "salary_range": "...",
+    "benefits": ["..."]
+}}
+"""
+        return self.analyze_resume(job_text, lambda _: prompt, "job_parsing", use_cache=True)
+
+
     
     def analyze_skills_gap(self, resume_text: str, identified_skills: Dict = None, target_role: str = None, experience_level: str = "mid") -> Dict[str, Any]:
         """

@@ -1,0 +1,32 @@
+{
+  "summary": "Full Stack Intern to develop and maintain efficient systems supporting AI-driven applications, optimizing server-side logic for maximum application speed and scalability.",
+  "responsibilities": [
+    "Develop and maintain server-side & client-side components for seamless functionality and performance.",
+    "Create robust logics to optimize applications with Node.js, Express.js, and React.js Next.js expertise.",
+    "Work with databases like MongoDB and MySQL.",
+    "Apply knowledge of data structures and algorithms to optimize system performance.",
+    "Understand basic security practices and implement SSL certificates and software licenses.",
+    "Familiarize with deployment procedures for mobile and web applications on cloud platforms.",
+    "Implement continuous integration and deployment process (CI/CD).",
+    "Proficiency in Git-GitHub for version control.",
+    "Manage SSL certificates and software licenses.",
+    "Knowledge of JSON Web Tokens (JWT) for secure authentication."
+  ],
+  "required_skills": [
+    "Proficiency in back-end and front-end web development (MERN)",
+    "Experience in full-stack development",
+    "Expertise in React.js, Node.js, Express.js, MongoDB, and cloud technologies (AWS)",
+    "Familiarity with Python & Flask",
+    "Solid understanding of data structures and algorithms",
+    "Strong knowledge of Cascading Style Sheets (CSS) & Tailwind CSS"
+  ],
+  "qualifications": [
+    "Bachelor\u2019s degree in Computer Science, Engineering, or a related field"
+  ],
+  "salary_range": "$5000 - $8000",
+  "benefits": [
+    "Work from office",
+    "Immediate join",
+    "Dynamic startup environment"
+  ]
+}

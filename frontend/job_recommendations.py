@@ -10,36 +10,56 @@ def recommendations_page():
         <style>
         .job-card {
             background-color: #1e1e1e;
-            padding: 20px;
-            border-radius: 10px;
+            padding: 25px;
+            border-radius: 15px;
             margin-bottom: 20px;
             border: 1px solid #333;
             position: relative;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .job-card:hover {
+            transform: translateY(-5px);
+            border-color: #00ADB5;
+            box-shadow: 0 8px 15px rgba(0,173,181,0.1);
         }
         .job-title {
             color: #00ADB5;
-            font-size: 1.2rem;
+            font-size: 1.4rem;
             font-weight: bold;
             text-decoration: none;
+            line-height: 1.2;
+        }
+        .job-title:hover {
+            text-decoration: underline;
         }
         .company-name {
             color: #EEEEEE;
-            font-size: 1rem;
-            margin-top: 5px;
+            font-size: 1.1rem;
+            margin-top: 8px;
+            font-weight: 500;
         }
         .job-location {
             color: #AAAAAA;
-            font-size: 0.9rem;
-            margin-bottom: 10px;
+            font-size: 0.95rem;
+            margin-top: 5px;
         }
         .match-score {
-            background-color: #00ADB5;
             color: white;
-            padding: 2px 8px;
-            border-radius: 12px;
-            font-size: 0.8rem;
-            float: right;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: bold;
+            border: 1.5px solid transparent;
+            background:
+                linear-gradient(#1e1e1e, #1e1e1e) padding-box,
+                linear-gradient(90deg, #00ADB5, #00c853) border-box;
         }
+        .job-container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
         </style>
     """, unsafe_allow_html=True)
     
@@ -108,19 +128,24 @@ def recommendations_page():
     if not jobs:
         st.info("No jobs found. Try running a scrape!")
     else:
+        st.markdown('<div class="job-container">', unsafe_allow_html=True)
         for i, job in enumerate(jobs, 1):
             st.markdown(f"""
-                <div style="display: flex; align-items: center; gap: 20px; margin-bottom: 20px;">
-                    <div style="min-width: 40px; font-size: 1.8rem; font-weight: bold; color: #00ADB5; text-align: right;">{i}</div>
-                    <div class="job-card" style="flex: 1; margin-bottom: 0;">
-                        <span class="match-score">Match: {int(job.get('match_percentage', 0))}%</span>
-                        <a href="{job['job_url']}" target="_blank" class="job-title">{job['job_title']}</a>
-                    <div class="company-name">{job['company_name']}</div>
-                    <div class="job-location">📍 {job['location']}</div>
-                    <div class="job-location" style="font-size: 0.8rem; color: #888;">📅 Posted: {job.get('posted_date', 'Unknown') or 'Unknown'}</div>
-                    <hr style="border-color: #333; margin: 10px 0;">
-                    <div style="color: #CCCCCC; font-size: 0.9rem;">
-                        {job['job_description'][:200]}...
+                <div style="display: flex; align-items: stretch; gap: 20px; margin-bottom: 25px;">
+                    <div style="min-width: 40px; display: flex; align-items: flex-start; justify-content: center; font-size: 2.2rem; font-weight: 800; color: white; padding-top: 15px;">{i}</div>
+                    <div class="job-card" style="flex: 1; margin: 0;">
+                        <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 15px;">
+                            <a href="{job['job_url']}" target="_blank" class="job-title">{job['job_title']}</a>
+                            <span class="match-score">Match: {int(job.get('match_percentage', 0))}%</span>
+                        </div>
+                        <div class="company-name">{job['company_name']}</div>
+                        <div class="job-location">📍 {job['location']}</div>
+                        <div class="job-location" style="font-size: 0.85rem; color: #777;">📅 Posted: {job.get('posted_date', 'Unknown') or 'Unknown'}</div>
+                        <hr style="border-color: #333; margin: 15px 0;">
+                        <div style="color: #CCCCCC; font-size: 0.95rem; line-height: 1.6; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;">
+                            {job['job_description'][:300] if job['job_description'] else 'No description available'}...
+                        </div>
                     </div>
                 </div>
             """, unsafe_allow_html=True)
+        st.markdown('</div>', unsafe_allow_html=True)

@@ -1,0 +1,22 @@
+{
+  "summary": "We are looking for a talented Java Development intern to join our team at App Genesis Soft Solutions Private Limited.",
+  "responsibilities": [
+    "Collaborate with the development team to design and implement new features for our software applications.",
+    "Write clean, efficient, and maintainable code using Java and related technologies.",
+    "Develop and optimize database queries using MySQL for improved application performance.",
+    "Utilize JSP and J2EE to create dynamic web pages and enhance user experience.",
+    "Implement Spring MVC framework for building robust and scalable web applications.",
+    "Work with Hibernate ORM to map Java objects to relational database tables.",
+    "Participate in code reviews, testing, and debugging to ensure high-quality software delivery."
+  ],
+  "required_skills": [
+    "Java",
+    "MySQL",
+    "JSP",
+    "J2EE",
+    "Hibernate ORM (Java)",
+    "Spring MVC"
+  ],
+  "salary_range": null,
+  "benefits": []
+}

@@ -11,6 +11,7 @@ create_tables()
 
 
 def main():
+    st.set_page_config(layout="wide", page_title="Resume Analyst & Job Recommender")
     st.sidebar.title("Navigation")
 
     if 'page' not in st.session_state:

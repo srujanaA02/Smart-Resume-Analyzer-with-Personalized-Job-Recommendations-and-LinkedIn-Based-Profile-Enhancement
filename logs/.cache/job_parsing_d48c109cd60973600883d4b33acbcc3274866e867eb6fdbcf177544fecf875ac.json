@@ -1,0 +1,27 @@
+{
+  "summary": "We are seeking a skilled software professional with expertise in Java backend to join our team as a Consultant/ Sr Consultant/ Manager. The ideal candidate should have at least 3-12 years of experience and a Bachelor's degree in Computer Science or related field.",
+  "responsibilities": [
+    "Consulting on software development projects",
+    "Leading teams of developers and providing technical guidance",
+    "Designing and implementing Java backend solutions using Springboot and other relevant technologies"
+  ],
+  "required_skills": [
+    "Java",
+    "Springboot",
+    "Gradle",
+    "Open API Swagger",
+    "Junit",
+    "Spring Unit",
+    "Mocks",
+    "Spring REST",
+    "Spring DATA SOLID",
+    "12Factor",
+    "RDBMS like PostgreSQL"
+  ],
+  "qualifications": [
+    "Bachelor's degree in Computer Science or related field",
+    "3-12 years of experience in software development"
+  ],
+  "salary_range": null,
+  "benefits": []
+}

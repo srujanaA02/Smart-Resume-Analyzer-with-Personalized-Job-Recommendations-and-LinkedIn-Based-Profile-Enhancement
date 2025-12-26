@@ -1,0 +1,27 @@
+{
+  "summary": "Join our engineering team as a Software Dev Engineer I to develop and enhance our Android mobile application, working closely with our talented team of Android developers.",
+  "responsibilities": [
+    "Design and Architecture: Collaborate with cross-functional teams to make our app more scalable and robust. Architect solutions that adhere to best practices and promote code reusability.",
+    "Development: Write clean, maintainable, reusable code in Kotlin. Implement new features, enhancements, and bug fixes according to project requirements and timelines.",
+    "Testing: Develop and execute comprehensive unit tests and integration tests to ensure the reliability and stability of our Consumer App. Implement automated testing frameworks and strategies to streamline the testing process.",
+    "Performance Optimization: Identify performance bottlenecks and optimize Android applications for speed, responsiveness, and resource efficiency. Conduct code reviews and performance profiling to maintain high performance standards.",
+    "Documentation: Create technical documentation, including design documents, API specifications, and release notes. Document codebase changes, architecture decisions, and development processes to facilitate knowledge sharing and onboarding.",
+    "Collaboration: Collaborate closely with product managers, designers, and other engineers to translate product requirements into technical solutions. Participate in Agile ceremonies, such as sprint planning, daily stand-ups, and retrospectives.",
+    "Continuous Improvement: Stay updated on the latest trends, tools, and technologies in Android development. Continuously improve development processes, coding standards, and software quality through innovation and experimentation."
+  ],
+  "required_skills": [
+    "Bachelor's degree in Computer Science, Engineering, or related field (Master's degree preferred).",
+    "1+ years of professional experience in Android application development.",
+    "Proficiency in Kotlin programming languages.",
+    "Strong understanding of Android SDK, Android Studio, and related development tools.",
+    "Experience with Android architecture components (e.g., MVVM, LiveData, Room).",
+    "Solid understanding of software design principles, patterns, and best practices.",
+    "Experience with RESTful APIs, JSON/Proto etc"
+  ],
+  "qualifications": [
+    "Bachelor's degree in Computer Science, Engineering, or related field (Master's degree preferred).",
+    "1+ years of professional experience in Android application development."
+  ],
+  "salary_range": null,
+  "benefits": []
+}

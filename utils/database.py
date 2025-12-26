@@ -551,8 +551,8 @@ def save_job_listings(user_id, jobs_data):
 
             cursor.execute("""
                 INSERT INTO job_recommendations 
-                (user_id, job_title, company_name, location, job_description, job_url, match_percentage)
-                VALUES (?, ?, ?, ?, ?, ?, ?)
+                (user_id, job_title, company_name, location, job_description, job_url, match_percentage, posted_date)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?)
             """, (
                 user_id,
                 job.get('job_title'),
@@ -560,7 +560,8 @@ def save_job_listings(user_id, jobs_data):
                 job.get('location'),
                 job.get('job_description'),
                 job.get('job_url'),
-                job.get('match_percentage', 0.0)
+                job.get('match_percentage', 0.0),
+                job.get('posted_date')
             ))
             saved_count += 1
             
@@ -573,22 +574,41 @@ def save_job_listings(user_id, jobs_data):
     finally:
         conn.close()
 
-def get_job_recommendations(user_id, limit=20):
+def get_job_recommendations(user_id, limit=None):
     """Retrieve job recommendations for a user."""
     conn = get_db_connection()
     cursor = conn.cursor()
     try:
-        cursor.execute("""
-            SELECT job_title, company_name, location, job_url, job_description, match_percentage, scraping_date
+        query = """
+            SELECT job_title, company_name, location, job_url, job_description, match_percentage, scraping_date, posted_date
             FROM job_recommendations 
             WHERE user_id = ? 
             ORDER BY scraping_date DESC 
-            LIMIT ?
-        """, (user_id, limit))
+        """
+        params = [user_id]
+        
+        if limit is not None:
+            query += " LIMIT ?"
+            params.append(limit)
+            
+        cursor.execute(query, tuple(params))
         rows = cursor.fetchall()
         return [dict(row) for row in rows]
     except Exception as e:
         logger.error(f"Error retrieving job recommendations: {e}")
         return []
+    finally:
+        conn.close()
+
+def check_job_exists(user_id, job_url):
+    """Check if a job already exists for the user."""
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    try:
+        cursor.execute("SELECT 1 FROM job_recommendations WHERE user_id = ? AND job_url = ?", (user_id, job_url))
+        return cursor.fetchone() is not None
+    except Exception as e:
+        logger.error(f"Error checking job existence: {e}")
+        return False
     finally:
         conn.close()

@@ -1,0 +1,26 @@
+{
+  "summary": "We\u2019re looking for a Software Developer Internship who\u2019s passionate about building scalable, user-centric web applications across the stack.",
+  "responsibilities": [
+    "Develop responsive and high-performance user interfaces using React, Next.js, and TypeScript.",
+    "Convert Figma designs into production-ready components.",
+    "Manage state efficiently using Zustand, Redux, or similar libraries.",
+    "Ensure pixel-perfect, accessible, and consistent UI experiences across devices."
+  ],
+  "required_skills": [
+    "Strong knowledge of JavaScript, TypeScript, React.js, Next.js, and Node.js.",
+    "Experience with state management and API integrations.",
+    "Understanding of RESTful APIs and JSON-based communication.",
+    "Basic experience with databases (MongoDB / PostgreSQL).",
+    "Familiarity with version control (Git) and testing tools (Postman, Jest)."
+  ],
+  "qualifications": [
+    "Strong skills in ReactJS, Next.js, JavaScript, and TypeScript."
+  ],
+  "salary_range": null,
+  "benefits": [
+    "Build next-gen AI-powered products shaping the future of business tools.",
+    "Work directly with a passionate founding team and global tech mentors.",
+    "Learn full-stack development from concept to deployment.",
+    "Grow fast in a startup culture that values innovation, autonomy, and collaboration."
+  ]
+}

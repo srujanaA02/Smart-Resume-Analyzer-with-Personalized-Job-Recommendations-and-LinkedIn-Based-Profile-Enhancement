@@ -2,8 +2,9 @@ import os
 import time
 import random
 import logging
-from datetime import datetime
+from datetime import datetime, timedelta
 from typing import List, Dict, Any, Optional
+import re
 import urllib.parse
 
 from selenium import webdriver
@@ -27,13 +28,13 @@ from dotenv import load_dotenv
 # If running this script directly, you might need to adjust python path.
 try:
     from backend.llm_analyzer import LLMAnalyzer
-    from utils.database import save_job_listings, get_skills_gap_analysis, get_user_analysis
+    from utils.database import save_job_listings, get_skills_gap_analysis, get_user_analysis, check_job_exists
 except ImportError:
     # Fallback for direct execution/testing
     import sys
     sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
     from backend.llm_analyzer import LLMAnalyzer
-    from utils.database import save_job_listings, get_skills_gap_analysis, get_user_analysis
+    from utils.database import save_job_listings, get_skills_gap_analysis, get_user_analysis, check_job_exists
 
 load_dotenv()
 
@@ -136,7 +137,7 @@ class LinkedInJobScraper:
             logger.error(f"Login error: {e}")
             return False
 
-    def search_jobs(self, keywords: str, location: str, limit: int = 20, filters: Optional[Dict[str, Any]] = None):
+    def search_jobs(self, keywords: str, location: str, limit: int = 20, filters: Optional[Dict[str, Any]] = None, progress_callback=None):
         """
         Navigate to jobs page and search with filters.
         
@@ -149,6 +150,7 @@ class LinkedInJobScraper:
                 - experience: list of ["internship", "entry", "associate", "mid_senior", "director", "executive"]
                 - job_type: list of ["full_time", "contract", "part_time", "temporary", "internship", "volunteer", "other"]
                 - remote: list of ["on_site", "remote", "hybrid"]
+            progress_callback: Optional function(scraped_count, total_limit, time_remaining_str)
         """
         logger.info(f"Searching for '{keywords}' in '{location}' with filters: {filters}")
         
@@ -204,12 +206,13 @@ class LinkedInJobScraper:
         self.driver.get(search_url)
         random_sleep(3, 5)
         
-        return self._scrape_job_list(limit)
+        return self._scrape_job_list(limit, search_location=location, progress_callback=progress_callback)
 
-    def _scrape_job_list(self, limit: int) -> List[Dict]:
+    def _scrape_job_list(self, limit: int, search_location: str = None, progress_callback=None) -> List[Dict]:
         """Iterate through job list and extract details."""
         scraped_jobs = []
         page = 1
+        start_time = time.time()
         
         while len(scraped_jobs) < limit:
             logger.info(f"Scraping page {page}, collected {len(scraped_jobs)}/{limit} jobs...")
@@ -221,47 +224,104 @@ class LinkedInJobScraper:
                 job_card_selector = ".job-card-container, li.jobs-search-results__list-item"
                 self.wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, job_card_selector)))
                 
-                # Scroll the list to load lazy-loaded elements
+                # Scroll the list to load ALL lazy-loaded elements on the current page
                 job_list_container = self.driver.find_elements(By.CSS_SELECTOR, ".jobs-search-results-list")
-                if job_list_container:
-                    # Scroll within the sidebar container
-                    js_script = "arguments[0].scrollTop = arguments[0].scrollTop + 500;"
-                    for _ in range(5):
-                        self.driver.execute_script(js_script, job_list_container[0])
-                        time.sleep(0.5)
-                else:
-                    # Generic window scroll
-                    self.driver.execute_script("window.scrollTo(0, document.body.scrollHeight / 2);")
                 
+                if job_list_container:
+                    container = job_list_container[0]
+                    last_height = self.driver.execute_script("return arguments[0].scrollHeight", container)
+                    
+                    # Try harder to load at least 25 or until no new content
+                    load_retries = 0
+                    while load_retries < 15: # Increased retries
+                        cards_count = len(self.driver.find_elements(By.CSS_SELECTOR, job_card_selector))
+                        if cards_count >= 25:
+                            logger.info(f"Loaded {cards_count} jobs, sufficient for page.")
+                            break
+                            
+                        # Scroll to bottom of container
+                        self.driver.execute_script("arguments[0].scrollTop = arguments[0].scrollHeight;", container)
+                        time.sleep(2) # Increased wait time
+                        
+                        new_height = self.driver.execute_script("return arguments[0].scrollHeight", container)
+                        if new_height == last_height:
+                             load_retries += 1
+                             # Try a small scroll up and down to trigger update
+                             self.driver.execute_script("arguments[0].scrollTop = arguments[0].scrollTop - 200;", container)
+                             time.sleep(0.5)
+                             self.driver.execute_script("arguments[0].scrollTop = arguments[0].scrollHeight;", container)
+                        else:
+                             last_height = new_height
+                             load_retries = 0
+                else:
+                    # Fallback for full page generic scroll - try multiple scrolls
+                    for _ in range(5):
+                        self.driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+                        time.sleep(2)
+
                 random_sleep(1, 2)
                 
-                # Find job cards
+                # Find all fully loaded job cards
                 job_cards = self.driver.find_elements(By.CSS_SELECTOR, job_card_selector)
                 
-                for card in job_cards:
+                logger.info(f"Found {len(job_cards)} job cards on page {page}")
+                
+                current_page_scraped = 0
+                processed_urls_on_page = set()
+                
+                for i, card in enumerate(job_cards):
                     if len(scraped_jobs) >= limit:
                         break
-                        
+
                     try:
+                        # Optimization: Check if job exists BEFORE clicking
+                        # Try to extract URL from the visible card
+                        try:
+                            # Typically the title itself is a link, or inside the card
+                            link_elem = card.find_element(By.CSS_SELECTOR, "a.job-card-list__title, .job-card-container__link")
+                            pre_url = link_elem.get_attribute("href").split('?')[0]
+                            
+                            if pre_url in processed_urls_on_page:
+                                continue
+                                
+                            if self.user_id and check_job_exists(self.user_id, pre_url):
+                                logger.info(f"Skipping already scraped job: {pre_url}")
+                                continue
+                                
+                            processed_urls_on_page.add(pre_url)
+                        except:
+                            # If we can't get URL easily, we proceed to click and check later
+                            pass
+
+                        # Scroll the individual card into view to ensure it's clickable
+                        self.driver.execute_script("arguments[0].scrollIntoView({block: 'center', inline: 'nearest'});", card)
+                        random_sleep(0.5, 1) # Short pause
+                        
+
                         # Extract basic info
                         title_elem = card.find_element(By.CSS_SELECTOR, ".job-card-list__title, strong")
                         job_title = title_elem.text.strip()
                         
                         # Click to load details
-                        # We need to scroll to element and click
-                        self.driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", card)
+                        # Already scrolled into view above
                         try:
                             card.click()
                         except ElementClickInterceptedException:
-                            # Try JS click
                             self.driver.execute_script("arguments[0].click();", card)
                             
+                        # Wait for details to load
                         random_sleep(1, 2) # Wait for details pane to load
                         
                         # Parse details
-                        job_details = self._extract_job_details_pane(job_title)
+                        job_details = self._extract_job_details_pane(job_title, search_location=search_location)
                         
                         if job_details:
+                            # Double check URL after extraction if we missed it before
+                            final_url = job_details.get("job_url")
+                            if final_url and (self.user_id and check_job_exists(self.user_id, final_url)):
+                                 logger.info("Skipping existing job (confirmed after click).")
+                                 continue
+                            
                             # Use LLM to structure the description
                             # To save tokens/time, we can optionally skip LLM if just grabbing raw text is enough initially
                             # But requirement says "Use LLM to parse"
@@ -279,33 +339,94 @@ class LinkedInJobScraper:
                             if self.user_id:
                                 save_job_listings(self.user_id, [job_details])
                                 
+                            # Progress Update with ETA
+                            elapsed = time.time() - start_time
+                            count = len(scraped_jobs)
+                            if count > 0:
+                                avg_time = elapsed / count
+                                remaining = limit - count
+                                eta_seconds = int(remaining * avg_time)
+                                eta_str = f"{eta_seconds // 60}m {eta_seconds % 60}s"
+                            else:
+                                eta_str = "Calculating..."
+                                
+                            if progress_callback:
+                                progress_callback(count, limit, eta_str)
+
+                                
                     except Exception as e:
                         logger.warning(f"Failed to scrape a job card: {e}")
                         continue
                 
                 # Pagination
-                # Look for "Next" button
-                # Button usually has aria-label="Page 2" etc or "Next" text
+                if len(scraped_jobs) >= limit:
+                    break
+                    
+                if page >= 10: # Safety limit to prevent very long execution
+                    logger.info("Reached maximum page limit (10). Stopping.")
+                    break
+
+                # Look for "Next" button or numeric page button
                 try:
-                    next_button = self.driver.find_element(By.CSS_SELECTOR, "button[aria-label*='Next']")
+                    # Try finding the 'Next' button specifically
+                    next_selectors = [
+                        "button[aria-label*='Next']",
+                        ".artdeco-pagination__button--next",
+                        "button.artdeco-pagination__button--next",
+                        f"button[aria-label='Page {page+1}']"
+                    ]
+                    
+                    next_button = None
+                    for selector in next_selectors:
+                        try:
+                            next_button = self.driver.find_element(By.CSS_SELECTOR, selector)
+                            if next_button:
+                                break
+                        except:
+                            continue
+                            
+                    if not next_button:
+                        raise NoSuchElementException("Next button not found")
+
                     self.driver.execute_script("arguments[0].scrollIntoView();", next_button)
-                    next_button.click()
+                    try:
+                        next_button.click()
+                    except ElementClickInterceptedException:
+                        self.driver.execute_script("arguments[0].click();", next_button)
+
                     page += 1
+                    logger.info(f"Navigating to page {page}...")
                     random_sleep(3, 5)
                 except NoSuchElementException:
-                    logger.info("No more pages found.")
-                    break
+                    # Try "See more jobs" for infinite scroll variants
+                    try:
+                        see_more = self.driver.find_element(By.XPATH, "//button[contains(text(), 'See more jobs')]")
+                        self.driver.execute_script("arguments[0].scrollIntoView();", see_more)
+                        self.driver.execute_script("arguments[0].click();", see_more)
+                        logger.info("Clicked 'See more jobs'...")
+                        random_sleep(3, 5)
+                    except NoSuchElementException:
+                        logger.info("No next page or load more button found. Scrape complete.")
+                        break
+
+
                     
             except TimeoutException:
                 logger.warning("Timeout waiting for job list.")
                 break
             except Exception as e:
                 logger.error(f"Error during scraping loop: {e}")
-                break
+                # Don't break immediately, try to recover or move to next page
+                try:
+                     # Try to scroll a bit to unfreeze/change state
+                     self.driver.execute_script("window.scrollBy(0, 100);")
+                except:
+                     pass
+                continue # Continue the outer loop (re-finding elements) instead of breaking
                 
         return scraped_jobs
 
-    def _extract_job_details_pane(self, job_title_fallback):
+    def _extract_job_details_pane(self, job_title_fallback, search_location=None):
         """Extract info from the right-hand details pane."""
         try:
             # Wait for details container
@@ -317,21 +438,93 @@ class LinkedInJobScraper:
                 # Sometimes the URL is in a 'share' button or the title link in the pane
                 link_elem = self.driver.find_element(By.CSS_SELECTOR, ".job-details-jobs-unified-top-card__job-title a, .jobs-unified-top-card__job-title a")
                 job_url = link_elem.get_attribute("href").split('?')[0] # Clean URL
-            except:
+            except Exception:
                 job_url = self.driver.current_url # Fallback
             
             # Company
             try:
                 company = self.driver.find_element(By.CSS_SELECTOR, ".job-details-jobs-unified-top-card__company-name, .jobs-unified-top-card__company-name").text.strip()
-            except:
+            except Exception:
                 company = "Unknown"
                 
-            # Location
+            # Location & Date Extraction
             try:
-                location = self.driver.find_element(By.CSS_SELECTOR, ".job-details-jobs-unified-top-card__bullet, .jobs-unified-top-card__bullet").text.strip()
-            except:
+                # Strategy 1: Look for the primary description block (Company · Location · Date)
+                primary_desc = self.driver.find_elements(By.CSS_SELECTOR, ".job-details-jobs-unified-top-card__primary-description-container, .job-details-jobs-unified-top-card__primary-description, .jobs-unified-top-card__primary-description")
+                
                 location = "Unknown"
+                posted_date_str = None
+                
+                if primary_desc:
+                    full_text = primary_desc[0].text
+                    parts = [p.strip() for p in full_text.split('·')]
+                    
+                    for part in parts:
+                        # Skip if it is the company name (fuzzy match)
+                        if company != "Unknown" and company.lower() in part.lower():
+                            continue
+                        
+                        # Check if it looks like a date
+                        lower_part = part.lower()
+                        if any(k in lower_part for k in ["ago", "hour", "minute", "day", "week", "month", "year", "reposted"]):
+                            posted_date_str = part
+                            continue
+                            
+                        # If not company and not date, likely location
+                        if location == "Unknown":
+                            location = part
+                
+                # Strategy 2: Fallbacks if not found
+                if location == "Unknown":
+                    location_selectors = [
+                        ".job-details-jobs-unified-top-card__bullet",
+                        ".jobs-unified-top-card__bullet",
+                        "span.tvm__text--low-emphasis", # Common for meta-data
+                        ".job-details-jobs-unified-top-card__workplace-type" 
+                    ]
+                    for selector in location_selectors:
+                        try:
+                            elements = self.driver.find_elements(By.CSS_SELECTOR, selector)
+                            for el in elements:
+                                text = el.text.strip()
+                                # Filter out common non-location text like "Apply" or numbers
+                                if text and len(text) > 2 and not text[0].isdigit():
+                                    # Helper check for time
+                                    lower_text = text.lower()
+                                    if any(k in lower_text for k in ["ago", "hour", "minute", "day", "week", "month", "year", "reposted"]):
+                                        continue
+                                        
+                                    if location == "Unknown": 
+                                         location = text
+                                         break
+                        except Exception:
+                           continue
+
+                # Date fallback if not found in primary block
+                if not posted_date_str:
+                    try:
+                        # Try finding separate date element
+                        date_elem = self.driver.find_elements(By.CSS_SELECTOR, ".tvm__text--low-emphasis, .job-details-jobs-unified-top-card__posted-date")
+                        for el in date_elem:
+                            text = el.text.strip()
+                            if any(k in text.lower() for k in ["ago", "hour", "minute", "day", "week", "month"]):
+                                posted_date_str = text
+                                break
+                    except Exception:
+                        pass
+
+            except Exception:
+                location = "Unknown"
+                posted_date_str = None
+
+            # Convert relative date to actual timestamp
+            posted_date = datetime.now()
+            if posted_date_str:
+                posted_date = self._parse_relative_date(posted_date_str)
             
+            # Formating date for DB (YYYY-MM-DD HH:MM:SS)
+            formatted_date = posted_date.strftime('%Y-%m-%d %H:%M:%S')
+
             # Full Description
             try:
                 description_box = self.driver.find_element(By.ID, "job-details")
@@ -343,9 +536,9 @@ class LinkedInJobScraper:
                     show_more.click()
                     random_sleep(0.5, 1)
                     description = description_box.text.strip()
-                except:
+                except Exception:
                     pass
-            except:
+            except Exception:
                 description = ""
                 
             return {
@@ -355,12 +548,47 @@ class LinkedInJobScraper:
                 "job_description": description, # Used for storage
                 "raw_description": description, # Used for LLM
                 "job_url": job_url,
-                "match_percentage": 0 # To be calculated later
+                "match_percentage": 0, # To be calculated later
+                "posted_date": formatted_date
             }
             
         except Exception as e:
             logger.error(f"Error extracting job details pane: {e}")
             return None
+
+    def _parse_relative_date(self, relative_str: str) -> datetime:
+        """Convert relative time string (e.g. '2 days ago') to datetime object."""
+        try:
+            now = datetime.now()
+            relative_str = relative_str.lower().strip()
+            
+            # Handle "Reposted" prefix
+            relative_str = relative_str.replace("reposted", "").strip()
+            
+            # Regex to find number and unit
+            match = re.search(r'(\d+)\s+(minute|hour|day|week|month)', relative_str)
+            if not match:
+                return now
+                
+            amount = int(match.group(1))
+            unit = match.group(2)
+            
+            if "minute" in unit:
+                return now - timedelta(minutes=amount)
+            elif "hour" in unit:
+                return now - timedelta(hours=amount)
+            elif "day" in unit:
+                return now - timedelta(days=amount)
+            elif "week" in unit:
+                return now - timedelta(weeks=amount)
+            elif "month" in unit:
+                # Approximation
+                return now - timedelta(days=amount*30)
+                
+            return now
+        except:
+            return datetime.now()
+
 
     def scrape_recommended_jobs(self, user_id: int, limit: int = 10):
         """

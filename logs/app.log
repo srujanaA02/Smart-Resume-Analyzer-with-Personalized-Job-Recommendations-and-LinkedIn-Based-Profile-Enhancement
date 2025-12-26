@@ -189,3 +189,34 @@
 2025-12-26 19:37:53,698 - utils.database - INFO - Saved 1 new job listings for user 1
 2025-12-26 19:37:53,706 - __main__ - INFO - No more pages found.
 2025-12-26 19:37:53,707 - __main__ - INFO - Scraped 5 jobs.
+2025-12-26 20:56:05,698 - backend.llm_analyzer - INFO - Initializing LLMAnalyzer with model: llama3.2:3b, host: http://localhost:11434
+2025-12-26 20:56:06,686 - backend.llm_analyzer - INFO - Ollama client initialized successfully
+2025-12-26 20:56:06,687 - __main__ - INFO - Logging in as emailtorishal@gmail.com...
+2025-12-26 20:56:20,477 - __main__ - INFO - Login successful.
+2025-12-26 20:56:20,477 - __main__ - INFO - Searching for 'Python Developer' in 'Remote' with filters: None
+2025-12-26 20:56:20,477 - __main__ - INFO - Navigating to: https://www.linkedin.com/jobs/search/?keywords=Python+Developer&location=Remote
+2025-12-26 20:56:28,505 - __main__ - INFO - Scraping page 1, collected 0/5 jobs...
+2025-12-26 20:56:31,767 - __main__ - INFO - Parsing description for: Python Developer Internship
+2025-12-26 20:56:31,767 - backend.llm_analyzer - INFO - Parsing job description...
+2025-12-26 20:56:31,767 - backend.llm_analyzer - INFO - Calling Ollama (attempt 1/3)...
+2025-12-26 20:56:37,010 - backend.llm_analyzer - INFO - Ollama response received successfully
+2025-12-26 20:56:37,011 - backend.llm_analyzer - INFO - Tokens used: 1006 | Total so far: 1006 | Request #1
+2025-12-26 20:56:37,012 - backend.llm_analyzer - INFO - Cached job_parsing result
+2025-12-26 20:56:37,027 - utils.database - INFO - Saved 1 new job listings for user 1
+2025-12-26 20:56:38,640 - __main__ - INFO - Parsing description for: Python Developer Intern
+2025-12-26 20:56:38,640 - backend.llm_analyzer - INFO - Parsing job description...
+2025-12-26 20:56:38,640 - backend.llm_analyzer - INFO - Cache hit (disk) for job_parsing
+2025-12-26 20:56:38,655 - utils.database - INFO - Saved 1 new job listings for user 1
+2025-12-26 20:56:40,473 - __main__ - INFO - Parsing description for: Python Developer Intern
+2025-12-26 20:56:40,473 - backend.llm_analyzer - INFO - Parsing job description...
+2025-12-26 20:56:40,474 - backend.llm_analyzer - INFO - Cache hit (disk) for job_parsing
+2025-12-26 20:56:40,489 - utils.database - INFO - Saved 1 new job listings for user 1
+2025-12-26 20:56:42,127 - __main__ - INFO - Parsing description for: Python Developer
+2025-12-26 20:56:42,127 - backend.llm_analyzer - INFO - Parsing job description...
+2025-12-26 20:56:42,128 - backend.llm_analyzer - INFO - Cache hit (disk) for job_parsing
+2025-12-26 20:56:42,143 - utils.database - INFO - Saved 1 new job listings for user 1
+2025-12-26 20:56:44,121 - __main__ - INFO - Parsing description for: SQL or Python Developer
+2025-12-26 20:56:44,121 - backend.llm_analyzer - INFO - Parsing job description...
+2025-12-26 20:56:44,121 - backend.llm_analyzer - INFO - Cache hit (disk) for job_parsing
+2025-12-26 20:56:44,136 - utils.database - INFO - Saved 1 new job listings for user 1
+2025-12-26 20:56:44,137 - __main__ - INFO - Scraped 5 jobs.

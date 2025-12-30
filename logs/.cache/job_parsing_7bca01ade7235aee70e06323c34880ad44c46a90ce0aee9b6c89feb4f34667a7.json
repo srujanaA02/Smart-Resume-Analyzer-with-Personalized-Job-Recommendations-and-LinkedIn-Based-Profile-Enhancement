@@ -1,0 +1,33 @@
+{
+  "summary": "Experienced Engineer for Embedded Systems Development",
+  "responsibilities": [
+    "Excellent Programming Skills in Embedded -C",
+    "Understanding of various processor and microcontroller architecture",
+    "Working experience of on bare metal, RTOS, device driver development",
+    "Hands-on programming/coding, and debugging",
+    "Expert in Embedded C and OOPS Programming languages, data structure, and design patterns",
+    "Expert in bootloader (U-Boot) development for embedded systems",
+    "Strong working experience in Linux Kernel programming and device driver development"
+  ],
+  "required_skills": [
+    "Embedded C",
+    "RTOS (FreeRTOS/VxWorks/QNX)",
+    "STM32",
+    "ARM",
+    "Device Drivers",
+    "Yocto",
+    "Kernel",
+    "Linux Device Drivers",
+    "Zigbee, Zwave, Matter, BLE, Threads, WiFi, and Sub-GHz technologies"
+  ],
+  "qualifications": [
+    "Working experience of on bare metal, RTOS, device driver development",
+    "Expert in Embedded C and OOPS Programming languages, data structure, and design patterns",
+    "Expert in bootloader (U-Boot) development for embedded systems",
+    "Strong working experience in Linux Kernel programming and device driver development"
+  ],
+  "salary_range": null,
+  "benefits": [
+    "Experience in different distributions such as Yocto, and openWRT"
+  ]
+}

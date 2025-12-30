@@ -1,0 +1,24 @@
+{
+  "summary": "Bytebeam is seeking a Firmware Engineer to develop and maintain embedded software for innovative IoT solutions. The candidate will work on designing, coding, and debugging embedded systems, collaborating with cross-functional teams to ensure seamless hardware-software integration.",
+  "responsibilities": [
+    "Designing, coding, and debugging embedded systems",
+    "Collaborating with cross-functional teams to ensure seamless hardware-software integration",
+    "Contributing to the development of scalable and reliable systems",
+    "Optimizing performance and debugging system-level issues"
+  ],
+  "required_skills": [
+    "Embedded Software development and debugging",
+    "ARM Architecture",
+    "Software Development",
+    "Electrical Engineering principles",
+    "Low-level programming techniques",
+    "Hardware-software interaction",
+    "MQTT, RTOS, Board bring up, CI/CD, Linux, TCP/IP"
+  ],
+  "qualifications": [
+    "Bachelor's or Master's degree in Computer Science, Electrical/Electronic Engineering, or a related field",
+    "Experience with IoT systems and previous experience in related industries (added advantage)"
+  ],
+  "salary_range": null,
+  "benefits": []
+}

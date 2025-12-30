@@ -1,0 +1,24 @@
+{
+  "summary": "We are looking for a passionate, talented Software Development Engineer with a growth mindset who are adept at a variety of skills.",
+  "responsibilities": [
+    "Be responsible for system architecture and development of new features for embedded systems",
+    "Investigate, prototype and deliver new and innovative system solutions",
+    "Design, develop and verify firmware for embedded systems",
+    "Participate in design reviews, API development, and documentation"
+  ],
+  "required_skills": [
+    "Experience in embedded development in C/C++",
+    "Experience in one or more of these areas: cameras, sensors and associated algorithm development.",
+    "Experience with RTOS and embedded Linux development."
+  ],
+  "qualifications": [
+    "3+ years of non-internship professional software development experience",
+    "2+ years of non-internship design or architecture (design patterns, reliability and scaling) of new and existing systems experience",
+    "Experience in computer science fundamentals (object-oriented design, data structures, algorithm design, problem solving and complexity analysis)"
+  ],
+  "salary_range": null,
+  "benefits": [
+    "Flexible working hours",
+    "Support for work-life balance"
+  ]
+}

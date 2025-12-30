@@ -143,7 +143,7 @@ def recommendations_page():
                         <div class="job-location" style="font-size: 0.85rem; color: #777;">📅 Posted: {job.get('posted_date', 'Unknown') or 'Unknown'}</div>
                         <hr style="border-color: #333; margin: 15px 0;">
                         <div style="color: #CCCCCC; font-size: 0.95rem; line-height: 1.6; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;">
-                            {job['job_description'][:300] if job['job_description'] else 'No description available'}...
+                            {job['job_description'][:1000] if job['job_description'] else 'No description available'}...
                         </div>
                     </div>
                 </div>

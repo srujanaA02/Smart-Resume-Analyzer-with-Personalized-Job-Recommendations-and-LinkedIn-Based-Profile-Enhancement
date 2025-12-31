@@ -130,18 +130,19 @@ def recommendations_page():
             if 'scraper' in locals():
                 scraper.close()
 
-    # --- STATS SUMMARY ---
+    # --- STATS SUMMARY (Placeholders) ---
     raw_jobs = get_job_recommendations(user_id, limit=None)
-    total_found = len(raw_jobs) if raw_jobs else 0
-    avg_score = 0
-    if total_found > 0:
-        avg_score = int(sum(j.get('match_percentage', 0) for j in raw_jobs)/total_found)
     
     st.markdown("### 📊 Overview")
     k1, k2, k3 = st.columns(3)
-    k1.metric("Opportunities Found", total_found)
-    k2.metric("Avg Match Score", f"{avg_score}%")
-    k3.metric("New Today", len([j for j in raw_jobs if "hour" in j.get('posted_date', '').lower()]))
+    metric_found = k1.empty()
+    metric_score = k2.empty()
+    metric_new = k3.empty()
+    
+    # Initialize defaults
+    metric_found.metric("Opportunities Found", 0)
+    metric_score.metric("Avg Match Score", "0%")
+    metric_new.metric("New Today", 0)
 
     st.markdown("---")
 
@@ -158,7 +159,7 @@ def recommendations_page():
         remote_only = st.checkbox("Remote Only", value=True)
 
         # 2. Match Score
-        min_match = st.slider("Min Match %", 0, 100, 60, 5)
+        min_match = st.slider("Min Match %", 0, 100, 0, 5) # Default 0 to see all jobs if scoring fails
 
         # 3. Job Type (Mock data for now if not in scraper)
         job_types = ["Full-time", "Contract", "Internship", "Part-time"]
@@ -187,6 +188,24 @@ def recommendations_page():
         
         # 1. Processing
         processed_jobs = recommender.filter_and_score_jobs(user_id, raw_jobs, filters)
+        
+        # Persist updated match scores to DB so they are valid for future queries
+        if processed_jobs:
+             from utils.database import update_job_match_scores
+             updates = [(j['id'], j['match_percentage']) for j in processed_jobs]
+             update_job_match_scores(user_id, updates)
+        
+        # UPDATE STATS with real values
+        p_count = len(processed_jobs)
+        p_avg = int(sum(j.get('match_percentage', 0) for j in processed_jobs)/p_count) if p_count > 0 else 0
+        p_new = len([j for j in processed_jobs if "hour" in str(j.get('posted_date', '')).lower() or "minute" in str(j.get('posted_date', '')).lower()])
+        
+        metric_found.metric("Opportunities Found", p_count)
+        metric_score.metric("Avg Match Score", f"{p_avg}%")
+        metric_new.metric("New Today", p_new)
+        
+        if p_count > 0 and p_avg == 0:
+            st.warning("⚠️ Match scores are 0%. Please ensuring you have uploaded and analyzed your resume in the Dashboard so we can calculate matches.")
         
         # Sorting
         sort_opts = {
@@ -272,6 +291,7 @@ def recommendations_page():
 
         with tab_compare:
             st.subheader("Compare Jobs")
+            selected_names = []
             if not raw_jobs:
                 st.info("No jobs to compare.")
             else:
@@ -342,6 +362,7 @@ def _render_job_card(job, recommender, user_id, is_featured=False, key_suffix=""
             from utils.database import update_job_status
             update_job_status(user_id, job['id'], 'saved')
             st.toast("Job Saved!")
+            st.rerun()
     with c2:
         if st.button("Ignore", key=f"i_{unique_key}"):
             st.toast("Marked as Not Interested")

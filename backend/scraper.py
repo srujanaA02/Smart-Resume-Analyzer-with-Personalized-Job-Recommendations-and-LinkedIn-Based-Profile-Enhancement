@@ -523,31 +523,40 @@ class LinkedInJobScraper:
             # Applicant Count Extraction
             applicant_count = 0
             try:
-                # Selectors for applicant count (often "X applicants")
+                # Strategy 1: Specific Selectors
                 app_selectors = [
                     ".job-details-jobs-unified-top-card__applicant-count",
                     ".jobs-unified-top-card__applicant-count",
-                    ".jobs-unified-top-card__bullet" # Fallback, sometimes mixed
+                    ".jobs-unified-top-card__bullet",
+                    ".tvm__text--low-emphasis", # Sometimes it's here
+                    ".job-details-jobs-unified-top-card__primary-description" # Text dump
                 ]
+                
+                found_app = False
                 for selector in app_selectors:
+                    if found_app: break
                     try:
                         elements = self.driver.find_elements(By.CSS_SELECTOR, selector)
                         for el in elements:
-                            text = el.text.strip()
-                            if "applicant" in text.lower():
-                                # Extract number
-                                match = re.search(r'(\d+)', text)
-                                if match:
-                                    applicant_count = int(match.group(1))
-                                    break
-                        if applicant_count > 0: break
+                            text = el.text.strip().lower()
+                            # Look for patterns like "25 applicants", "over 100 applicants"
+                            if "applicant" in text:
+                                # Extract all numbers
+                                numbers = re.findall(r'(\d+)', text.replace(',', ''))
+                                if numbers:
+                                    # Heuristic: usually the applicant count is the last number if there are multiple dates etc?
+                                    # Or closest to "applicant" word.
+                                    # Simple approach: grab the number immediately preceding "applicant"
+                                    match = re.search(r'(\d+)\s*(?:over)?\s*applicant', text)
+                                    if match:
+                                        applicant_count = int(match.group(1))
+                                        found_app = True
+                                        break
+                                    
+                                    # Fallback: just take the largest number found in the string if small enough to be realistic?
+                                    # Risk of picking up "2 days ago".
+                                    pass
                     except: continue
-                
-                # Check within primary description text if not found yet
-                if applicant_count == 0 and posted_date_str:
-                     # e.g. "2 hours ago · 25 applicants"
-                     # We might have separate strategies for this but let's check top card text again
-                     pass # Already tried to parse separated parts earlier, could refine
             except Exception:
                 pass
 

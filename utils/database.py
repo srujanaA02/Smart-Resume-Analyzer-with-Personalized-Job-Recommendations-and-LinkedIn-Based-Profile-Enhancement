@@ -662,3 +662,25 @@ def check_job_exists(user_id, job_url):
         return False
     finally:
         conn.close()
+
+def update_job_match_scores(user_id, updates):
+    """
+    Bulk update match scores for jobs.
+    updates: list of tuples (job_id, match_percentage)
+    """
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    updated_count = 0
+    try:
+        cursor.executemany(
+            "UPDATE job_recommendations SET match_percentage = ? WHERE id = ? AND user_id = ?",
+            [(score, job_id, user_id) for job_id, score in updates]
+        )
+        conn.commit()
+        updated_count = cursor.rowcount
+        return updated_count
+    except Exception as e:
+        logger.error(f"Error updating match scores: {e}")
+        return 0
+    finally:
+        conn.close()

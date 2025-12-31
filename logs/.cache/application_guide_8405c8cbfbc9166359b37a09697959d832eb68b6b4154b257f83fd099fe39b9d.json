@@ -1,0 +1,47 @@
+{
+  "cover_letter_points": [
+    "Highlight experience with Spark, Python, and related technologies for building and optimizing data pipelines.",
+    "Emphasize proficiency in Postgres (indexing, replication, partitioning, optimization) to align with the job's database management requirements.",
+    "Mention familiarity with NoSQL schema design and access patterns for MongoDB and DynamoDB, as required by the job.",
+    "Talk about experience with cloud components (AWS services), Databricks, internal microservices, and containerization (Docker) for seamless data flow across platforms."
+  ],
+  "resume_tweaks": [
+    "Create a separate section for 'Backend Experience' to highlight proficiency in Node.js, TypeScript, Express.js, Spring Boot, and related technologies.",
+    "Quantify achievements as Network Supervisor & Digital Signature Project Coordinator at KELTRON by mentioning metrics such as 'managed IT operations', 'coordinated DSC implementation', or 'provided system configuration'.",
+    "Emphasize data modeling skills by adding relevant coursework (e.g., DBMS, Operating Systems) and creating a table of contents that highlights these sections."
+  ],
+  "interview_prep": [
+    {
+      "question": "What do you know about Delta Lake?",
+      "angle": "Highlight the role of Delta Lake in efficient data access and analytics by mentioning its format, features, and benefits."
+    },
+    {
+      "question": "How do you approach data storage optimization?",
+      "angle": "Talk about experience with indexing strategies, partitioning, schema management, and data storage formats to optimize performance."
+    },
+    {
+      "question": "Can you explain Kafka's consumer groups, offsets, partitions, and message processing?",
+      "angle": "Use analogies or examples to simplify complex concepts, then transition into explaining Kafka's key features and how they support stream processing."
+    }
+  ],
+  "missing_skills_strategy": [
+    {
+      "skill": "Java frameworks (Spring Batch or Hibernate)",
+      "strategy": "Highlight transferable skills from Node.js, TypeScript, Express.js, Spring Boot that can be applied to Java development"
+    },
+    {
+      "skill": "Infrastructure orchestration (Terraform) for database provisioning",
+      "strategy": "Emphasize experience with cloud components and containerization (Docker), then discuss potential applications of Terraform in the future."
+    }
+  ],
+  "company_research": [
+    {
+      "area": "Industry focus on institutional equities and data-driven decision-making.",
+      "aspect": "Kotak Securities' expertise in providing actionable insights to institutional clients through advanced analytics and AI-powered solutions."
+    },
+    {
+      "area": "Company culture and growth opportunities.",
+      "aspect": "Research Kotak Securities' employee reviews, company values, and career growth expectations to determine alignment with personal goals and aspirations."
+    }
+  ]
+}

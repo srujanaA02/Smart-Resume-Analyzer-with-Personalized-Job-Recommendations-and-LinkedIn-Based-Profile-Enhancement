@@ -356,16 +356,7 @@ def _render_job_card(job, recommender, user_id, is_featured=False, key_suffix=""
     
     # Actions
     unique_key = f"{job['id']}_{key_suffix}"
-    c1, c2, c3 = st.columns([1, 1, 2])
-    with c1:
-        if st.button("Save", key=f"s_{unique_key}"):
-            from utils.database import update_job_status
-            update_job_status(user_id, job['id'], 'saved')
-            st.toast("Job Saved!")
-            st.rerun()
-    with c2:
-        if st.button("Ignore", key=f"i_{unique_key}"):
-            st.toast("Marked as Not Interested")
+
             
     with st.expander("Show Details & Analysis"):
         st.write(f"**Match Analysis**: {scores.get('match_analysis', 'N/A')}")
@@ -383,5 +374,54 @@ def _render_job_card(job, recommender, user_id, is_featured=False, key_suffix=""
              with st.spinner("Generating..."):
                  tips = recommender.generate_detailed_application_guide(user_id, job)
                  if tips:
-                     st.subheader("💡 AI Tips")
-                     st.write(tips.get('cover_letter_points', []))
+                     st.subheader("💡 AI Application Strategy")
+                     
+                     # 1. Cover Letter
+                     if tips.get('cover_letter_points'):
+                        st.markdown("**📝 Cover Letter Points**")
+                        for point in tips['cover_letter_points']:
+                            st.markdown(f"- {point}")
+                     
+                     # 2. Resume Tweaks
+                     if tips.get('resume_tweaks'):
+                        st.markdown("**📄 Resume Tweaks**")
+                        for tweak in tips['resume_tweaks']:
+                            st.markdown(f"- {tweak}")
+                            
+                     # 3. Interview Prep
+                     if tips.get('interview_prep'):
+                        st.markdown("**🎤 Interview Prep**")
+                        for q in tips['interview_prep']:
+                            st.markdown(f"- {q}")
+
+                     # 4. Missing Skills Strategy
+                     if tips.get('missing_skills_strategy'):
+                        st.markdown("**📚 Upskilling Strategy**")
+                        strategy = tips['missing_skills_strategy']
+                        if isinstance(strategy, list):
+                            for item in strategy:
+                                st.markdown(f"- {item}")
+                        else:
+                            st.info(strategy)
+
+                     # 5. Company Research
+                     if tips.get('company_research'):
+                        st.markdown("**🏢 Company Research**")
+                        for item in tips['company_research']:
+                             st.markdown(f"- {item}")
+
+    # Actions (Moved to bottom)
+    st.write("") # Spacer
+    c1, c2, c3 = st.columns([1, 1, 2])
+    with c1:
+        if st.button("Save", key=f"s_{unique_key}"):
+            from utils.database import update_job_status
+            update_job_status(user_id, job['id'], 'saved')
+            st.toast("Job Saved!")
+            st.rerun()
+    with c2:
+        if st.button("Ignore", key=f"i_{unique_key}"):
+            from utils.database import update_job_status
+            update_job_status(user_id, job['id'], 'rejected')
+            st.toast("Job marked as Rejected")
+            st.rerun()

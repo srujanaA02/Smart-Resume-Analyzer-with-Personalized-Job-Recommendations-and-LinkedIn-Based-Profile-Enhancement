@@ -1,0 +1,24 @@
+{
+  "summary": "We\u2019re building a fast, experimental AI Lab inside Dr. Reddy\u2019s and hiring fresh graduates who want to build real AI products from Day 1.",
+  "responsibilities": [
+    "Prototype and ship AI agents and solutions using LLMs, RAG systems and modern ML workflows",
+    "Write clean Python code and contribute to full ML pipelines",
+    "Explore datasets, train and evaluate models, iterate fast and learn continuously",
+    "Deploy solutions on cloud and pick up real-world MLOps practices"
+  ],
+  "required_skills": [
+    "Strong Python skills",
+    "Familiarity with ML or deep learning frameworks",
+    "Good engineering discipline: Git, APIs, debugging, clean code",
+    "Understanding of core AI, ML and GenAI concepts",
+    "Curiosity, drive and comfort with rapid experimentation"
+  ],
+  "nice_to_have_skills": [
+    "Nothing mentioned"
+  ],
+  "required_experience_years": 0,
+  "education_level": "None",
+  "seniority_level": "Junior",
+  "salary_range": null,
+  "benefits": []
+}

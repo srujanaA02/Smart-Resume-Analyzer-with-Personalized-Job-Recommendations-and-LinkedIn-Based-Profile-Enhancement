@@ -528,8 +528,9 @@ class LinkedInJobScraper:
                     ".job-details-jobs-unified-top-card__applicant-count",
                     ".jobs-unified-top-card__applicant-count",
                     ".jobs-unified-top-card__bullet",
-                    ".tvm__text--low-emphasis", # Sometimes it's here
-                    ".job-details-jobs-unified-top-card__primary-description" # Text dump
+                    ".tvm__text--low-emphasis", 
+                    ".job-details-jobs-unified-top-card__primary-description",
+                    ".job-details-jobs-unified-top-card__subtitle" # Often contains the full metadata string
                 ]
                 
                 found_app = False
@@ -539,23 +540,33 @@ class LinkedInJobScraper:
                         elements = self.driver.find_elements(By.CSS_SELECTOR, selector)
                         for el in elements:
                             text = el.text.strip().lower()
-                            # Look for patterns like "25 applicants", "over 100 applicants"
-                            if "applicant" in text:
-                                # Extract all numbers
-                                numbers = re.findall(r'(\d+)', text.replace(',', ''))
-                                if numbers:
-                                    # Heuristic: usually the applicant count is the last number if there are multiple dates etc?
-                                    # Or closest to "applicant" word.
-                                    # Simple approach: grab the number immediately preceding "applicant"
-                                    match = re.search(r'(\d+)\s*(?:over)?\s*applicant', text)
-                                    if match:
-                                        applicant_count = int(match.group(1))
-                                        found_app = True
-                                        break
-                                    
-                                    # Fallback: just take the largest number found in the string if small enough to be realistic?
-                                    # Risk of picking up "2 days ago".
-                                    pass
+                            
+                            # 1. "Over 100 people clicked apply" or "25 applicants"
+                            # Regex to capture: number followed by variations
+                            # Patterns to match:
+                            # 100 applicants
+                            # over 100 applicants
+                            # 50 people clicked apply
+                            # over 50 people clicked apply
+                            
+                            if "applicant" in text or "people clicked apply" in text:
+                                # Remove commas from numbers first
+                                clean_text = text.replace(',', '')
+                                
+                                # Pattern 1: Direct "applicant" association
+                                match = re.search(r'(?:over\s+)?(\d+)\s*(?:applicants|people clicked apply)', clean_text)
+                                if match:
+                                    applicant_count = int(match.group(1))
+                                    found_app = True
+                                    break
+                                
+                                # Pattern 2: "· 145 applicants" (bullet point style)
+                                match = re.search(r'·\s*(\d+)\s*(?:applicants|people)', clean_text)
+                                if match:
+                                    applicant_count = int(match.group(1))
+                                    found_app = True
+                                    break
+
                     except: continue
             except Exception:
                 pass

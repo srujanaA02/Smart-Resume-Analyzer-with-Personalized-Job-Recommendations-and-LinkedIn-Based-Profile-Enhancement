@@ -1,0 +1,29 @@
+{
+  "summary": "We are looking for a Data Engineer who can design, build, and maintain robust data pipelines and infrastructure to support analytics, reporting, and machine learning initiatives.",
+  "responsibilities": [
+    "Design, build, and maintain scalable data pipelines and ETL/ELT workflows",
+    "Collect, integrate, and transform structured and unstructured data from multiple sources",
+    "Develop and manage data warehouses, data lakes, and data models",
+    "Ensure data reliability, quality, security, and performance"
+  ],
+  "required_skills": [
+    "Strong proficiency in Python and/or SQL for data engineering tasks",
+    "Experience building ETL/ELT pipelines and data workflows",
+    "Hands-on experience with relational and NoSQL databases",
+    "Strong understanding of data modeling, schema design, and data warehousing concepts"
+  ],
+  "nice_to_have_skills": [
+    "Experience with big data tools (Spark, Hadoop, Kafka)",
+    "Exposure to real-time or streaming data pipelines",
+    "Knowledge of data lake frameworks (Delta Lake, Iceberg, Hudi)"
+  ],
+  "required_experience_years": 0.0,
+  "education_level": "None",
+  "seniority_level": "Lead",
+  "salary_range": null,
+  "benefits": [
+    "100% remote work (India-based)",
+    "Flexible working hours",
+    "Opportunity to work on global, data-intensive projects"
+  ]
+}

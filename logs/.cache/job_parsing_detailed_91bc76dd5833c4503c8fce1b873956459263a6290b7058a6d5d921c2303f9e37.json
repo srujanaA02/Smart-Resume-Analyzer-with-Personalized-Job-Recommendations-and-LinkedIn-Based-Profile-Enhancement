@@ -1,0 +1,32 @@
+{
+  "summary": "Work with team members to enable them to fullfill the technical needs and own the responsibility of development, unit testing of data-products, analytics, and data engineering needs.",
+  "responsibilities": [
+    "Work with team members to enable them to fullfill the technical needs and own the responsibility of development, unit testing of data-products, analytics, and data engineering needs.",
+    "Build efficient code to transform raw data into datasets for analysis, reporting and data models",
+    "Collaborate with other data engineers to implement a shared technical vision",
+    "Participate in the entire software development lifecycle, from concept to release",
+    "Discuss with PO team, create JIRA tickets wherever necessary and update work logs properly"
+  ],
+  "required_skills": [
+    "Degree (B.S. or higher) in Computer Science or a related discipline or relevant professional experience",
+    "Designing scalable & automated software systems, strong theoretical knowledge is mandatory",
+    "Proficiency in Python/PySpark coding",
+    "Data structures and algorithms using python are preferred",
+    "Proficiency in SQL",
+    "Experience with data processing frameworks such as Spark, Flink, or Beam",
+    "Understandance of cloud-based infrastructures such as AWS or GCP"
+  ],
+  "nice_to_have_skills": [
+    "Exposure to orchestration platforms such as Airflow or Kubeflow",
+    "Proven attention to detail, critical thinking, and the ability to work independently within a cross-functional team",
+    "Basic understanding of code versioning tools such as GitHub, SVN, CVS etc.",
+    "Understanding of Agile framework and delivery",
+    "Experience in any one of the ETL tool like Informatica, Talend ETL, PentahoDI",
+    "Conceptual knowledge on cloud based Distributed/Hybrid data-warehousing solutIons and Data Lake knowledge"
+  ],
+  "required_experience_years": 0,
+  "education_level": "Bachelor",
+  "seniority_level": "Mid",
+  "salary_range": null,
+  "benefits": []
+}

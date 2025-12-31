@@ -102,10 +102,28 @@ def create_tables():
         job_description TEXT,
         job_url TEXT,
         match_percentage REAL,
+        job_analysis TEXT,
+        applicant_count INTEGER,
+        status TEXT DEFAULT 'new',
+        posted_date TEXT,
         scraping_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         FOREIGN KEY (user_id) REFERENCES users (id)
     )
     """)
+    
+    # Migrations
+    try:
+        cursor.execute("ALTER TABLE job_recommendations ADD COLUMN job_analysis TEXT")
+    except Exception:
+        pass
+    try:
+        cursor.execute("ALTER TABLE job_recommendations ADD COLUMN applicant_count INTEGER")
+    except Exception:
+        pass
+    try:
+        cursor.execute("ALTER TABLE job_recommendations ADD COLUMN status TEXT DEFAULT 'new'")
+    except Exception:
+        pass
 
     cursor.execute("CREATE INDEX IF NOT EXISTS idx_user_id ON resume_analysis (user_id)")
     cursor.execute("CREATE INDEX IF NOT EXISTS idx_user_id_jobs ON job_recommendations (user_id)")
@@ -549,10 +567,12 @@ def save_job_listings(user_id, jobs_data):
             if cursor.fetchone():
                 continue
 
+            analysis_json = json.dumps(job.get('job_analysis', {})) if job.get('job_analysis') else None
+
             cursor.execute("""
                 INSERT INTO job_recommendations 
-                (user_id, job_title, company_name, location, job_description, job_url, match_percentage, posted_date)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+                (user_id, job_title, company_name, location, job_description, job_url, match_percentage, job_analysis, applicant_count, posted_date, status)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'new')
             """, (
                 user_id,
                 job.get('job_title'),
@@ -561,6 +581,8 @@ def save_job_listings(user_id, jobs_data):
                 job.get('job_description'),
                 job.get('job_url'),
                 job.get('match_percentage', 0.0),
+                analysis_json,
+                job.get('applicant_count', 0),
                 job.get('posted_date')
             ))
             saved_count += 1
@@ -580,7 +602,7 @@ def get_job_recommendations(user_id, limit=None):
     cursor = conn.cursor()
     try:
         query = """
-            SELECT job_title, company_name, location, job_url, job_description, match_percentage, scraping_date, posted_date
+            SELECT id, job_title, company_name, location, job_url, job_description, match_percentage, job_analysis, applicant_count, status, scraping_date, posted_date
             FROM job_recommendations 
             WHERE user_id = ? 
             ORDER BY scraping_date DESC 
@@ -593,10 +615,38 @@ def get_job_recommendations(user_id, limit=None):
             
         cursor.execute(query, tuple(params))
         rows = cursor.fetchall()
-        return [dict(row) for row in rows]
+        result = []
+        for row in rows:
+            d = dict(row)
+            if d.get('job_analysis'):
+                try:
+                    d['job_analysis'] = json.loads(d['job_analysis'])
+                except:
+                    d['job_analysis'] = {}
+            else:
+                 d['job_analysis'] = {}
+            result.append(d)
+        return result
     except Exception as e:
         logger.error(f"Error retrieving job recommendations: {e}")
         return []
+    finally:
+        conn.close()
+
+def update_job_status(user_id, job_id, new_status):
+    """Update status of a job (e.g., 'saved', 'applied', 'rejected')."""
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    try:
+        cursor.execute(
+            "UPDATE job_recommendations SET status = ? WHERE id = ? AND user_id = ?",
+            (new_status, job_id, user_id)
+        )
+        conn.commit()
+        return cursor.rowcount > 0
+    except Exception as e:
+        logger.error(f"Error updating job status: {e}")
+        return False
     finally:
         conn.close()
 

@@ -1,0 +1,25 @@
+{
+  "summary": "Join HSBC's MSS AI team as an AI/ML Developer and build innovative solutions for market leading Artificial Intelligence (AI) and Machine Learning (ML) products.",
+  "responsibilities": [
+    "Deploy / productionise MSS Data Science team\u2019s projects. Build MLOps infrastructure to enable large-scale ML/DL model development, training and deployment",
+    "Build and optimize model inference, integration, backtesting frameworks. Working with data scientists and quants to onboard ML/DL/RL use cases",
+    "Managing the delivery of multiple complex projects from design through to release. Understanding and contributing to the technical solution from design through to code",
+    "Responsibility for ensuring that risks and issues are identified and managed closely to deliver on time and to the required quality standards whilst adhering to the SDLC. Run post implementation reviews helping to demonstrate success or otherwise of deliveries."
+  ],
+  "required_skills": [
+    "Proficient in Python production development in enterprise environment",
+    "Good experience of data science/ML stacks, e.g. pandas/numpy/sklearn/pytorch",
+    "Good experience with CI/CD pipelines (e.g., Jenkins), version control (Git), software testing, and a solid understanding of DevOps methodologies",
+    "Good experience of databases, e.g. MongoDB, RDBMS, KDB",
+    "Experience of MLOps frameworks e.g. MLFlow, Kubeflow etc. Good experience of Cloud platforms, e.g. GCP, Azure",
+    "Good understanding of machine learning, deep learning, NLP models in general. Good knowledge of overall computer science, e.g. programming, distributed computing, OS, security, networks"
+  ],
+  "nice_to_have_skills": [
+    "Experience of other programming languages is a plus, e.g. Java/C++/Javascript"
+  ],
+  "required_experience_years": 0.0,
+  "education_level": null,
+  "seniority_level": null,
+  "salary_range": null,
+  "benefits": []
+}

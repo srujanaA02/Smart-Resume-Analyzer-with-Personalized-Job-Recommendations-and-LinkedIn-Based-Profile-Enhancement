@@ -92,7 +92,7 @@ def human_typing(element, text):
         time.sleep(random.uniform(0.05, 0.15))
     time.sleep(random.uniform(0.3, 0.6))
 
-def random_sleep(min_seconds=1.0, max_seconds=3.0):
+def random_sleep(min_seconds=1.0, max_seconds=2.0):
     time.sleep(random.uniform(min_seconds, max_seconds))
 
 # --------------------------------------------------
@@ -204,7 +204,7 @@ class LinkedInJobScraper:
         
         logger.info(f"Navigating to: {search_url}")
         self.driver.get(search_url)
-        random_sleep(3, 5)
+        random_sleep(1, 2)
         
         return self._scrape_job_list(limit, search_location=location, progress_callback=progress_callback)
 
@@ -310,7 +310,7 @@ class LinkedInJobScraper:
                             self.driver.execute_script("arguments[0].click();", card)
                             
                         # Wait for details to load
-                        random_sleep(1, 2) # Wait for details pane to load
+                        random_sleep(0.5, 1) # Wait for details pane to load
                         
                         # Parse details
                         job_details = self._extract_job_details_pane(job_title, search_location=search_location)
@@ -331,7 +331,10 @@ class LinkedInJobScraper:
                             
                             # Merge parsed data
                             if "error" not in parsed_data:
-                                job_details.update(parsed_data)
+                                job_details["job_analysis"] = parsed_data
+                                # Also keep top-level fields if needed for immediate display without parsing JSON? 
+                                # But frontend uses extraction from DB which returns job_analysis dict.
+                                # So this is clean.
                             
                             scraped_jobs.append(job_details)
                             
@@ -396,7 +399,7 @@ class LinkedInJobScraper:
 
                     page += 1
                     logger.info(f"Navigating to page {page}...")
-                    random_sleep(3, 5)
+                    random_sleep(0.5, 1)
                 except NoSuchElementException:
                     # Try "See more jobs" for infinite scroll variants
                     try:
@@ -404,7 +407,7 @@ class LinkedInJobScraper:
                         self.driver.execute_script("arguments[0].scrollIntoView();", see_more)
                         self.driver.execute_script("arguments[0].click();", see_more)
                         logger.info("Clicked 'See more jobs'...")
-                        random_sleep(3, 5)
+                        random_sleep(0.5, 1)
                     except NoSuchElementException:
                         logger.info("No next page or load more button found. Scrape complete.")
                         break
@@ -517,6 +520,38 @@ class LinkedInJobScraper:
                 location = "Unknown"
                 posted_date_str = None
 
+            # Applicant Count Extraction
+            applicant_count = 0
+            try:
+                # Selectors for applicant count (often "X applicants")
+                app_selectors = [
+                    ".job-details-jobs-unified-top-card__applicant-count",
+                    ".jobs-unified-top-card__applicant-count",
+                    ".jobs-unified-top-card__bullet" # Fallback, sometimes mixed
+                ]
+                for selector in app_selectors:
+                    try:
+                        elements = self.driver.find_elements(By.CSS_SELECTOR, selector)
+                        for el in elements:
+                            text = el.text.strip()
+                            if "applicant" in text.lower():
+                                # Extract number
+                                match = re.search(r'(\d+)', text)
+                                if match:
+                                    applicant_count = int(match.group(1))
+                                    break
+                        if applicant_count > 0: break
+                    except: continue
+                
+                # Check within primary description text if not found yet
+                if applicant_count == 0 and posted_date_str:
+                     # e.g. "2 hours ago · 25 applicants"
+                     # We might have separate strategies for this but let's check top card text again
+                     pass # Already tried to parse separated parts earlier, could refine
+            except Exception:
+                pass
+
+
             # Convert relative date to actual timestamp
             posted_date = datetime.now()
             if posted_date_str:
@@ -549,7 +584,8 @@ class LinkedInJobScraper:
                 "raw_description": description, # Used for LLM
                 "job_url": job_url,
                 "match_percentage": 0, # To be calculated later
-                "posted_date": formatted_date
+                "posted_date": formatted_date,
+                "applicant_count": applicant_count
             }
             
         except Exception as e:

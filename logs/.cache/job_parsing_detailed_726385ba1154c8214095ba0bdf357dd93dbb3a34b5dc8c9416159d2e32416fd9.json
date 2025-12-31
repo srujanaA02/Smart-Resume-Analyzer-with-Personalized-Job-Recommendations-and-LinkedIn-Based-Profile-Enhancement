@@ -1,0 +1,23 @@
+{
+  "summary": "Join us as a Data Engineer-SQL at Barclays, where you'll spearhead the evolution of our digital landscape, driving innovation and excellence.",
+  "responsibilities": [
+    "Build and maintain the systems that collect, store, process, and analyse data, such as data pipelines, data warehouses and data lakes to ensure that all data is accurate, accessible, and secure.",
+    "Design and implementation of data warehoused and data lakes that manage the appropriate data volumes and velocity and adhere to the required security measures.",
+    "Development of processing and analysis algorithms fit for the intended data complexity and volumes.",
+    "Collaboration with data scientist to build and deploy machine learning models."
+  ],
+  "required_skills": [
+    "Hands-on experience in developing complex/medium/easy datasets using SQL tools.",
+    "Solid working knowledge of writing SQL queries in Teradata and Hive/Impala.",
+    "Working Knowledge on scripts (.bteq ) in Unix/ linux environments."
+  ],
+  "nice_to_have_skills": [
+    "Exposure to AWS/Azure.",
+    "Exposure to Snowflake."
+  ],
+  "required_experience_years": 0,
+  "education_level": null,
+  "seniority_level": "Lead",
+  "salary_range": "$100k - $120k",
+  "benefits": []
+}

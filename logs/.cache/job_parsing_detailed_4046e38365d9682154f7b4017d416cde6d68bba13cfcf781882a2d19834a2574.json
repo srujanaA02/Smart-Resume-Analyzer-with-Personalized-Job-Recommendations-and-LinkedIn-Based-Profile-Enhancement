@@ -1,0 +1,25 @@
+{
+  "required_skills": [
+    "Skills in Computer Science and Software Development",
+    "Knowledge of Back-End Web Development",
+    "Proficiency in Programming and Object-Oriented Programming (OOP)",
+    "Excellent problem-solving abilities and attention to detail",
+    "Ability to work independently and in a team",
+    "Effective communication and collaboration skills"
+  ],
+  "nice_to_have_skills": [
+    "Previous internship or project experience in software development"
+  ],
+  "seniority_level": "Junior",
+  "required_experience_years": "3-5",
+  "education": "Bachelor\u2019s degree in Computer Science or a related field",
+  "responsibilities": [
+    "programming",
+    "back-end web development",
+    "debugging software issues",
+    "collaborating with team members to design and implement new features",
+    "participating in code reviews",
+    "contributing to software documentation"
+  ],
+  "salary_range": null
+}

@@ -1,0 +1,30 @@
+{
+  "summary": "The AI Engineer Associate designs, builds, and deploys Generative AI applications in coordination with the AI Innovation team.",
+  "responsibilities": [
+    "Develop and deploy production-grade Generative AI applications",
+    "Engage in full-stack development, contributing to both the front-end and back-end of AI-powered applications",
+    "Implement and maintain MLOps pipelines for continuous integration, delivery, and monitoring of AI models",
+    "Contribute to the end-to-end ML model development lifecycle",
+    "Collaborate with cross-functional teams to translate business requirements into technical solutions",
+    "Write clean, scalable, and well-documented code",
+    "Assist in evaluating and integrating new AI technologies and frameworks"
+  ],
+  "required_skills": [
+    "Proficiency in Python",
+    "Experience with relevant frameworks (e.g., Flask, FastAPI, LangChain, Hugging Face)",
+    "Experience with deep learning frameworks such as PyTorch or TensorFlow",
+    "Hands-on experience with at least one major cloud platform (AWS, Azure, or GCP) and containerization technologies (Docker, Kubernetes)",
+    "Familiarity with MLOps principles and tools (e.g., MLflow, Kubeflow, Sagemaker)"
+  ],
+  "nice_to_have_skills": [
+    "Experience with RAG/Agentic pipeline development",
+    "Strong understanding of the Gen AI development process"
+  ],
+  "required_experience_years": 2.5,
+  "education_level": "Bachelor's/University degree or equivalent experience in Computer Science, Engineering, or a related quantitative field",
+  "seniority_level": "Mid",
+  "salary_range": null,
+  "benefits": [
+    "Citi is an equal opportunity employer"
+  ]
+}

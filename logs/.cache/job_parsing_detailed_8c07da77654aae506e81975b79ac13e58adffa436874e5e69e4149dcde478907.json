@@ -1,0 +1,46 @@
+{
+  "summary": "We are seeking a skilled and experienced Data Engineer with a strong background in medical imaging and healthcare data to join our growing team.",
+  "responsibilities": [
+    "Ingest, process, and manage large-scale medical imaging datasets (e.g., MRI, CT scans, pathology slides) in DICOM and non-DICOM formats.",
+    "Develop robust ETL/ELT pipelines to extract and transform healthcare data from EHRs, PACS, RIS, and medical registries using tools like Apache NiFi, Airflow, or Dagster.",
+    "Build streaming and event-driven pipelines using Kafka, RabbitMQ, and other messaging systems.",
+    "Design scalable storage systems for structured, unstructured, and semi-structured data using data lakes (e.g., Apache Hudi, Iceberg, Delta Lake) over Amazon S3 or MinIO.",
+    "Implement distributed databases (e.g., Cassandra, ClickHouse, MongoDB, Elasticsearch) for various analytical workloads.",
+    "Collaborate with clinicians, researchers, and ML teams to prepare datasets for downstream AI/ML pipelines and analytics platforms.",
+    "Integrate graph databases for modeling complex biomedical relationships.",
+    "Ensure data security, governance, anonymization, and compliance with HIPAA, GDPR, and related healthcare standards.",
+    "Enable data observability, monitoring, and audit trails for all pipeline components.",
+    "Work with query engines such as Trino for federated query access across systems.",
+    "Support data versioning and reproducibility using DVC.",
+    "Perform data migrations and query optimization across polyglot data systems."
+  ],
+  "required_skills": [
+    "Bachelor's or Master\u2019s in Computer Science, Biomedical Engineering, Health Informatics, or a related field.",
+    "Minimum 3 years of experience as a Data Engineer in the healthcare or biomedical domain.",
+    "Expertise in Python, SQL, and handling medical imaging with libraries like pydicom, SimpleITK, or Nibabel.",
+    "Solid understanding of healthcare interoperability standards (DICOM, HL7, FHIR, OMOP).",
+    "Hands-on with distributed systems and databases like Cassandra, MongoDB, Elasticsearch, ClickHouse, TimescaleDB, and Redis.",
+    "Experience with Apache Spark, Apache Kafka, and streaming/event-driven architectures.",
+    "Familiar with data lakes (Apache Hudi, Iceberg, Delta Lake) and cloud/object storage (Amazon S3, MinIO).",
+    "Proficient with ETL orchestration using Airflow, Dagster, or Apache NiFi.",
+    "Comfortable with messaging queues (RabbitMQ).",
+    "Strong foundation in data security, privacy, and regulatory compliance (HIPAA, GDPR)"
+  ],
+  "nice_to_have_skills": [
+    "Experience working with time-series databases: InfluxDB, TimescaleDB, QuestDB.",
+    "Experience with graph databases like OrientDB, RavenDB, or Neo4j.",
+    "Exposure to SQL/NoSQL ecosystems: MySQL, PostgreSQL, MariaDB, HBase, Bytebase.",
+    "Familiarity with Elasticsearch for indexing and search over medical datasets.",
+    "Prior involvement in MLOps, feature stores, or AI/ML lifecycle integration.",
+    "Understanding of data observability and monitoring tools for pipelines.",
+    "Experience with data migration strategies and query performance tuning.",
+    "Exposure to clinical registries, cohort builders, or clinical trial platforms."
+  ],
+  "required_experience_years": 3,
+  "education_level": "Bachelor",
+  "seniority_level": "Mid",
+  "salary_range": null,
+  "benefits": [
+    "Full-time"
+  ]
+}

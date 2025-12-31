@@ -1,0 +1,37 @@
+{
+  "summary": "Design, build, and deploy generative AI applications and retrieval-based systems within the enterprise data and AI ecosystem.",
+  "responsibilities": [
+    "Build and maintain GenAI applications, including LLM-powered assistants, automation workflows, and RAG-based solutions.",
+    "Design and implement embedding pipelines, chunking strategies, vector indexing, and retrieval logic.",
+    "Work with vector databases for storage, search, and semantic retrieval.",
+    "Develop backend APIs and services using Python and frameworks like FastAPI.",
+    "Implement prompt engineering, evaluation, testing, and optimisation processes.",
+    "Integrate GenAI components with enterprise data and cloud platforms (AWS, Databricks, or similar).",
+    "Build orchestration flows using LangChain, LlamaIndex, or equivalent tools.",
+    "Ensure reliability, observability, and structured logging for GenAI workloads.",
+    "Collaborate with cross-functional teams to convert requirements into AI-enabled solutions.",
+    "Maintain documentation for design decisions, workflows, prompts, and deployment pipelines."
+  ],
+  "required_skills": [
+    "Strong Python",
+    "Hands-on experience with GenAI frameworks such as LangChain, LlamaIndex, or similar.",
+    "Solid understanding of embeddings, vector databases, similarity search, and retrieval optimization.",
+    "Experience with LLM APIs (OpenAI, Anthropic, AWS Bedrock, Azure OpenAI, etc.).",
+    "Ability to build scalable GenAI services using FastAPI or equivalent frameworks.",
+    "Understanding of prompt design, evaluation methods, and guardrail techniques.",
+    "Experience with cloud integration (AWS preferred) for deploying AI components.",
+    "Familiarity with unstructured data handling and preprocessing."
+  ],
+  "nice_to_have_skills": [
+    "Exposure to MLOps tools (Mlflow, model registry, deployment workflows).",
+    "Basic understanding of Spark / PySpark for scalable preprocessing.",
+    "Familiarity with multi-agent frameworks (CrewAI, AutoGen, LangGraph).",
+    "Understanding of containerization (Docker) and CI/CD pipelines.",
+    "Experience working with enterprise data platforms or analytics ecosystems."
+  ],
+  "required_experience_years": 0,
+  "education_level": "None",
+  "seniority_level": "Lead",
+  "salary_range": null,
+  "benefits": []
+}

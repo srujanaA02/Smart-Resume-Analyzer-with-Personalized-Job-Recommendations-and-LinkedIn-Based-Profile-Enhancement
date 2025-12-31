@@ -1,0 +1,30 @@
+{
+  "summary": "Join our Core Platform team and contribute to the continued scalability and innovation of our backend systems, powering our high-traffic marketplace.",
+  "responsibilities": [
+    "Lead the design, development, and deployment of scalable backend services and distributed systems.",
+    "Help evolve our application and service delivery platform, leveraging cloud-native architectures, NoSQL solutions, queueing technologies, and search infrastructure.",
+    "Architect and implement new product features using a data-driven, iterative approach with measurable impact.",
+    "Drive performance tuning and system improvements to ensure reliability, scalability, and maintainability of key components.",
+    "Collaborate with cross-functional teams \u2014 including Product, Design, DevOps, and QA \u2014 to deliver high-quality software aligned with business goals.",
+    "Actively participate in code reviews, technical discussions, and mentoring of junior engineers.",
+    "Identify and lead refactoring and technical debt reduction efforts to improve developer velocity and system health."
+  ],
+  "required_skills": [
+    "4+ years of professional backend software engineering experience, including designing and scaling distributed systems.",
+    "Strong foundation in computer science, including data structures, algorithms, and software design principles.",
+    "Proficiency with backend programming languages such as Ruby and/or Java.",
+    "Experience working with technologies like MongoDB, ElasticSearch, RabbitMQ, and Redis.",
+    "Strong understanding of RESTful API design and implementation.",
+    "Experience with scalability, performance optimization, and systems-level problem solving.",
+    "Familiarity with microservices architecture and cloud platforms (e.g., AWS, GCP) is a plus."
+  ],
+  "nice_to_have_skills": [
+    "Bachelor's or Master\u2019s degree in Computer Science or a related field.",
+    "Strong communication skills and a user-centric, quality-first mindset."
+  ],
+  "required_experience_years": 4.0,
+  "education_level": "Master",
+  "seniority_level": "Senior",
+  "salary_range": null,
+  "benefits": []
+}

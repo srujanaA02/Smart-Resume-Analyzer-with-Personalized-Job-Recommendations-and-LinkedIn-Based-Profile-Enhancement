@@ -1,0 +1,31 @@
+{
+  "summary": "We are looking for a detail-oriented SQL Developer Intern to support our data and development teams. You will work on database design, query optimization, and data-driven reporting while collaborating with engineers and analysts.",
+  "responsibilities": [
+    "Write and execute SQL queries, joins, triggers, and stored procedures.",
+    "Assist in designing and maintaining relational database structures.",
+    "Perform data cleaning, validation, and migration tasks as required.",
+    "Debug SQL-related issues and optimize performance.",
+    "Collaborate with backend and analytics teams for data integration tasks.",
+    "Prepare documentation for database processes, mapping, and workflows.",
+    "Ensure data quality, accuracy, and compliance with standards."
+  ],
+  "required_skills": [
+    "Pursuing or recently completed a degree in Computer Science, IT, Data Science, or related fields.",
+    "Good understanding of SQL and relational database management systems.",
+    "Familiar with MySQL / PostgreSQL / SQL Server.",
+    "Basic knowledge of ETL concepts and data modelling will be an advantage."
+  ],
+  "nice_to_have_skills": [
+    "Analytical mindset with strong problem-solving skills."
+  ],
+  "required_experience_years": 0.0,
+  "education_level": "Bachelor",
+  "seniority_level": "Intern",
+  "salary_range": null,
+  "benefits": [
+    "$15,000 per month",
+    "Internship completion certificate",
+    "Mentorship from experienced SQL and data professionals",
+    "Real-world database project experience"
+  ]
+}

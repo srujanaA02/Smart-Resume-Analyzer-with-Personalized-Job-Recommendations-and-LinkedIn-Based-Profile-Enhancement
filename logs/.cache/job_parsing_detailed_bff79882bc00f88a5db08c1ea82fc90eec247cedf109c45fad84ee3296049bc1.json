@@ -1,0 +1,26 @@
+{
+  "summary": "Join us as a Data Engineer to collaborate with colleagues and build effortless, digital first customer experiences.",
+  "responsibilities": [
+    "Carrying out data engineering tasks to build, maintain, test and optimise a scalable data architecture",
+    "Carrying out data extractions, transforming data to make it usable to data analysts and scientists",
+    "Loading data into data platforms",
+    "Developing comprehensive knowledge of the bank's data structures and metrics",
+    "Practicing DevOps adoption in the delivery of data engineering"
+  ],
+  "required_skills": [
+    "At least five years of experience in data engineering",
+    "Experience in Apache Spark for distributed data processing and transformations",
+    "Proficiency in AWS EMR, Glue, Athena, and S3 for scalable data processing and storage",
+    "Experience of using programming languages alongside knowledge of data and software engineering fundamentals",
+    "Good knowledge of modern code development practices"
+  ],
+  "nice_to_have_skills": [
+    "Experience of using programming languages",
+    "Knowledge of data and software engineering fundamentals"
+  ],
+  "required_experience_years": 5.0,
+  "education_level": null,
+  "seniority_level": null,
+  "salary_range": null,
+  "benefits": []
+}

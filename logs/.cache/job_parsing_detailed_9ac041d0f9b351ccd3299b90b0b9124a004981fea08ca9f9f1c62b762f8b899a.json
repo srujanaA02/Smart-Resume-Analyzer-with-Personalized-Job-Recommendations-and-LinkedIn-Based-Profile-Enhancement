@@ -1,0 +1,36 @@
+{
+  "summary": "Help shape the future of mobility! We are looking for a skilled engineer to join our team and contribute to creating advanced safety systems, high-performance electrification solutions, and data connectivity solutions.",
+  "responsibilities": [
+    "Analyzing customer requirements",
+    "Converting Customer Requirements into Design and Code",
+    "Analysis and resolution of customer and internal reported issues",
+    "Prepare test specifications and plans",
+    "Static/Dynamic Code Analysis",
+    "Conduct System testing",
+    "Helping in Software integration activity"
+  ],
+  "required_skills": [
+    "4 to 8 years of technical experience with B.E. / B.Tech / M.E. / M.Tech in Computer Science / Electronics & Communication",
+    "Experience in C/C++ coding",
+    "Board bring-up",
+    "Third party software design, integration, and debugging",
+    "Linux Experience: U-Boot customization",
+    "Kernel driver development, building and optimizing kernels and root filesystems.",
+    "Driver expertise includes serial, net, mtd, filesystem, PCI etc.,"
+  ],
+  "nice_to_have_skills": [
+    "Added Advantage - Custom drivers (USB, Ethernet, WLAN, Bluetooth, Display, HW acceleration, Camera, Audio, ...)",
+    "Linux Performance Optimization including boot time, memory and power management.",
+    "Linux application development",
+    "Frameworks like Yocto etc.,"
+  ],
+  "required_experience_years": 0,
+  "education_level": "Bachelor's degree required (B.E. / B.Tech / M.E. / M.Tech)",
+  "seniority_level": null,
+  "salary_range": null,
+  "benefits": [
+    "Higher Education Opportunities (UDACITY, UDEMY, COURSERA are available for your continuous growth and development);",
+    "Life and accident insurance;",
+    "Sodexo cards for food and beverages"
+  ]
+}

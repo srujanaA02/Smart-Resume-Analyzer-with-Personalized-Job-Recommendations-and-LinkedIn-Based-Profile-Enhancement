@@ -1,0 +1,35 @@
+{
+  "summary": "Forbes Advisor is seeking a Data Engineer to perform and build core data products, promote data-driven culture, democratize insights through self-service, and establish a single source of truth in business and customer metrics.",
+  "responsibilities": [
+    "Assemble large, complex data that meet functional/non-functional business requirements.",
+    "Identify, design, and implement internal process improvements: automating manual processes, optimizing data delivery, re-designing transformation for greater scalability, etc.",
+    "Use the infrastructure/services required for optimal extraction, transformation, and loading of data from a wide variety of data sources using GCP services.",
+    "Work with stakeholders including the Product, Data and Design teams to assist with data-related technical issues and support their data requirement needs."
+  ],
+  "required_skills": [
+    "Bachelor\u2019s degree",
+    "Minimum 1.5+ years of experience working in globally distributed teams successfully",
+    "Experience working on Python and data handling frameworks(spark, beam, etc)",
+    "Apply experience with cloud storage and computing for data pipelines in GCP (GCS, BQ, composer, etc)",
+    "Write pipelines in Airflow to orchestrate data pipelines",
+    "Experience handling data from 3rd party providers is a great plus: Google Analytics, Google Ads etc.",
+    "Experience in manipulating, processing and extracting value from large disconnected datasets.",
+    "Experience with software engineering practices in data engineering, e.g. release management, testing, etc and corresponding tooling (dbt, great expectations, \u2026)",
+    "Basic knowledge on dbt is a good to have",
+    "Knowledge on data privacy and security"
+  ],
+  "nice_to_have_skills": [
+    "Experience with software engineering practices in data engineering, e.g. release management, testing, etc and corresponding tooling (dbt, great expectations, \u2026)"
+  ],
+  "required_experience_years": 1.5,
+  "education_level": "Bachelor",
+  "seniority_level": "Mid",
+  "salary_range": null,
+  "benefits": [
+    "Monthly long weekends \u2014 every third Friday off",
+    "Wellness reimbursement to support your health and balance",
+    "Paid parental leave",
+    "Remote-first with flexibility and trust",
+    "Work with a world-class data and marketing team inside a globally recognized brand"
+  ]
+}

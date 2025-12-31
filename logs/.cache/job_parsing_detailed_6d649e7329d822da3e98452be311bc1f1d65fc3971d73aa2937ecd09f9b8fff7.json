@@ -1,0 +1,37 @@
+{
+  "summary": "Lead a critical and highly visible function within Teradata Vantage platform, delivering technical direction of the service and feature roadmap.",
+  "responsibilities": [
+    "Contribute to the design and development of software components that enable autonomous AI agents to reason, plan, act, and learn.",
+    "Implement features that support agentic capabilities such as tool use, memory, long-term planning, task execution, and self-reflection.",
+    "Integrate with state-of-the-art LLMs (e.g., OpenAI, Anthropic) and agent orchestration frameworks (e.g., LangChain, CrewAI, AutoGen).",
+    "Write, test, and debug Python or other backend code that powers agent workflows in cloud-native environments.",
+    "Assist in building interfaces between agents and tools such as APIs, databases, search engines, and user-facing applications.",
+    "Participate in Agile development workflows \u2014 sprint planning, code reviews, retrospectives \u2014 and collaborate across AI, product, and engineering teams.",
+    "Work with structured and unstructured data to support context-aware reasoning and decision-making in agents.",
+    "Contribute to the development of internal testing tools and evaluation methods for autonomous agent behaviors.",
+    "Support the deployment of agent systems in scalable environments using Kubernetes, Docker, and cloud services (AWS, Azure, or GCP).",
+    "Maintain documentation of agent capabilities, system design, and integration strategies."
+  ],
+  "required_skills": [
+    "Strong interest in Agentic AI \u2014 systems where AI agents can autonomously interpret goals, take actions, and learn from outcomes.",
+    "Familiarity with one or more programming languages: Python (preferred), Go, Java, or C++.",
+    "Exposure to LLMs and AI APIs (e.g., OpenAI, Hugging Face, Claude) and understanding of prompting, embeddings, or vector databases.",
+    "Basic understanding of how AI agents use tools and memory to solve complex tasks.",
+    "Experience with RESTful APIs, backend service design, and microservice architectures.",
+    "Familiarity with modern cloud infrastructure (AWS, GCP, or Azure), especially in deploying containerized applications."
+  ],
+  "nice_to_have_skills": [
+    "Experience with cloud tools and platforms (AWS, GCP, Azure), especially Kubernetes and Docker.",
+    "Exposure to agentic frameworks such as LangChain, AutoGen, CrewAI, or similar tools.",
+    "Curiosity and excitement about building intelligent systems that act autonomously and adaptively."
+  ],
+  "required_experience_years": 1.0,
+  "education_level": "Bachelor",
+  "seniority_level": "Mid",
+  "salary_range": null,
+  "benefits": [
+    "Flexible work model",
+    "Well-being focus",
+    "Anti-racist company culture"
+  ]
+}

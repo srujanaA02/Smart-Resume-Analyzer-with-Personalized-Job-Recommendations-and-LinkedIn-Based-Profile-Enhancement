@@ -1,0 +1,22 @@
+{
+  "summary": "Join us as a DevOps Engineer at Barclays, where you'll spearhead the evolution of our digital landscape and drive innovation and excellence.",
+  "responsibilities": [
+    "Build Engineering: Development, delivery, and maintenance of high-quality infrastructure solutions to fulfil business requirements ensuring measurable reliability, performance, availability, and ease of use."
+  ],
+  "required_skills": [
+    "Graduate/ Bachelor's degree",
+    "Hands-on experience with continuous integration and continuous deployment using tools like Gradle, Docker, and CI/CD pipelines using GITLAB, Jenkins, Chef, Ansible etc.",
+    "Solid understanding of Service First, release management, patching, and vulnerability management is essential.",
+    "Experience with monitoring and observability tools like ELK, ESaaS, AppDynamics."
+  ],
+  "nice_to_have_skills": [
+    "Experience with Kafka/ActiveMQ or other message brokers for event-driven communication",
+    "Experience with Cloud platforms (AWS, Azure) and tools such as AWS CloudFormation, Terraform etc.",
+    "Incident and Problem Management skills to Monitor and resolve issues swiftly to minimize downtime."
+  ],
+  "required_experience_years": 0.0,
+  "education_level": "Bachelor",
+  "seniority_level": "Mid",
+  "salary_range": null,
+  "benefits": []
+}

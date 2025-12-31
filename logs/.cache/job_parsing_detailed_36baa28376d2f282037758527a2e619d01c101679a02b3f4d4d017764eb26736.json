@@ -1,0 +1,27 @@
+{
+  "summary": "Design and implement efficient data pipelines, ETL processes, ensuring data quality and integrity for India's first payments app FamPay.",
+  "responsibilities": [
+    "Design and implement efficient data pipelines, ETL processes, ensuring data quality and integrity",
+    "Build the different components of Data Platform from scratch (Data Lakehouse, Serving & Query infrastructure, Event Streaming Platform, etc)"
+  ],
+  "required_skills": [
+    "B.Tech in Computer Science or equivalent practical experience",
+    "Previous internship experience in a product-based company or startup"
+  ],
+  "nice_to_have_skills": [
+    "Proficiency in Python or GoLang",
+    "Strong knowledge of SQL and data modeling fundamentals",
+    "Demonstrated interest in Data Engineering through previous internship experience or personal projects",
+    "Experience with analytical databases, data warehousing & data integration. Familiarity with ETL concepts and structured data formats such as CSV, JSON, Avro and Parquet"
+  ],
+  "required_experience_years": 0,
+  "education_level": "Bachelor",
+  "seniority_level": "Junior/Mid",
+  "salary_range": null,
+  "benefits": [
+    "Competitive Stipend",
+    "Certificate and Letter of Recommendation",
+    "Access to Mental Health professionals",
+    "Flexible work schedule so you never miss brunch, lunch, or dinner plans"
+  ]
+}

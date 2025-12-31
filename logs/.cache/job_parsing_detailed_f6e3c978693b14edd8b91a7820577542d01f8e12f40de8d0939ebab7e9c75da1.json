@@ -1,0 +1,29 @@
+{
+  "summary": "Join our Analytics Engineering team and help us build a truly social experience that makes the world a better place. We're seeking expert engineers to design, code, and develop new features and products to support the Analytics needs of our games.",
+  "responsibilities": [
+    "Build and operate a multi PB-scale data platform.",
+    "Design, code, and develop new features/fix bugs/enhancements to systems and data pipelines (ETLs) while adhering to the SLA.",
+    "Identifying anomalies, inconsistencies in data sets and algorithms and flagging it to the relevant team and / or fixing the bugs in the data workflows where applicable."
+  ],
+  "required_skills": [
+    "Bachelor's degree in Computer Science, or a related technical discipline (or equivalent).",
+    "2+ years of strong data engineering design/development experience in building large-scale, distributed data platforms/products.",
+    "Advanced coding expertise in SQL & Python/JVM-based language.",
+    "Exposure to heterogeneous data storage systems like relational, NoSQL, in-memory etc.",
+    "Knowledge of data modeling, lineage, data access and its governance.",
+    "Proficient in AWS services like Redshift, Kinesis, Lambda, RDS, EKS/ECS etc.",
+    "Exposure to open source software, frameworks and broader powerful technologies (Airflow, Kafka, DataHub etc).",
+    "Shown ability to deliver work on time with attention to quality.",
+    "Excellent written and spoken communication skills and ability to work optimally in a geographically distributed team environment."
+  ],
+  "nice_to_have_skills": [
+    "Experience with heterogeneous data storage systems like relational, NoSQL, in-memory etc.",
+    "Knowledge of data modeling, lineage, data access and its governance",
+    "Experience with open source software, frameworks and broader powerful technologies (Airflow, Kafka, DataHub etc)."
+  ],
+  "required_experience_years": 2.0,
+  "education_level": "Bachelor's",
+  "seniority_level": "Mid",
+  "salary_range": null,
+  "benefits": []
+}

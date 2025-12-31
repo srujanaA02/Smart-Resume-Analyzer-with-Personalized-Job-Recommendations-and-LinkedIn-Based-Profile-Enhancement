@@ -1,0 +1,40 @@
+{
+  "summary": "Wells Fargo seeks a Software Engineer - Gen AI to participate in low to moderately complex initiatives and projects associated with the technology domain, including installation, upgrades, and deployment efforts.",
+  "responsibilities": [
+    "Participate in low to moderately complex initiatives and projects associated with the technology domain, including installation, upgrades, and deployment efforts",
+    "Identify opportunities for service quality and availability improvements within the technology domain environment",
+    "Design, code, test, debug, and document for low to moderately complex projects and programs associated with technology domain, including upgrades and deployments",
+    "Review and analyze technical assignments or challenges that are related to low to medium risk deliverables and that require research, evaluation, and selection of alternative technology domains",
+    "Present recommendations for resolving issues or may escalate issues as needed to meet established service level agreements",
+    "Exercise some independent judgment while also developing understanding of given technology domain in reference to security and compliance requirements",
+    "Provide information to technology colleagues, internal partners, and stakeholders"
+  ],
+  "required_skills": [
+    "2+ years of software engineering experience, or equivalent demonstrated through one or a combination of the following: work experience, training, military experience, education",
+    "Strong proficiency in Python/Java and LLM orchestration frameworks (LangChain, LangGraph)",
+    "Basic Knowledge of model context protocols, RAG architectures, and embedding techniques",
+    "Experience with model evaluation frameworks and metrics for LLM performance"
+  ],
+  "nice_to_have_skills": [
+    "2+ years of software engineering experience in a BFSI GCC or Product Engineering organization.",
+    "Strong proficiency in React.js for AI applications",
+    "Experience with UI/UX design patterns specific to AI interfaces",
+    "Experience with vector databases and efficient retrieval methods",
+    "Knowledge of prompt engineering techniques and best practices",
+    "Experience with containerization and microservices architecture",
+    "Strong understanding of semantic search and document retrieval systems",
+    "Working knowledge of both structured and unstructured data processing",
+    "Experience with version control using GitHub and CI/CD pipelines",
+    "Experience working with globally distributed teams in Agile scrums"
+  ],
+  "required_experience_years": 2,
+  "education_level": "None",
+  "seniority_level": "Mid-level Software Engineer",
+  "salary_range": null,
+  "benefits": [
+    "Understanding of enterprise use cases for Generative AI",
+    "Knowledge of responsible AI practices and ethical considerations",
+    "Ability to optimize AI solutions for performance and cost",
+    "Well versed in MLOps concepts for LLM applications"
+  ]
+}

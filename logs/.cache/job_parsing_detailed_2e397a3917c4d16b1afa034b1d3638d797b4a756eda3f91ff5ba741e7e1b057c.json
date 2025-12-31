@@ -1,0 +1,45 @@
+{
+  "summary": "Help shape the future of mobility! Imagine a world with zero vehicle accidents, zero vehicle emissions, and wireless vehicle connectivity all around us. Every day, we move closer to making that world a reality.",
+  "responsibilities": [
+    "Develop and integrate embedded software for ADAS ECUs on automotive-grade microcontrollers and SoCs.",
+    "Work with radar, camera, LiDAR, and ultrasonic sensor interfaces for perception and object detection modules.",
+    "Implement real-time control and data processing algorithms for parking, lane-keeping, and low-speed automation functions.",
+    "Collaborate with ADAS and Infotainment teams for sensor fusion and cockpit integration.",
+    "Ensure compliance with ISO 26262 functional safety standards and assist in ASIL-B/C software development.",
+    "Work on communication stacks \u2013 CAN, CAN-FD, Ethernet, FlexRay, and SOME/IP \u2013 for ECU connectivity.",
+    "Develop and maintain unit tests, SIL/HIL validation, and integration test cases for embedded modules.",
+    "Optimize software for CPU, memory, and power efficiency on real-time embedded platforms.",
+    "Debug and troubleshoot issues on vehicle-level testing or simulation platforms.",
+    "Document software architecture, interfaces, and integration details for internal and supplier reviews."
+  ],
+  "required_skills": [
+    "Bachelor\u2019s / Master\u2019s degree in Electronics, Electrical, Computer Science, or related discipline.",
+    "5+ years of experience in embedded software development for ADAS or automotive ECUs.",
+    "Strong knowledge of C/C++ for embedded systems; familiarity with Python or MATLAB for algorithm verification.",
+    "Experience with real-time operating systems (RTOS) \u2013 QNX, FreeRTOS, or Embedded Linux.",
+    "Hands-on experience with ECU-level communication protocols \u2013 CAN, CAN-FD, Ethernet, SOME/IP, FlexRay.",
+    "Understanding of sensor drivers, calibration, and data acquisition for radar, camera, or ultrasonic sensors.",
+    "Knowledge of software development processes for automotive applications (ASPICE, ISO 26262).",
+    "Experience with HIL/SIL simulation, debugging, and testing frameworks."
+  ],
+  "nice_to_have_skills": [
+    "Familiarity with ADAS features \u2013 parking assist, lane-keeping, adaptive cruise control, surround view.",
+    "Experience with ADAS sensor fusion (radar + camera + ultrasonic).",
+    "Knowledge of Hypervisor-based domain separation or Digital Cockpit integration.",
+    "Exposure to automotive middleware (AUTOSAR Classic/Adaptive).",
+    "Understanding of digital signal processing (DSP) concepts."
+  ],
+  "required_experience_years": 5.0,
+  "education_level": "Bachelor\u2019s / Master\u2019s degree",
+  "seniority_level": "Mid",
+  "salary_range": null,
+  "benefits": [
+    "Higher Education Opportunities",
+    "Life and accident insurance",
+    "Sodexo cards for food and beverages",
+    "Well Being Program",
+    "EAP Employee Assistance",
+    "Access to fitness clubs (T&C apply)",
+    "Creche facility for working parents"
+  ]
+}

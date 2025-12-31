@@ -803,7 +803,7 @@ Return ONLY valid JSON, no additional text."""
 
     def parse_job_description(self, job_text: str) -> Dict[str, Any]:
         """
-        Parse unstructured job description into structured data.
+        Parse unstructured job description into structured data with detailed fields.
         """
         logger.info("Parsing job description...")
         
@@ -815,8 +815,11 @@ Job Description:
 Extract the following fields:
 - summary: A brief summary of the role (2-3 sentences).
 - responsibilities: List of key responsibilities.
-- required_skills: List of required technical and soft skills.
-- qualifications: List of educational and experience qualifications.
+- required_skills: List of MUST-HAVE technical and soft skills.
+- nice_to_have_skills: List of PREFERRED/BONUS skills.
+- required_experience_years: Minimum years of experience as a number (e.g. 2, 5.5). Use 0 if none mentioned.
+- education_level: Required degree (e.g., "Bachelor", "Master", "PhD", "Associate", "None").
+- seniority_level: Inferred level (e.g. "Junior", "Mid", "Senior", "Lead", "Intern").
 - salary_range: Salary range if mentioned (e.g. "$100k - $120k"), else null.
 - benefits: List of benefits if mentioned.
 
@@ -825,12 +828,15 @@ Return ONLY valid JSON with this structure:
     "summary": "...",
     "responsibilities": ["...", "..."],
     "required_skills": ["...", "..."],
-    "qualifications": ["...", "..."],
+    "nice_to_have_skills": ["...", "..."],
+    "required_experience_years": 0.0,
+    "education_level": "...",
+    "seniority_level": "...",
     "salary_range": "...",
     "benefits": ["..."]
 }}
 """
-        return self.analyze_resume(job_text, lambda _: prompt, "job_parsing", use_cache=True)
+        return self.analyze_resume(job_text, lambda _: prompt, "job_parsing_detailed", use_cache=True)
 
 
     

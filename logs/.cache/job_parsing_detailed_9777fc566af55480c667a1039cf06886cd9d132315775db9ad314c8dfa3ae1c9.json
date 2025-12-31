@@ -1,0 +1,37 @@
+{
+  "summary": "We're looking for an AI Engineer to join our team as a fully-remote opportunity based in India. You'll assist in the development, training, and fine-tuning of machine learning models, working with large datasets and collaborating with software engineers.",
+  "responsibilities": [
+    "Assist in the development, training, and fine-tuning of machine learning (ML) models",
+    "Work with large datasets, including data cleaning, preprocessing, and feature engineering",
+    "Implement and optimize deep learning models using frameworks such as TensorFlow, PyTorch, or Scikit-learn",
+    "Support research and development of AI applications in natural language processing (NLP) and predictive analytics",
+    "Collaborate with software engineers to deploy and integrate AI models into production environments",
+    "Conduct experiments, analyze results, and enhance model performance"
+  ],
+  "required_skills": [
+    "Bachelor's or Master's degree in Computer Science, AI, Data Science, or a related field",
+    "Basic understanding of machine learning algorithms and deep learning models",
+    "Hands-on experience with Python and AI frameworks (TensorFlow, PyTorch)",
+    "Familiarity with data processing libraries like Pandas, NumPy, and the regular expression",
+    "Understanding of model evaluation techniques and performance metrics"
+  ],
+  "nice_to_have_skills": [
+    "Experience with NLP (Hugging Face Transformers, spaCy)",
+    "Exposure to cloud AI services (AWS SageMaker, Google Vertex AI, Azure AI)",
+    "Knowledge of MLOps practices, including CI/CD for ML models",
+    "Familiarity with AI ethics, bias detection, and model interpretability"
+  ],
+  "required_experience_years": 0,
+  "education_level": "Bachelor's or Master's degree",
+  "seniority_level": "Junior",
+  "salary_range": null,
+  "benefits": [
+    "Comprehensive benefits",
+    "Perks",
+    "Competitive salary",
+    "Vacation time",
+    "Parental leave",
+    "Team events",
+    "Learning reimbursement"
+  ]
+}

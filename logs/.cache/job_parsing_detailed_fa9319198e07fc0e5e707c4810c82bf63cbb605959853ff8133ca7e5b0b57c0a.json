@@ -1,0 +1,34 @@
+{
+  "summary": "We are seeking an experienced AI Developer to design, develop, and deploy intelligent applications that leverage Machine Learning, Conversational AI, and custom datasets.",
+  "responsibilities": [
+    "Collect, clean, and preprocess structured and unstructured datasets.",
+    "Perform feature engineering and exploratory data analysis for model readiness.",
+    "Design and implement machine learning models for NLP, intent recognition, and predictive analytics.",
+    "Fine-tune LLMs or domain-specific models for enterprise use cases.",
+    "Build MCP-based applications for model orchestration and lifecycle management.",
+    "Develop chatbots and interactive apps to handle business queries on custom datasets.",
+    "Integrate AI services with enterprise platforms (e.g., Slack, Teams, internal portals).",
+    "Develop RAG pipelines",
+    "Connect AI components with APIs, databases, and cloud services.",
+    "Ensure seamless integration with existing bot services and monitoring tools (e.g., Datadog).",
+    "Optimize models for accuracy, latency, and scalability.",
+    "Implement automated testing and CI/CD pipelines for AI applications."
+  ],
+  "required_skills": [
+    "Strong proficiency in Python, PyTorch/TensorFlow, and NLP frameworks.",
+    "Experience with MCP platforms, API development, and cloud environments (AWS/Azure).",
+    "Familiarity with GitHub Copilot, CI/CD, and containerization (Docker/Kubernetes).",
+    "Knowledge of data visualization, SQL, and JSON-based integrations.",
+    "Understanding of enterprise security and compliance standards."
+  ],
+  "nice_to_have_skills": [
+    "Experience in building chatbots for Slack/Teams or similar platforms.",
+    "Exposure to LLM fine-tuning and prompt engineering.",
+    "Background in financial services or analytics-driven environments."
+  ],
+  "required_experience_years": 0,
+  "education_level": "None",
+  "seniority_level": "Mid",
+  "salary_range": null,
+  "benefits": []
+}

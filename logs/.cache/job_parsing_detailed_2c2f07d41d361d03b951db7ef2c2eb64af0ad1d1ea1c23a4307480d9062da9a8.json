@@ -1,0 +1,37 @@
+{
+  "summary": "We are looking for a motivated and detail-oriented Junior Software Engineer to join our growing development team.",
+  "responsibilities": [
+    "Assist in designing, developing, testing, and maintaining software applications",
+    "Write clean, efficient, and well-documented code",
+    "Work closely with senior developers and team members on assigned tasks",
+    "Debug and fix issues in existing applications",
+    "Participate in code reviews and team discussions",
+    "Learn and adapt to new tools, frameworks, and technologies",
+    "Follow best practices in software development and security"
+  ],
+  "required_skills": [
+    "Bachelor\u2019s degree in Computer Science, IT, or a related field (or equivalent experience)",
+    "Basic knowledge of at least one programming language (Java / Python / JavaScript / C++ etc.)",
+    "Understanding of fundamentals like OOPs, Data Structures, and Algorithms",
+    "Basic knowledge of databases (MySQL / PostgreSQL / MongoDB is a plus)",
+    "Familiarity with Git or version control systems",
+    "Good problem-solving and analytical skills"
+  ],
+  "nice_to_have_skills": [
+    "Basic knowledge of web technologies (HTML, CSS, JavaScript)",
+    "Familiarity with frameworks like React, Spring Boot, Django, or Node.js",
+    "Understanding of REST APIs",
+    "Internship or project experience"
+  ],
+  "required_experience_years": 0.0,
+  "education_level": "Bachelor\u2019s degree in Computer Science, IT, or a related field (or equivalent experience)",
+  "seniority_level": "Junior",
+  "salary_range": null,
+  "benefits": [
+    "Fully remote work opportunity",
+    "Learning and mentorship from experienced developers",
+    "Growth-oriented work environment",
+    "Opportunity to work on real-world projects",
+    "Skill development and career advancement"
+  ]
+}

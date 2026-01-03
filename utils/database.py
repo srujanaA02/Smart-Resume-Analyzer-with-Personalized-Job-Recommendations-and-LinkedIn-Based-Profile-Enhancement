@@ -150,6 +150,30 @@ def create_tables():
     cursor.execute("CREATE INDEX IF NOT EXISTS idx_resume_scores_user ON resume_scores (user_id)")
     cursor.execute("CREATE INDEX IF NOT EXISTS idx_resume_scores_timestamp ON resume_scores (scoring_timestamp)")
 
+    cursor.execute("""
+    CREATE TABLE IF NOT EXISTS user_search_preferences (
+        user_id INTEGER PRIMARY KEY,
+        preferences_json TEXT,
+        last_updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (user_id) REFERENCES users (id)
+    )
+    """)
+
+    cursor.execute("""
+    CREATE TABLE IF NOT EXISTS search_history (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        user_id INTEGER NOT NULL,
+        query_summary TEXT,  -- Short text like "Python Developer in Remote"
+        search_params_json TEXT, -- Full parameters used
+        jobs_found_count INTEGER DEFAULT 0,
+        new_jobs_count INTEGER DEFAULT 0,
+        search_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (user_id) REFERENCES users (id)
+    )
+    """)
+    cursor.execute("CREATE INDEX IF NOT EXISTS idx_search_history_user ON search_history (user_id)")
+    cursor.execute("CREATE INDEX IF NOT EXISTS idx_search_history_time ON search_history (search_timestamp)")
+
     conn.commit()
     conn.close()
 
@@ -682,5 +706,88 @@ def update_job_match_scores(user_id, updates):
     except Exception as e:
         logger.error(f"Error updating match scores: {e}")
         return 0
+    finally:
+        conn.close()
+
+def save_user_search_preferences(user_id: int, preferences: dict) -> bool:
+    """Save or update user search preferences."""
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    try:
+        pref_json = json.dumps(preferences)
+        cursor.execute("""
+            INSERT INTO user_search_preferences (user_id, preferences_json, last_updated)
+            VALUES (?, ?, CURRENT_TIMESTAMP)
+            ON CONFLICT(user_id) DO UPDATE SET
+                preferences_json = excluded.preferences_json,
+                last_updated = CURRENT_TIMESTAMP
+        """, (user_id, pref_json))
+        conn.commit()
+        return True
+    except Exception as e:
+        logger.error(f"Error saving preferences: {e}")
+        return False
+    finally:
+        conn.close()
+
+def get_user_search_preferences(user_id: int) -> dict:
+    """Retrieve user search preferences."""
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    try:
+        cursor.execute("SELECT preferences_json FROM user_search_preferences WHERE user_id = ?", (user_id,))
+        row = cursor.fetchone()
+        if row and row[0]:
+            return json.loads(row[0])
+        return {}
+    except Exception as e:
+        logger.error(f"Error retrieving preferences: {e}")
+        return {}
+    finally:
+        conn.close()
+
+def add_search_history_entry(user_id: int, query_summary: str, params: dict, found_count: int, new_count: int):
+    """Log a search event."""
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    try:
+        cursor.execute("""
+            INSERT INTO search_history (user_id, query_summary, search_params_json, jobs_found_count, new_jobs_count)
+            VALUES (?, ?, ?, ?, ?)
+        """, (user_id, query_summary, json.dumps(params), found_count, new_count))
+        conn.commit()
+    except Exception as e:
+        logger.error(f"Error logging search history: {e}")
+    finally:
+        conn.close()
+
+def get_search_history(user_id: int, limit: int = 5) -> list:
+    """Get recent search history."""
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    try:
+        cursor.execute("""
+            SELECT id, query_summary, search_params_json, jobs_found_count, new_jobs_count, search_timestamp
+            FROM search_history
+            WHERE user_id = ?
+            ORDER BY search_timestamp DESC
+            LIMIT ?
+        """, (user_id, limit))
+        rows = cursor.fetchall()
+        
+        history = []
+        for row in rows:
+            history.append({
+                "id": row[0],
+                "query_summary": row[1],
+                "params": json.loads(row[2]) if row[2] else {},
+                "found": row[3],
+                "new": row[4],
+                "timestamp": row[5]
+            })
+        return history
+    except Exception as e:
+        logger.error(f"Error getting search history: {e}")
+        return []
     finally:
         conn.close()

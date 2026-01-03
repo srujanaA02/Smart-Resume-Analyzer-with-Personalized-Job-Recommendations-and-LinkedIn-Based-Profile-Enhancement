@@ -1,0 +1,40 @@
+{
+  "summary": "We\u2019re looking for a Senior Frontend Developer who goes beyond writing code and takes real ownership of frontend features. We want someone who enjoys working in a fast-moving, product-driven environment, isn\u2019t afraid to question assumptions, and loves shipping things users actually enjoy using.",
+  "responsibilities": [
+    "Contributing to frontend feature development with a strong focus on quality and performance.",
+    "Collaborating closely with the Lead Developer and other team members.",
+    "Building slick, responsive, reusable components with React.js, Next.js, and Tailwind.",
+    "Optimizing applications for performance, scalability, and UX.",
+    "Troubleshooting and resolving complex bugs. Sometimes, before anyone even notices.",
+    "Pairing with backend engineers and designers to implement full-stack features.",
+    "Testing ideas quickly, giving feedback on UX, and improving what\u2019s already built.",
+    "Refactoring older code as the product scales and always improving what you touch.",
+    "Sharing insights, patterns, and discoveries with the team through demos, docs, or Slack banter."
+  ],
+  "required_skills": [
+    "2-4 years of frontend experience with React.js, Next.js, and JavaScript (ES6+).",
+    "Advanced knowledge of HTML5, CSS3/SASS, Tailwind CSS, and responsive UI.",
+    "Deep understanding of component-driven design, state management, and REST API integration.",
+    "Familiarity with automated testing tools like Jest, Playwright, or Cypress.",
+    "Sharp eye for UI/UX detail and an obsession with frontend performance."
+  ],
+  "nice_to_have_skills": [
+    "A portfolio or GitHub showing off real, impactful projects.",
+    "Experience working in PHP",
+    "Experience working in fast-paced SaaS or product-focused environments.",
+    "Familiarity with NPM, Laravel, WordPress development."
+  ],
+  "required_experience_years": 0.0,
+  "education_level": "None",
+  "seniority_level": "Senior",
+  "salary_range": null,
+  "benefits": [
+    "Remote work",
+    "Flexible working hours",
+    "Competitive pay",
+    "Paid time off",
+    "Allowances for setting up workspace",
+    "Excellent work-life balance",
+    "Career growth opportunities"
+  ]
+}

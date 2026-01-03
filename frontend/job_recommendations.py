@@ -2,72 +2,69 @@ import streamlit as st
 import pandas as pd
 from backend.auth import get_logged_in_user_id
 from backend.scraper import LinkedInJobScraper
-from utils.database import get_job_recommendations
+from utils.database import (
+    get_job_recommendations, save_user_search_preferences,
+    get_user_search_preferences, add_search_history_entry,
+    get_search_history, update_job_match_scores, update_job_status
+)
 from backend.recommendations import JobRecommender
 import time
 import textwrap
 import math
+import json
+from datetime import datetime
 
 def recommendations_page():
+    # --- Custom CSS for Premium Look ---
     st.markdown("""
         <style>
+        .stButton>button {
+            width: 100%;
+            border-radius: 8px;
+            font-weight: 600;
+        }
         .job-card {
-            background-color: #1e1e1e;
-            padding: 25px;
-            border-radius: 15px;
+            background-color: #1a1a1a;
+            padding: 24px;
+            border-radius: 12px;
             margin-bottom: 20px;
             border: 1px solid #333;
-            position: relative;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
         .job-card:hover {
-            transform: translateY(-5px);
+            transform: translateY(-4px);
             border-color: #00ADB5;
-            box-shadow: 0 8px 15px rgba(0,173,181,0.1);
+            box-shadow: 0 10px 20px rgba(0, 173, 181, 0.15);
         }
-        .job-title {
-            color: #00ADB5;
-            font-size: 1.4rem;
-            font-weight: bold;
-            text-decoration: none;
-            line-height: 1.2;
+        .metric-card {
+            background-color: #262626;
+            padding: 15px;
+            border-radius: 10px;
+            border-left: 4px solid #00ADB5;
+            text-align: center;
         }
-        .job-title:hover {
-            text-decoration: underline;
+        .history-item {
+            padding: 10px;
+            border-bottom: 1px solid #333;
+            font-size: 0.9rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
-        .company-name {
-            color: #EEEEEE;
-            font-size: 1.1rem;
-            margin-top: 8px;
-            font-weight: 500;
+        .history-item:hover {
+            background-color: #333;
         }
-        .job-location {
-            color: #AAAAAA;
-            font-size: 0.95rem;
-            margin-top: 5px;
+        
+        /* Form Styling */
+        div[data-testid="stForm"] {
+            background-color: #1e1e1e;
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid #444;
         }
-        .match-score {
-            color: white;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            font-weight: bold;
-            border: 1.5px solid transparent;
-            background:
-                linear-gradient(#1e1e1e, #1e1e1e) padding-box,
-                linear-gradient(90deg, #00ADB5, #00c853) border-box;
-        }
-        .job-container {
-            max-width: 900px;
-            margin: 0 auto;
-        }
-
         </style>
     """, unsafe_allow_html=True)
-    
-    st.title("Job Recommendations")
-    
+
     user_id = get_logged_in_user_id()
     if not user_id:
         st.warning("Please log in to view recommendations.")
@@ -80,348 +77,387 @@ def recommendations_page():
         st.error("Backend module error.")
         return
 
-    # Search Preferences
-    st.subheader("Search Preferences")
-    
-    col1, col2, col3 = st.columns([2, 2, 1])
-    with col1:
-        keywords = st.text_input("Keywords (e.g., Python Developer)", value="")
-    with col2:
-        location = st.text_input("Location (e.g., Remote)", value="")
-    with col3:
-        limit = st.number_input("Max Jobs", min_value=1, max_value=50, value=5, step=1)
-    
-    # st.subheader("Filters (Coming Soon)")
-    # st.checkbox("Date Posted (Last 24h)", disabled=True)
-    # st.checkbox("Remote Only", value=True, disabled=True)
+    # --- Load Saved Preferences ---
+    saved_prefs = get_user_search_preferences(user_id) or {}
 
-    if st.button("Search & Scrape Jobs", type="primary"):
+    st.title("🚀 Smart Job Search")
+    
+    # Layout: Sidebar for quick history, Main for Form & Results
+    
+    # --- SEARCH PREFERENCES FORM ---
+    with st.expander("🔍 **Search Preferences & Configuration**", expanded=True):
+        with st.form("job_search_form"):
+            c1, c2 = st.columns([1, 1])
+            with c1:
+                job_title = st.text_input("Job Title", value=saved_prefs.get('job_title', 'Software Engineer'), placeholder="e.g. Data Scientist")
+                location = st.text_input("Location", value=saved_prefs.get('location', 'Remote'), placeholder="e.g. New York, Remote")
+            
+            with c2:
+               # Remote Preference (Single select simulating Radio for compactness)
+               remote_map = {"Any": [], "Remote": ["remote"], "Hybrid": ["hybrid"], "On-site": ["on_site"]}
+               # Reverse map for default
+               saved_remote_code = saved_prefs.get('remote_type', 'Any')
+               # Ensure robustness if saved value is invalid
+               default_idx = 0
+               try:
+                   default_idx = ["Any", "Remote", "Hybrid", "On-site"].index(saved_remote_code)
+               except ValueError:
+                   default_idx = 0
+                   
+               remote_pref = st.selectbox("Workplace Type", ["Any", "Remote", "Hybrid", "On-site"], index=default_idx)
+
+               exp_levels = ["Internship", "Entry Level", "Mid Level", "Senior Level", "Director"]
+               saved_exp = saved_prefs.get('experience_level', 'Mid Level')
+               # Robust index finding
+               exp_idx = 2
+               if saved_exp in exp_levels:
+                   exp_idx = exp_levels.index(saved_exp)
+               experience = st.selectbox("Experience Level", exp_levels, index=exp_idx)
+
+            # Job Types
+            st.markdown("**Job Type**")
+            cols_jt = st.columns(4)
+            jt_types = ["Full-time", "Part-time", "Contract", "Internship"]
+            selected_jts = []
+            
+            # Helper to handle saved_jts list safety
+            saved_jts = saved_prefs.get('job_type', ["Full-time"])
+            if not isinstance(saved_jts, list): saved_jts = ["Full-time"]
+
+            for i, jt in enumerate(jt_types):
+                with cols_jt[i]:
+                    if st.checkbox(jt, value=(jt in saved_jts)):
+                        selected_jts.append(jt)
+
+            # Advanced Section
+            with st.expander("⚙️ Advanced Filters (Salary, Keywords, Company)"):
+                ac1, ac2 = st.columns(2)
+                with ac1:
+                    min_salary = st.number_input("Min Annual Salary ($)", value=int(saved_prefs.get('min_salary', 0)), step=5000)
+                    keywords_inc = st.text_input("Must-have Keywords", value=saved_prefs.get('keywords_include', ''), placeholder="python, machine learning")
+                    visa_support = st.checkbox("Visa Sponsorship Required", value=saved_prefs.get('visa_sponsorship', False))
+
+                with ac2:
+                    default_inds = saved_prefs.get('industries', [])
+                    if not isinstance(default_inds, list): default_inds = []
+                    industries = st.multiselect("Industries", ["Tech", "Finance", "Healthcare", "Education", "Retail", "Manufacturing"], default=default_inds)
+                    keywords_exc = st.text_input("Exclude Keywords", value=saved_prefs.get('keywords_exclude', ''), placeholder="sales, cold calling")
+                    commute_max = st.slider("Max Commute (mins)", 0, 120, int(saved_prefs.get('max_commute', 45)))
+                
+                preferred_companies = st.text_area("Preferred Companies", value=saved_prefs.get('preferred_companies', ''), placeholder="Google, Microsoft (comma separated)")
+
+                st.markdown("---")
+                st.markdown("⏰ **Auto-Scheduling (Beta)**")
+                schedule_freq = st.selectbox("Run this search automatically:", ["Off", "Daily", "Weekly"], index=["Off", "Daily", "Weekly"].index(saved_prefs.get('schedule_frequency', 'Off')))
+                if schedule_freq != "Off":
+                    st.caption("You will receive email notifications when new jobs are found.")
+
+            # Actions
+            col_act1, col_act2, col_act3 = st.columns([2, 1, 1])
+            with col_act1:
+                search_submitted = st.form_submit_button("🔎 Find Jobs Now", type="primary")
+            with col_act2:
+                # We can't have multiple submit buttons easily in Streamlit form in standard way, 
+                # but checkboxes work fine to modify the submit action.
+                save_prefs = st.checkbox("Save as Default", value=True)
+            with col_act3:
+                # Reset needs to be outside form or handled differently, but Streamlit forms are strict.
+                # Actually, making reset a checkbox often works better inside logic, OR separate button OUTSIDE form.
+                # Putting it here as submit button creates conflict if pressed. 
+                # Common pattern: Just one submit button. 
+                pass
+
+    # Reset Button Outside Form
+    if st.button("Reset Defaults"):
+        if save_user_search_preferences(user_id, {}):
+             st.toast("Preferences reset!")
+             time.sleep(0.5)
+             st.rerun()
+
+    # --- HANDLING FORM SUBMISSION ---
+    if search_submitted:
+        # 1. Save Preferences
+        current_prefs = {
+            "job_title": job_title,
+            "location": location,
+            "remote_type": remote_pref,
+            "experience_level": experience,
+            "job_type": selected_jts,
+            "min_salary": min_salary,
+            "keywords_include": keywords_inc,
+            "keywords_exclude": keywords_exc,
+            "industries": industries,
+            "max_commute": commute_max,
+            "visa_sponsorship": visa_support,
+            "preferred_companies": preferred_companies,
+            "schedule_frequency": schedule_freq
+        }
+        
+        if save_prefs:
+            save_user_search_preferences(user_id, current_prefs)
+            st.toast("Preferences Saved.")
+
+        # 2. Logic to construct Scraper Query
+        
+        # Merge includes and job title
+        full_query = job_title
+        if keywords_inc:
+            full_query += " " + keywords_inc
+        if keywords_exc:
+             # Add exclude logic (depends on scraper, mostly appending NOT)
+             # LinkedIn supports NOT operator
+             excludes = [f'NOT "{k.strip()}"' for k in keywords_exc.split(',') if k.strip()]
+             full_query += " " + " ".join(excludes)
+             
+        # Map Experience
+        # Map: 'Internship'->'internship', 'Entry Level'->'entry', 'Mid Level'->'mid_senior'
+        exp_map_scraper = {
+            "Internship": "internship", "Entry Level": "entry", 
+            "Mid Level": "associate", "Senior Level": "mid_senior", "Director": "director" 
+        }
+        # Note: LinkedIn 'associate' is often used for Mid-level in scraper map, or 'mid_senior'.
+        
+        # Map Job Type
+        jt_map_scraper = {
+            "Full-time": "full_time", "Part-time": "part_time", 
+            "Contract": "contract", "Internship": "internship"
+        }
+        
+        scraper_filters = {
+            "remote": remote_map.get(remote_pref, []),
+            "experience": [exp_map_scraper.get(experience, "mid_senior")],
+            "job_type": [jt_map_scraper.get(t) for t in selected_jts if t in jt_map_scraper],
+            "date_posted": "week" # Default to week for freshness
+        }
+
+        # 4. Run Scraper
         progress_bar = st.progress(0)
         status_text = st.empty()
         
         def update_progress(current, total, eta):
-            progress = min(current / total, 1.0)
-            progress_bar.progress(progress)
-            status_text.text(f"Scraped {current}/{total} jobs. Estimated time remaining: {eta}")
+            prog = min(current / total, 1.0)
+            progress_bar.progress(prog)
+            status_text.markdown(f"**Searching LinkedIn...**Found {current}/{total} jobs. <br>⏱️ Estimated time: {eta}", unsafe_allow_html=True)
 
         try:
-            status_text.text("Initializing scraper...")
-            scraper = LinkedInJobScraper(user_id=user_id, headless=False) # Headless=False for debugging/safety
+            status_text.info("Initializing Intelligence Agent...")
+            scraper = LinkedInJobScraper(user_id=user_id, headless=False)
             
-            # Login logic handling (assuming env vars set)
+            # Login
             import os
             email = os.getenv("LINKEDIN_EMAIL")
             password = os.getenv("LINKEDIN_PASSWORD")
             
             if scraper.login(email, password):
-                status_text.text("Logged in. Starting search...")
-                search_term = keywords if keywords else "Software Engineer"
-                scraper.search_jobs(search_term, location, limit=limit, progress_callback=update_progress)
-                status_text.text("Scraping completed!")
+                status_text.info(f"Logged In. Searching for '{full_query}' in {location}...")
+                
+                jobs = scraper.search_jobs(
+                    keywords=full_query,
+                    location=location,
+                    limit=10, # User defaults to 10 for speed
+                    filters=scraper_filters,
+                    progress_callback=update_progress
+                )
+                
+                # 5. Log History
+                # Scraper skips existing jobs in DB, so all returned jobs are 'new' to the system.
+                new_count = len(jobs)
+                add_search_history_entry(user_id, f"{job_title} - {location}", current_prefs, len(jobs), new_count)
+                
                 progress_bar.progress(1.0)
-                st.success("Scraping completed!")
-                time.sleep(1) 
+                status_text.success(f"Search Complete! Found {len(jobs)} new jobs.")
+                time.sleep(1)
                 st.rerun()
             else:
-                st.error("Failed to login to LinkedIn scraper.")
+                st.error("Login failed. Check credentials.")
         except Exception as e:
-            st.error(f"Scraping failed: {e}")
+            st.error(f"Search failed: {e}")
+            import traceback
+            st.code(traceback.format_exc())
         finally:
             if 'scraper' in locals():
                 scraper.close()
 
-    # --- STATS SUMMARY (Placeholders) ---
-    raw_jobs = get_job_recommendations(user_id, limit=None)
+    # --- MAIN DASHBOARD AREA ---
     
-    st.markdown("### 📊 Overview")
-    k1, k2, k3 = st.columns(3)
-    metric_found = k1.empty()
-    metric_score = k2.empty()
-    metric_new = k3.empty()
+    col_dash, col_hist = st.columns([3, 1])
     
-    # Initialize defaults
-    metric_found.metric("Opportunities Found", 0)
-    metric_score.metric("Avg Match Score", "0%")
-    metric_new.metric("New Today", 0)
+    # HISTORY SIDEBAR
+    with col_hist:
+        st.subheader("🕑 Recent Searches")
+        history = get_search_history(user_id, limit=5)
+        if not history:
+            st.markdown("*No recent searches.*")
+        else:
+            for item in history:
+                with st.container():
+                     st.markdown(f"""
+                     <div class="history-item">
+                        <div>
+                            <strong>{item['query_summary']}</strong><br>
+                            <span style="color:#888; font-size:0.8em">{item['timestamp'][:10]}</span>
+                        </div>
+                        <div style="text-align:right">
+                            <span style="color:#00ADB5; font-weight:bold">+{item['new']}</span><br>
+                            <span style="color:#666; font-size:0.8em">new</span>
+                        </div>
+                     </div>
+                     """, unsafe_allow_html=True)
+                     if st.button("Rerun", key=f"hist_{item['id']}"):
+                         # Load params and rerun (simplified: just load into Session State to fill form?)
+                         # Ideally trigger search, but filling form is safer.
+                         prefs = item['params']
+                         save_user_search_preferences(user_id, prefs) # Set as current
+                         st.toast("Configuration loaded! Click 'Find Jobs Now'.")
+                         time.sleep(0.5)
+                         st.rerun()
 
-    st.markdown("---")
-
-    # --- MAIN LAYOUT ---
-    col_main, col_right = st.columns([3, 1])
-
-    # --- RIGHT PANEL FILTERS ---
-    with col_right:
-        st.subheader("🔍 Filters")
+    # RESULTS AREA
+    with col_dash:
+        raw_jobs = get_job_recommendations(user_id)
         
-        # 1. Location
-        all_locs = sorted(list(set([j['location'] for j in raw_jobs]))) if raw_jobs else []
-        sel_locs = st.multiselect("Location", all_locs)
-        remote_only = st.checkbox("Remote Only", value=True)
-
-        # 2. Match Score
-        min_match = st.slider("Min Match %", 0, 100, 0, 5) # Default 0 to see all jobs if scoring fails
-
-        # 3. Job Type (Mock data for now if not in scraper)
-        job_types = ["Full-time", "Contract", "Internship", "Part-time"]
-        sel_types = st.multiselect("Job Type", job_types, default=["Full-time"])
-
-        # 4. Experience
-        exp_levels = ["Entry Level", "Mid Level", "Senior Level", "Director"]
-        sel_exp = st.selectbox("Experience Level", ["Any"] + exp_levels)
-
-        # 5. Date Posted
-        date_opts = {"Any": 0, "Last 24 Hours": 1, "Last 7 Days": 7, "Last 30 Days": 30}
-        sel_date = st.selectbox("Date Posted", list(date_opts.keys()))
- 
-
-    # --- MAIN CONTENT ---
-    with col_main:
-        # Processing Logic
-        filters = {
-            "locations": sel_locs,
-            "remote": remote_only,
-            "min_match_score": min_match,
-            "job_type": sel_types,
-            "experience_level": sel_exp if sel_exp != "Any" else None,
-            "date_posted_days": date_opts[sel_date]
-        }
-        
-        # 1. Processing
-        processed_jobs = recommender.filter_and_score_jobs(user_id, raw_jobs, filters)
-        
-        # Persist updated match scores to DB so they are valid for future queries
-        if processed_jobs:
-             from utils.database import update_job_match_scores
-             updates = [(j['id'], j['match_percentage']) for j in processed_jobs]
-             update_job_match_scores(user_id, updates)
-        
-        # UPDATE STATS with real values
-        p_count = len(processed_jobs)
-        p_avg = int(sum(j.get('match_percentage', 0) for j in processed_jobs)/p_count) if p_count > 0 else 0
-        p_new = len([j for j in processed_jobs if "hour" in str(j.get('posted_date', '')).lower() or "minute" in str(j.get('posted_date', '')).lower()])
-        
-        metric_found.metric("Opportunities Found", p_count)
-        metric_score.metric("Avg Match Score", f"{p_avg}%")
-        metric_new.metric("New Today", p_new)
-        
-        if p_count > 0 and p_avg == 0:
-            st.warning("⚠️ Match scores are 0%. Please ensuring you have uploaded and analyzed your resume in the Dashboard so we can calculate matches.")
-        
-        # Sorting
-        sort_opts = {
-            "Best Match": "match_percentage",
-            "Recency": "posted_date", 
-            "Applicants (Low to High)": "applicant_count" 
-        }
-        sort_by = st.selectbox("Sort By", list(sort_opts.keys()))
-        
-        if sort_by == "Best Match":
-            processed_jobs.sort(key=lambda x: x.get('match_percentage', 0), reverse=True)
-        elif sort_by == "Applicants (Low to High)":
-            processed_jobs.sort(key=lambda x: x.get('applicant_count', 9999))
-            
-        grouped_jobs = recommender.group_jobs(processed_jobs)
-
-        # Tabs Layout inside Main Column
-        tab_rec, tab_saved, tab_compare = st.tabs(["Recommended Jobs", "My Allocations", "Compare Jobs"])
-
-        with tab_rec:
-            # 2. Group Display
-            st.write(f"Showing {len(processed_jobs)} jobs matching criteria.")
-                
-            # Featured Section (Always Top)
-            if grouped_jobs["Featured"]:
-                st.subheader("🔥 Featured & Urgent")
-                for job in grouped_jobs["Featured"]:
-                    _render_job_card(job, recommender, user_id, is_featured=True, key_suffix="feat")
-                st.markdown("---")
-            
-            # Main Content - Unified List with Pagination
-            main_list = [j for j in processed_jobs if j not in grouped_jobs.get("Featured", [])] 
-            
-            if not main_list:
-                st.info("No matching jobs found.")
-            else:
-                items_per_page = 20
-                if "job_rec_page_index" not in st.session_state: st.session_state.job_rec_page_index = 0
-                
-                # Dynamic Pagination Reset
-                if st.session_state.job_rec_page_index * items_per_page >= len(main_list):
-                    st.session_state.job_rec_page_index = 0
-                
-                total_pages = max(1, math.ceil(len(main_list) / items_per_page))
-                current_page = st.session_state.job_rec_page_index
-                
-                start_idx = current_page * items_per_page
-                end_idx = start_idx + items_per_page
-                page_jobs = main_list[start_idx:end_idx]
-                
-                for job in page_jobs:
-                        _render_job_card(job, recommender, user_id, key_suffix="main")
-                
-                # Pagination Controls
-                if total_pages > 1:
-                    c_prev, c_cent, c_next = st.columns([1, 2, 1])
-                    with c_prev:
-                        if st.button("Previous", disabled=(current_page == 0)):
-                            st.session_state.job_rec_page_index -= 1
-                            st.rerun()
-                    with c_next:
-                        if st.button("Next", disabled=(current_page >= total_pages - 1)):
-                            st.session_state.job_rec_page_index += 1
-                            st.rerun()
-                    with c_cent:
-                        st.markdown(f"<div style='text-align: center; padding-top: 10px;'>Page {current_page + 1} of {total_pages}</div>", unsafe_allow_html=True)
-
-        with tab_saved:
-            st.subheader("Tracked Applications")
-            saved_jobs = [j for j in raw_jobs if j.get('status') in ['saved', 'applied', 'interviewing', 'rejected']]
-            if not saved_jobs:
-                st.info("You haven't saved any jobs yet.")
-            else:
-                for job in saved_jobs:
-                    st.markdown(f"**{job['job_title']}** at {job['company_name']} - Status: `{job.get('status')}`")
-                    # Expandable management for status
-                    with st.expander("Manage"):
-                        new_status = st.selectbox("Update Status", ["saved", "applied", "interviewing", "rejected"], key=f"status_{job['id']}")
-                        if st.button("Update", key=f"upd_{job['id']}"):
-                            from utils.database import update_job_status
-                            update_job_status(user_id, job['id'], new_status)
-                            st.rerun()
-
-        with tab_compare:
-            st.subheader("Compare Jobs")
-            selected_names = []
-            if not raw_jobs:
-                st.info("No jobs to compare.")
-            else:
-                # Multi-select
-                job_options = {f"{j['job_title']} @ {j['company_name']}": j for j in raw_jobs}
-                selected_names = st.multiselect("Select jobs to compare (2-4 recommended)", list(job_options.keys()))
-            
-            if selected_names:
-                selected_jobs = [job_options[n] for n in selected_names]
-                
-                # Comparison Table Data
-                comp_data = []
-                for j in selected_jobs:
-                    analysis = j.get('job_analysis', {})
-                    scores = j.get('match_scores', {})
-                    comp_data.append({
-                        "Job Title": j['job_title'],
-                        "Company": j['company_name'],
-                        "Match Score": f"{int(j.get('match_percentage', 0))}%",
-                        "Location": j['location'],
-                        "Salary": analysis.get('salary_range', 'Not listed'),
-                        "Experience": f"{analysis.get('required_experience_years', '?')} years",
-                        "Applicants": j.get('applicant_count', '?'),
-                        "Skills Match": f"{int(scores.get('skills_score', 0))}%"
-                    })
-                
-                df = pd.DataFrame(comp_data)
-                st.table(df)
-
-
-def _render_job_card(job, recommender, user_id, is_featured=False, key_suffix=""):
-    """Helper to render a single job card with actions."""
-    # Styles
-    border_color = "#FFD700" if is_featured else "#333"
-    bg_color = "#1e1e1e" 
-    
-    scores = job.get('match_scores', {})
-    
-    # Progress Bar Color
-    match_pct = int(job.get('match_percentage', 0))
-    bar_color = "#00c853" if match_pct > 80 else "#FFD700" if match_pct > 60 else "#FF5252"
-    
-    clean_desc = (job.get('job_description', '') or '').replace("About the job", "").strip()
-    short_desc = clean_desc[:250] + "..." if len(clean_desc) > 250 else clean_desc
-
-    # HTML Card
-    card_html = f"""<div class="job-card" style="border-color: {border_color}; background-color: {bg_color}; margin-bottom: 20px; padding: 20px; border-radius: 10px; border: 1px solid #333;">"""
-    card_html += f"""<div style="display: flex; justify-content: space-between;">"""
-    card_html += f"""<div><a href="{job['job_url']}" target="_blank" style="color: #00ADB5; font-size: 1.2rem; font-weight: bold; text-decoration: none;">{job['job_title']}</a>"""
-    card_html += f"""<div style="color: #EEE;">{job['company_name']}</div></div>"""
-    card_html += f"""<div style="text-align: right;"><span style="color: {bar_color}; font-weight: bold; font-size: 1.2rem;">{match_pct}% Match</span></div></div>"""
-    
-    # Visual Progress Bar
-    card_html += f"""<div style="width: 100%; background-color: #444; height: 6px; border-radius: 3px; margin-top: 5px;">"""
-    card_html += f"""<div style="width: {match_pct}%; background-color: {bar_color}; height: 6px; border-radius: 3px;"></div></div>"""
-    
-    card_html += f"""<div style="margin-top: 10px; color: #AAA; font-size: 0.9rem;">📍 {job['location']} | 👥 {job.get('applicant_count', 0)} Applicants | 📅 {job.get('posted_date', 'N/A')}</div>"""
-    card_html += f"""<div style="margin-top: 10px; color: #CCC; font-size: 0.9rem; line-height: 1.5;">{short_desc}</div>"""
-    card_html += f"""</div>"""
-
-    st.markdown(card_html, unsafe_allow_html=True)
-    
-    # Actions
-    unique_key = f"{job['id']}_{key_suffix}"
-
-            
-    with st.expander("Show Details & Analysis"):
-        st.write(f"**Match Analysis**: {scores.get('match_analysis', 'N/A')}")
-        
-        # Skills Chips
-        if scores.get('matching_skills'):
-            st.markdown("**Matching Skills:** " + " ".join([f"`{s}`" for s in scores['matching_skills']]))
-        if scores.get('missing_skills'):
-             st.markdown("**Missing / To Improve:** " + " ".join([f"`{s}`" for s in scores['missing_skills']]))
+        # Stats Bar
+        k1, k2, k3 = st.columns(3)
+        with k1: 
+             st.markdown(f"<div class='metric-card'><h3>{len(raw_jobs)}</h3><p>Total Opportunities</p></div>", unsafe_allow_html=True)
+        with k2:
+             avg_match = int(sum(j.get('match_percentage', 0) for j in raw_jobs)/len(raw_jobs)) if raw_jobs else 0
+             st.markdown(f"<div class='metric-card'><h3>{avg_match}%</h3><p>Avg Match Score</p></div>", unsafe_allow_html=True)
+        with k3:
+             new_jobs = len([j for j in raw_jobs if j.get('status') == 'new'])
+             st.markdown(f"<div class='metric-card'><h3>{new_jobs}</h3><p>New / Unread</p></div>", unsafe_allow_html=True)
 
         st.markdown("---")
-        st.markdown(clean_desc)
         
-        if st.button("Generate AI Tips", key=f"tips_{unique_key}"):
-             with st.spinner("Generating..."):
-                 tips = recommender.generate_detailed_application_guide(user_id, job)
-                 if tips:
-                     st.subheader("💡 AI Application Strategy")
-                     
-                     # 1. Cover Letter
-                     if tips.get('cover_letter_points'):
-                        st.markdown("**📝 Cover Letter Points**")
-                        for point in tips['cover_letter_points']:
-                            st.markdown(f"- {point}")
-                     
-                     # 2. Resume Tweaks
-                     if tips.get('resume_tweaks'):
-                        st.markdown("**📄 Resume Tweaks**")
-                        for tweak in tips['resume_tweaks']:
-                            st.markdown(f"- {tweak}")
-                            
-                     # 3. Interview Prep
-                     if tips.get('interview_prep'):
-                        st.markdown("**🎤 Interview Prep**")
-                        for q in tips['interview_prep']:
-                            st.markdown(f"- {q}")
+        # TABS
+        tab_rec, tab_saved, tab_compare = st.tabs(["🎯 Recommended", "📌 My List", "⚖️ Compare"])
+        
+        with tab_rec:
+            # Sort controls
+            s1, s2 = st.columns([2,1])
+            with s1:
+                 st.caption(f"Showing top results based on AI matching.")
+            with s2:
+                 sort_opt = st.selectbox("Sort by", ["Match %", "Newest", "Applicants"], label_visibility="collapsed")
+            
+            # Filter Logic (Client Side for Display)
+            display_jobs = [j for j in raw_jobs if j.get('status') not in ['rejected']]
+            
+            if sort_opt == "Match %":
+                display_jobs.sort(key=lambda x: x.get('match_percentage', 0), reverse=True)
+            elif sort_opt == "Newest":
+                display_jobs.sort(key=lambda x: x.get('posted_date', ''), reverse=True)
+            elif sort_opt == "Applicants":
+                display_jobs.sort(key=lambda x: x.get('applicant_count', 999))
 
-                     # 4. Missing Skills Strategy
-                     if tips.get('missing_skills_strategy'):
-                        st.markdown("**📚 Upskilling Strategy**")
-                        strategy = tips['missing_skills_strategy']
-                        if isinstance(strategy, list):
-                            for item in strategy:
-                                st.markdown(f"- {item}")
-                        else:
-                            st.info(strategy)
+            # Pagination
+            page_size = 5
+            if "job_page" not in st.session_state: st.session_state.job_page = 0
+            
+            total_pages = math.ceil(len(display_jobs) / page_size)
+            curr_page = st.session_state.job_page
+            
+            # Bounds check
+            if curr_page >= total_pages: curr_page = 0
+            
+            start = curr_page * page_size
+            end = start + page_size
+            page_items = display_jobs[start:end]
+            
+            if not page_items:
+                st.info("No jobs found matching your criteria. Try adjusting filters or running a new search.")
+            
+            for job in page_items:
+                _render_job_card(job, recommender, user_id)
+            
+            # Pagination Controls
+            if total_pages > 1:
+                pc1, pc2, pc3 = st.columns([1, 2, 1])
+                with pc1:
+                     if st.button("Previous", disabled=curr_page==0):
+                         st.session_state.job_page -= 1
+                         st.rerun()
+                with pc2:
+                     st.caption(f"Page {curr_page+1} of {total_pages}")
+                with pc3:
+                     if st.button("Next", disabled=curr_page>=total_pages-1):
+                         st.session_state.job_page += 1
+                         st.rerun()
 
-                     # 5. Company Research
-                     if tips.get('company_research'):
-                        st.markdown("**🏢 Company Research**")
-                        for item in tips['company_research']:
-                             st.markdown(f"- {item}")
+        with tab_saved:
+             saved_list = [j for j in raw_jobs if j.get('status') in ['saved', 'applied', 'interviewing']]
+             if saved_list:
+                 for job in saved_list:
+                      _render_job_card(job, recommender, user_id, mini=True)
+             else:
+                 st.info("No saved jobs yet.")
 
-    # Actions (Moved to bottom)
-    st.write("") # Spacer
-    c1, c2, c3 = st.columns([1, 1, 2])
-    with c1:
-        if st.button("Save", key=f"s_{unique_key}"):
-            from utils.database import update_job_status
-            update_job_status(user_id, job['id'], 'saved')
-            st.toast("Job Saved!")
-            st.rerun()
-    with c2:
-        if st.button("Ignore", key=f"i_{unique_key}"):
-            from utils.database import update_job_status
-            update_job_status(user_id, job['id'], 'rejected')
-            st.toast("Job marked as Rejected")
-            st.rerun()
+        with tab_compare:
+            st.write("Select jobs to compare side-by-side.")
+            # Reuse existing comparison logic or simplified
+            opts = {f"{j['job_title']} @ {j['company_name']}": j for j in raw_jobs}
+            sel = st.multiselect("Select 2-3 jobs", list(opts.keys()))
+            if sel:
+                sel_jobs = [opts[k] for k in sel]
+                cols = st.columns(len(sel_jobs))
+                for idx, j in enumerate(sel_jobs):
+                    with cols[idx]:
+                         st.markdown(f"#### {j['company_name']}")
+                         st.markdown(f"**{j['job_title']}**")
+                         st.success(f"{int(j.get('match_percentage', 0))}% Match")
+                         st.write(f"📍 {j['location']}")
+                         st.write(f"👥 {j.get('applicant_count', 0)} applicants")
+                         st.caption(j['job_description'][:150] + "...")
+
+def _render_job_card(job, recommender, user_id, mini=False):
+    """Render a single job card."""
+    match = int(job.get('match_percentage', 0))
+    color = "#00c853" if match > 75 else "#ffd700" if match > 50 else "#ff5252"
+    
+    with st.container():
+        st.markdown(f"""
+        <div class="job-card" style="border-left: 5px solid {color};">
+            <div style="display:flex; justify-content:space-between; align-items:start;">
+                <div>
+                    <a href="{job['job_url']}" target="_blank" style="text-decoration:none; color:#00ADB5; font-size:1.3em; font-weight:bold;">{job['job_title']}</a>
+                    <div style="color:#eee; font-size:1.1em; margin-bottom:5px;">{job['company_name']}</div>
+                    <div style="color:#aaa; font-size:0.9em;">📍 {job['location']} &nbsp;•&nbsp; 🗓️ Posted {job.get('posted_date', 'N/A')[:10]}</div>
+                </div>
+                <div style="text-align:right;">
+                    <span style="background:{color}33; color:{color}; padding:5px 10px; border-radius:15px; font-weight:bold;">{match}% Match</span>
+                    <br><span style="font-size:0.8em; color:#666;">{job.get('applicant_count', 0)} applicants</span>
+                </div>
+            </div>
+            <div style="margin-top:15px; color:#ccc; font-size:0.95em; line-height:1.5;">
+                {textwrap.shorten(job.get('job_description', ''), width=200, placeholder='...')}
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        # Action Buttons
+        c1, c2, c3, c4 = st.columns([1, 1, 1, 2])
+        status = job.get('status', 'new')
+        
+        if not mini:
+            with c1:
+                if status != 'saved' and st.button("🔖 Save", key=f"s_{job['id']}"):
+                    update_job_status(user_id, job['id'], 'saved')
+                    st.rerun()
+            with c2: 
+                if status != 'rejected' and st.button("🚫 Ignore", key=f"i_{job['id']}"):
+                    update_job_status(user_id, job['id'], 'rejected')
+                    st.rerun()
+            with c3:
+                # Tips logic
+                if st.button("💡 Tips", key=f"t_{job['id']}"):
+                    with st.spinner("Analyzing..."):
+                        tips = recommender.generate_detailed_application_guide(user_id, job)
+                        if tips:
+                            st.session_state[f"tips_{job['id']}"] = tips
+        
+        # Display tips if generated
+        if f"tips_{job['id']}" in st.session_state:
+            t = st.session_state[f"tips_{job['id']}"]
+            with st.expander("✨ AI Application Strategy", expanded=True):
+                 st.write("Cover Letter Ideas:")
+                 for p in t.get('cover_letter_points', []): st.write(f"- {p}")

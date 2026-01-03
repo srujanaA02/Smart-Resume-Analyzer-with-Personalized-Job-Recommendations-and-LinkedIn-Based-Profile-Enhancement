@@ -1,0 +1,24 @@
+{
+  "summary": "The Associate Professional, Software Engineering role assists with designing, developing and maintaining software applications and systems. Under close supervision, this job collaborates with cross functional teams to help implement new software features to meet user needs and business goals and upgrade existing software to improve performance and functionality through writing clean, efficient and scalable code and troubleshooting and debugging standard issues.",
+  "responsibilities": [
+    "Assists with designing and developing high quality software solutions by writing clean, maintainable and efficient codes.",
+    "Partners to apply internal software deployment platform, methodologies and tools to automate the deployment process, ensuring smooth and reliable releases.",
+    "Coordinates cross functional team of product managers, designers, architects, and other engineers to help gather requirements and deliver resolutions that meet business needs and deliver cybersecurity goals.",
+    "Writes and maintains standard unit tests and integration tests, and performs debugging to maintain the quality and performance of the software.",
+    "Makes suggestions for improving the software development and deployment processes, and partners to implement the approved standards to improve efficiency and reliability.",
+    "Maintains comprehensive documentation for software applications, deployment processes and system configurations.",
+    "Provides technical support and troubleshooting for standard issues with deployed applications to ensure minimal downtime and fast resolution."
+  ],
+  "required_skills": [
+    "clean, maintainable and efficient coding",
+    "software deployment platform, methodologies and tools"
+  ],
+  "nice_to_have_skills": [
+    "None specified"
+  ],
+  "required_experience_years": 2.0,
+  "education_level": null,
+  "seniority_level": "Junior",
+  "salary_range": "$100k - $120k",
+  "benefits": []
+}

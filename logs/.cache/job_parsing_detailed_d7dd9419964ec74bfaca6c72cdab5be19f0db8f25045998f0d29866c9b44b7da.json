@@ -1,0 +1,27 @@
+{
+  "summary": "As a Software Engineer, you will be part of a team that designs components and services for new feature developments. You will implement scalable architecture and work with an enthusiastic team contributing to robust projects that will be critical for growing Motive\u2019s customer base.",
+  "responsibilities": [
+    "Build responsive, accessible, and performant frontend experiences that make safety insights, event timelines, and video playback easy to understand and act on.",
+    "Work full stack to design and integrate APIs, connect data pipelines and services, and deliver dependable user experiences backed by secure, well-tested code.",
+    "Instrument features with telemetry and analytics to measure adoption, reliability, and UX quality, and use feature flags and experiments for safe, incremental rollouts.",
+    "Collaborate with ML and device teams to bring edge detections and rich media to the platform, handling streaming video, large datasets, and real-time updates.",
+    "Improve UI reliability, error handling, and observability so fleet managers and drivers can review events, take action, and complete coaching flows quickly.",
+    "Contribute to engineering excellence through code reviews, documentation, test coverage, and proactive performance profiling."
+  ],
+  "required_skills": [
+    "5+ years of professional experience in full-stack development with a strong frontend focus",
+    "Proficiency with a modern JavaScript framework like . React, Angular, Vue",
+    "Solid TypeScript, HTML, and CSS skills",
+    "Backend experience with one or more of Ruby on Rails, Go, Python, or Node.js, including API design and integration",
+    "Strong grounding in web performance, accessibility, responsive design, and state management"
+  ],
+  "nice_to_have_skills": [
+    "Experience with Git, CI/CD, automated testing, and Agile collaboration",
+    "Ability to write secure, maintainable, and testable code and to own features end to end"
+  ],
+  "required_experience_years": 5,
+  "education_level": "Bachelor",
+  "seniority_level": "Mid",
+  "salary_range": null,
+  "benefits": []
+}

@@ -1,0 +1,36 @@
+{
+  "summary": "We are seeking a motivated Python Developer to join our development team. The ideal candidate should have a strong foundation in Python programming and be excited to work on real-world projects involving web development, API creation, and performance optimization.",
+  "responsibilities": [
+    "Develop, test, and maintain backend applications using Python.",
+    "Work with frameworks like Django, Flask, or FastAPI for building APIs and web services.",
+    "Write clean, maintainable, and reusable code following industry standards.",
+    "Integrate with databases (MySQL, PostgreSQL, MongoDB) and handle data storage solutions.",
+    "Collaborate with front-end developers and designers to deliver end-to-end solutions.",
+    "Debug, troubleshoot, and resolve bugs to improve overall performance.",
+    "Participate in software planning, documentation, and deployment processes."
+  ],
+  "required_skills": [
+    "Bachelor's degree in Computer Science, IT, or relevant engineering field.",
+    "Strong understanding of Python programming and OOP concepts.",
+    "Familiarity with at least one backend framework (Django/Flask/FastAPI).",
+    "Basic knowledge of REST APIs and Version Control (Git/GitHub).",
+    "Good understanding of databases and SQL queries.",
+    "Analytical thinking and ability to solve technical problems."
+  ],
+  "nice_to_have_skills": [
+    "Knowledge of JavaScript, HTML, and CSS.",
+    "Experience working with cloud platforms (AWS/Azure) or Docker.",
+    "Understanding of Agile project methodologies."
+  ],
+  "required_experience_years": 1.0,
+  "education_level": "Bachelor",
+  "seniority_level": "Junior",
+  "salary_range": null,
+  "benefits": [
+    "Annual package of \u20b93.5 Lakhs",
+    "Remote working opportunity",
+    "Mentorship from experienced engineering professionals",
+    "Exposure to real-time projects and client-based development",
+    "Growth opportunities into Senior Developer or Full-Stack Developer roles"
+  ]
+}

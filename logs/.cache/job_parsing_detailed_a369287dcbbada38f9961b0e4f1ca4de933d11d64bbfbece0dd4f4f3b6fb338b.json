@@ -1,0 +1,37 @@
+{
+  "summary": "Join our friendly, collaborative team as a Junior Software Developer and work on building awesome web applications.",
+  "responsibilities": [
+    "Create and maintain web applications",
+    "Write clean code",
+    "Fix bugs",
+    "Help make products better every day",
+    "Work on both front end (what users see) and back end (the logic behind the scenes)"
+  ],
+  "required_skills": [
+    "HTML",
+    "CSS",
+    "JavaScript",
+    "React or Angular (if you know basics)",
+    "Node.js or Python (using frameworks like Express, Django, or Flask)",
+    "MySQL or MongoDB",
+    "Git"
+  ],
+  "nice_to_have_skills": [
+    "React",
+    "Angular",
+    "Express",
+    "Django",
+    "Flask",
+    "Git"
+  ],
+  "required_experience_years": 0.0,
+  "education_level": null,
+  "seniority_level": "Junior",
+  "salary_range": null,
+  "benefits": [
+    "Healthy work-life balance",
+    "Flexible hours",
+    "Positive atmosphere where everyone is encouraged to share ideas and experiment",
+    "Mentoring"
+  ]
+}

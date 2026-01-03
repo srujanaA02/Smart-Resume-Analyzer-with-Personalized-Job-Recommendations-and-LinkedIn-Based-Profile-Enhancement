@@ -1,0 +1,24 @@
+{
+  "summary": "We are looking for a skilled React.js Developer with experience in media streaming, OTT platforms, or set-top box UI development.",
+  "responsibilities": [
+    "Develop and maintain web applications using React.js",
+    "Build reusable components and front-end libraries for future use",
+    "Ensure UI/UX designs are implemented accurately and responsively",
+    "Optimize components for maximum performance across devices and browsers",
+    "Collaborate with backend developers to integrate APIs"
+  ],
+  "required_skills": [
+    "Good experience as a React.js Developer",
+    "Experience in media streaming, OTT platforms, or set-top box UI development.",
+    "Familiarity with TypeScript, React Hooks, and React Router."
+  ],
+  "nice_to_have_skills": [
+    "Exposure to video players, DRM, and adaptive streaming technologies.",
+    "Basic knowledge of testing frameworks (Jest, React Testing Library)"
+  ],
+  "required_experience_years": 0.0,
+  "education_level": null,
+  "seniority_level": null,
+  "salary_range": null,
+  "benefits": []
+}

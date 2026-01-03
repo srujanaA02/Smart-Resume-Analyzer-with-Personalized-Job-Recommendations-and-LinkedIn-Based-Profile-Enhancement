@@ -235,8 +235,10 @@ class LinkedInJobScraper:
                     load_retries = 0
                     while load_retries < 15: # Increased retries
                         cards_count = len(self.driver.find_elements(By.CSS_SELECTOR, job_card_selector))
-                        if cards_count >= 25:
-                            logger.info(f"Loaded {cards_count} jobs, sufficient for page.")
+                        # Optimize: Stop scrolling if we have enough jobs for the user's limit
+                        # or if we hit the page max (usually 25)
+                        if cards_count >= limit or cards_count >= 25:
+                            logger.info(f"Loaded {cards_count} jobs (Limit: {limit}).")
                             break
                             
                         # Scroll to bottom of container

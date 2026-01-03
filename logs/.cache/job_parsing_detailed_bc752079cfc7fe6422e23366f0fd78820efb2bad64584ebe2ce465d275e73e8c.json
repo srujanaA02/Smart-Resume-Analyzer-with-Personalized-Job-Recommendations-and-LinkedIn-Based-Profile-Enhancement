@@ -1,0 +1,35 @@
+{
+  "summary": "Network Engineer at Tesco responsible for managing large enterprise networks, providing on-call support and consulting to developer teams.",
+  "responsibilities": [
+    "Manage large enterprise networks",
+    "Work in multiple suppliers' environment",
+    "Provide on-call support for Major incidents",
+    "Work independently on network incidents",
+    "Manage technical discussion with internal infra teams",
+    "Be a team player",
+    "Contribute to network projects",
+    "Provide consultations to developer/App teams on network infra"
+  ],
+  "required_skills": [
+    "Network Skills: Juniper & Cisco Routing, Switching, Mist-Wireless, Zscaler (ZIA, ZPA), Forescout - NAC, Automation Silks - Python, API, Terraform, Jenkins, Ansible, CI/CD, GitLab, Resolve",
+    "Tools: Cisco ISE (Wi-Fi & radius) & Network perf monitoring tools SolarWinds etc."
+  ],
+  "nice_to_have_skills": [
+    "Network Skills: Arista& Cisco Routing, Switching, F5 or any similar Load Balancing solution , Palo Alto",
+    "Automation Silks - Python, API, Terraform, Jenkins, Ansible, CI/CD, GitLab, Resolve"
+  ],
+  "required_experience_years": 0.0,
+  "education_level": null,
+  "seniority_level": null,
+  "salary_range": null,
+  "benefits": [
+    "Fixed Pay",
+    "Leave & Time-off: 30 days of leave (18 days of Earned Leave, 12 days of Casual/Sick Leave) and 10 national and festival holidays",
+    "Making Retirement Tension-Free: Salary - Statutory retirement benefits, Tesco enables colleagues to participate in voluntary programmes like NPS and VPF",
+    "Health is Wealth: Tesco promotes programmes that support a culture of health and wellness including insurance for colleagues and their family",
+    "Mental Wellbeing: Tesco offers mental health support through self-help tools, community groups, ally networks, face-to-face counselling, and more for both colleagues and dependents",
+    "Financial Wellbeing: Through our financial literacy partner, we offer one-to-one financial coaching at discounted rates, as well as salary advances on earned wages upon request",
+    "Save As You Earn (SAYE): Our SAYE programme allows colleagues to transition from being employees to Tesco shareholders through a structured 3-year savings plan",
+    "Physical Wellbeing: Our green campus promotes physical wellbeing with facilities that include a cricket pitch, football field, badminton and volleyball courts, along with indoor games"
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "summary": "Lucio AI product company is hiring a Frontend Engineer to work on building beautiful interfaces and new user experiences.",
+  "responsibilities": [],
+  "required_skills": [
+    "Strong Proficiency in Core Web Technologies",
+    "JavaScript (ES6+)",
+    "CSS3",
+    "React",
+    "UI Design Systems/Component Libraries",
+    "State Management",
+    "Server-Side State Management/Data Fetching",
+    "Form Handling and Validation",
+    "Performance Optimization",
+    "Good Code Practices",
+    "Version Control (Git)"
+  ],
+  "nice_to_have_skills": [
+    "Next.js or React Router (Remix)",
+    "Tailwind CSS",
+    "Node.js and Express.js"
+  ],
+  "required_experience_years": 2.0,
+  "education_level": null,
+  "seniority_level": "Mid",
+  "salary_range": "$1000000 - $2500000",
+  "benefits": [
+    "Competitive salary based on experience",
+    "Unlimited leaves (including sick leaves, period leaves, and more)",
+    "Inclusive, diverse, and innovation-first work culture",
+    "A high-autonomy, zero-politics environment that values growth and ownership"
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "summary": "At Arcana, we understand technology networks and what drives businesses forward. From cloud-native platforms and data-driven solutions to DevOps automation, enterprise-scale services, infrastructure, and digital transformation, we deliver a broad portfolio of innovative solutions.",
+  "responsibilities": [
+    "Ensure smooth code integration with CI/CD pipelines",
+    "Optimize release management and automate deployment environments",
+    "Create and manage a cloud strategy (GPS, Azure and on-premise)",
+    "Standardize the software development release management process",
+    "Troubleshoot and provide technical support and guidance",
+    "Write and maintain technical documentation",
+    "Guide users on best practices for container-based applications"
+  ],
+  "required_skills": [
+    "Bachelor's or Master\u2019s degree in Computer Science, Information Systems, or related engineering field",
+    "Strong background in DevOps with hands-on configuration and deployment",
+    "Knowledge of Ansible, Terraform, Python, and scripting (PowerShell/Python/Bash)",
+    "Familiarity with containerization technologies such as Docker and Kubernetes (CKA certification is a plus)",
+    "Experience with Azure cloud-based provisioning, deployment, and monitoring",
+    "Understanding of platform security best practices",
+    "Proficiency in source control/configuration management including Git and GitLab; familiarity with Azure DevOps and Visual Studio Code is a plus"
+  ],
+  "nice_to_have_skills": [
+    "Collaborative spirit with proven capabilities in working with international teams",
+    "Experience working with data engineering and data science teams is a plus"
+  ],
+  "required_experience_years": 0.0,
+  "education_level": "Bachelor\u2019s or Master\u2019s degree",
+  "seniority_level": "Mid",
+  "salary_range": null,
+  "benefits": []
+}

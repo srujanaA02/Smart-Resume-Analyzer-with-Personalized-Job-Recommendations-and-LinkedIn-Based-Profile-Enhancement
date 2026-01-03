@@ -1,0 +1,37 @@
+{
+  "summary": "We are seeking a highly skilled AI Engineer to design and implement intelligent systems that drive automation, insights, and innovation.",
+  "responsibilities": [
+    "Design, develop and optimize ML/AI models for classification, regression, and recommendation systems.",
+    "Implement machine learning pipelines (end-to-end), from data preprocessing to model deployment.",
+    "Develop and fine-tune deep learning architectures using TensorFlow, PyTorch etc.",
+    "Apply MLOps best practices for model versioning, monitoring, and retraining.",
+    "Work with large-scale datasets, performing feature engineering and data augmentation.",
+    "Optimize model performance for scalability, latency, and efficiency in production.",
+    "Deploy AI models using MLOps practices, containerization (Docker), and cloud services (Azure).",
+    "Research and experiment with state-of-the-art AI techniques to improve existing models and integrate cutting-edge techniques into production systems.",
+    "Collaborate with data scientists and product teams to integrate AI into business applications."
+  ],
+  "required_skills": [
+    "Bachelor's/Master\u2019s degree in Computer Science, Artificial Intelligence, Machine Learning, or related field.",
+    "Strong programming skills in Python",
+    "Experience in training and deploying ML models in production",
+    "Proficiency with AI/ML frameworks (TensorFlow, PyTorch, Hugging Face, Scikit-learn)",
+    "Knowledge of cloud computing (AWS, GCP, Azure) and MLOps tools",
+    "Understanding of data structures, algorithms, and optimization techniques",
+    "Experience with data engineering, feature extraction, and model evaluation",
+    "Knowledge of deep learning techniques (CNNs, RNNs, Transformers, GANs, etc.)",
+    "Experience with LLMs (GPT, BERT, LLaMA, T5) and fine-tuning models",
+    "Knowledge of multi-modal AI (text, image)"
+  ],
+  "nice_to_have_skills": [
+    "Knowledge of reinforcement learning, planning, and decision-making models.",
+    "Hands-on experience with big data processing and big data frameworks",
+    "Familiarity with vector databases.",
+    "Experience in real-time AI applications for high-performance systems."
+  ],
+  "required_experience_years": 0.0,
+  "education_level": "Bachelor's/Master\u2019s degree",
+  "seniority_level": "Mid",
+  "salary_range": null,
+  "benefits": []
+}

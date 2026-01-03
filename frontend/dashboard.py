@@ -132,7 +132,7 @@ def dashboard_page():
                         st.rerun()
     else:
         # When resume exists, show metadata and delete controls in the same section position
-        with st.expander("Manage Current Resume", expanded=True):
+        with st.expander("Manage Current Resume", expanded=False):
             current_path = st.session_state.get('user_resume_path')
             if current_path:
                 file_name = os.path.basename(current_path)

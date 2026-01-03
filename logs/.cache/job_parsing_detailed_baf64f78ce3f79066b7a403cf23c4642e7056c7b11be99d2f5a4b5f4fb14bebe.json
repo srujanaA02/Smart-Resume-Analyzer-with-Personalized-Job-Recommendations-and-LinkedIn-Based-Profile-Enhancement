@@ -1,0 +1,24 @@
+{
+  "summary": "Java Fullstack Developer (Java + Angular/React) - We are seeking a talented Fullstack Developer to design and build scalable web applications.",
+  "responsibilities": [
+    "Develop, test, and deploy backend microservices using Spring Boot and Hibernate.",
+    "Build responsive and dynamic front-end applications using Angular or React.",
+    "Design and consume RESTful APIs to support frontend and third-party integrations."
+  ],
+  "required_skills": [
+    "2 to 5 years of fullstack development experience",
+    "Strong backend skills with Java, Spring Boot, Hibernate, and RESTful services",
+    "Proficient in frontend development using Angular or React",
+    "Experience with Microservices architecture and containerization (Docker, Kubernetes)",
+    "Familiarity with CI/CD tools such as Jenkins and version control systems like Git"
+  ],
+  "nice_to_have_skills": [
+    "Understanding of Agile methodologies and working in collaborative teams",
+    "Good problem-solving skills and attention to detail"
+  ],
+  "required_experience_years": 2.0,
+  "education_level": null,
+  "seniority_level": null,
+  "salary_range": "$100k - $120k",
+  "benefits": []
+}

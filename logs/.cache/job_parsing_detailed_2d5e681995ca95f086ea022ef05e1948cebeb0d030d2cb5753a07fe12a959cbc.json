@@ -1,0 +1,28 @@
+{
+  "summary": "We are looking for a Security Engineer to help us in our mission to build a better internet. Part engineer, part hacker, you will work with our engineering and security teams to build solutions for securing Cloudflare products and platforms.",
+  "responsibilities": [
+    "Work with engineering teams to help secure Cloudflare products and platforms",
+    "Assess products and new feature releases through threat modeling, code review and security testing. Also provide guidance on effective countermeasures",
+    "Contribute to security architecture/design and assist in building and rolling out processes for secure code development and deployment",
+    "Build secure frameworks & libraries that engineering teams can use at scale",
+    "Build internal security tools and automate processes that help fix security problems at a massive scale.",
+    "Managing and prioritizing multiple tasks in accordance with high level objectives"
+  ],
+  "required_skills": [
+    "Experience in securing large scale distributed systems",
+    "Experience in designing, building and implementing systems",
+    "Experience in assessing the security posture of systems/services",
+    "Experience in penetration testing and providing mitigating controls",
+    "Strong engineering background and programming experience (Python, Golang, Rust, Bash, etc.)",
+    "Strong communication skills and ability to work with remote teams"
+  ],
+  "nice_to_have_skills": [
+    "",
+    ""
+  ],
+  "required_experience_years": 0,
+  "education_level": "",
+  "seniority_level": "",
+  "salary_range": null,
+  "benefits": []
+}

@@ -1,0 +1,35 @@
+{
+  "summary": "We are seeking a C++ Software Engineer to join our team focused on developing and maintaining desktop software extensions for the customer's platform.",
+  "responsibilities": [
+    "Design, develop and maintain extensions for the customer's platform",
+    "Collaborate with a distributed team to deliver software solutions",
+    "Apply Object-Oriented Programming principles in software development",
+    "Contribute to code quality through unit and integration testing",
+    "Participate in agile software development processes",
+    "Learn and apply new languages and technologies as needed",
+    "Support DevOps practices using platforms like Azure DevOps"
+  ],
+  "required_skills": [
+    "3.5+ years experience in C++ development",
+    "Bachelor's degree in Engineering, Computer Science, Information Systems, or related field preferred",
+    "Strong knowledge of Object-Oriented Programming (OOP) and modern design patterns",
+    "Experience with C++ desktop development on Windows 10",
+    "Proficiency in Qt framework",
+    "Analytical mind with problem-solving attitude",
+    "Ability to work independently",
+    "Good communication skills",
+    "English proficiency at B2 Upper-Intermediate level"
+  ],
+  "nice_to_have_skills": [
+    "Knowledge of Python or willingness to learn",
+    "Familiarity with SOLID principles",
+    "Experience with Azure DevOps or similar DevOps platforms",
+    "Understanding of unit and integration testing",
+    "Experience with agile software development"
+  ],
+  "required_experience_years": 3.5,
+  "education_level": "Bachelor",
+  "seniority_level": "Mid",
+  "salary_range": null,
+  "benefits": []
+}

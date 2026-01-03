@@ -1,0 +1,33 @@
+{
+  "summary": "Join us as a Senior BI Analyst at Barclays, responsible for supporting the successful delivery of Location Strategy projects to plan, budget, agreed quality and governance standards.",
+  "responsibilities": [
+    "Delivery of Business Intelligence (BI) solutions including multi-dimensional database models, data marts, data warehousing, data transforms, data analytics, and reporting solutions",
+    "Execution of data extraction, cleansing and maintenance initiatives from a range of resources including internal systems, external data bases and market feeds",
+    "Development of data models, dashboards and reports to clearly communicate the banks key business KPIs, performance, trends, and relationships to various levels of management within the bank",
+    "Provision of responses and solutions to business requests for data analysis by building custom queries and reports to address specific questions and problems",
+    "Monitoring KPIs against established objectives and benchmarks to identify trends, patterns and anomalies that may impact the banks performance and provide recommendations to improve highlighted processes",
+    "Collaboration with various stakeholders to understand their data needs and provide solutions through new technologies and tools that are compliment with the banks objectives, regulatory requirements, and data governance policies"
+  ],
+  "required_skills": [
+    "Experience of working within a Business Intelligence Function in a large, complex organisation",
+    "Mathematical or computing educational background or relevant experience",
+    "Expertise in building dashboards on Tableau, sourced from a data warehouse (preferably Microsoft SQL Server)",
+    "Ability to develop, understand and execute SQL queries",
+    "Knowledge of relational and dimensional database concepts and technologies, data warehousing, ETL tasks and their design patterns",
+    "Understanding of IT Service Management processes based on ITIL i.e. ITIL Foundation",
+    "Proven ability to interact with senior stakeholders, with demonstrable communication and stakeholder management skills",
+    "Demonstrable ability to collaborate across teams whilst taking the lead on specific projects and topic areas"
+  ],
+  "nice_to_have_skills": [
+    "Certification in Tableau or related data visualization tools",
+    "Experience with or knowledge of other Reporting tools e.g. Microsoft SQL Server Reporting Services (SSRS), QlikView, Microsoft Power BI, etc.",
+    "Experience working with and reporting from Configuration Management Database and Asset Management tools (preferably ServiceNow)"
+  ],
+  "required_experience_years": 0,
+  "education_level": "Bachelor",
+  "seniority_level": "Senior",
+  "salary_range": null,
+  "benefits": [
+    "None mentioned"
+  ]
+}

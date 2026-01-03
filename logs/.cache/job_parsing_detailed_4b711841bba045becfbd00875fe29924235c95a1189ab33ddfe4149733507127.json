@@ -1,0 +1,30 @@
+{
+  "summary": "Infrabyte Consulting is seeking a creative HTML & CSS Developer Intern to join their team. The ideal candidate will have strong understanding of HTML and CSS fundamentals, experience with responsive design principles, and attention to detail.",
+  "responsibilities": [
+    "Develop responsive web pages using HTML5 and CSS3",
+    "Convert UI/UX designs into pixel-perfect layouts",
+    "Ensure cross-browser and cross-device compatibility",
+    "Use modern layout techniques such as Flexbox and CSS Grid",
+    "Assist in improving page performance and accessibility",
+    "Fix styling and layout issues in existing web pages"
+  ],
+  "required_skills": [
+    "Strong understanding of HTML and CSS fundamentals",
+    "Familiarity with responsive design principles",
+    "Basic knowledge of Bootstrap or Tailwind CSS is a plus",
+    "Attention to design detail and consistency"
+  ],
+  "nice_to_have_skills": [
+    "Bootstraps experience",
+    "Tailwind CSS experience"
+  ],
+  "required_experience_years": 0.0,
+  "education_level": "Bachelor",
+  "seniority_level": "Intern",
+  "salary_range": null,
+  "benefits": [
+    "$14,000 per month (stipend)",
+    "Internship completion certificate",
+    "Opportunity to move into a Front-End / UI Developer role based on performance"
+  ]
+}

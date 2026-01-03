@@ -1,0 +1,39 @@
+{
+  "summary": "We\u2019re proud to have been helping our clients build better financial futures for over 50 years. How have we achieved this? By working together - and supporting each other - all over the world. So, join our team and feel like you\u2019re part of something bigger.",
+  "responsibilities": [
+    "Developing, testing, and maintaining high-quality software solutions using Java technologies",
+    "Proficiency in Python with ML/AI libraries",
+    "Experience with Deep Learning frameworks",
+    "Ability to develop, fine-tune, and evaluate machine learning models",
+    "Collaborating with senior developers and team members to design and implement new features",
+    "Utilizing data structures and algorithms to optimize software performance",
+    "Participate in code reviews receiving constructive feedback. ",
+    "Writing clean, efficient, and maintainable code",
+    "Produce technical documentation to assist team members",
+    "Integrate AWS cloud services into the existing system architecture. ",
+    "Optimize and enhance application performance and scalability. ",
+    "Experience with JMS/KAFKA"
+  ],
+  "required_skills": [
+    "Strong knowledge of core Java concepts, object-oriented programming and J2EE development",
+    "Familiarity with data structures and algorithms",
+    "Experience with Spring framework and Spring Boot",
+    "Understanding of AWS cloud components",
+    "Experience of using source code management tools, e.g. Github"
+  ],
+  "nice_to_have_skills": [
+    "Good knowledge of UNIX and Jenkins",
+    "Experience on PAAS and K8s",
+    "Experience on Angular JS / Node"
+  ],
+  "required_experience_years": 2.0,
+  "education_level": "Bachelor",
+  "seniority_level": "Mid",
+  "salary_range": null,
+  "benefits": [
+    "Comprehensive benefits package",
+    "Value wellbeing and support development",
+    "Flexibility about where and when work",
+    "Support knowledge sharing and project continuity"
+  ]
+}

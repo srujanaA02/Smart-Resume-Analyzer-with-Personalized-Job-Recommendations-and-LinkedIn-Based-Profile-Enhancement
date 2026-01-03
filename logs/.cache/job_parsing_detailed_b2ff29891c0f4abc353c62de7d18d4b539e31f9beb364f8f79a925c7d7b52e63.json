@@ -1,0 +1,29 @@
+{
+  "summary": "A brief summary of the role (2-3 sentences).",
+  "responsibilities": [
+    "CI/CD pipelines, Docker, Kubernetes, or cloud platforms (AWS / Azure / GCP)",
+    "Experience working in Agile/Scrum environments.",
+    "DevOps practices and automation tools.",
+    "GraphQL or similar API frameworks.",
+    "Containerized deployments and micro frontend architectures."
+  ],
+  "required_skills": [
+    "CI/CD pipelines",
+    "Docker",
+    "Kubernetes"
+  ],
+  "nice_to_have_skills": [
+    "GraphQL",
+    "DevOps practices",
+    "Automation tools",
+    "Next.js",
+    "React Hooks"
+  ],
+  "required_experience_years": 0,
+  "education_level": "Bachelor's or Master\u2019s degree in Computer Science, Information Technology, or a related field.",
+  "seniority_level": "Mid-level engineer",
+  "salary_range": null,
+  "benefits": [
+    "Good compensation package"
+  ]
+}

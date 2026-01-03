@@ -1,0 +1,26 @@
+{
+  "summary": "Join Amagi's Data Platform team and help build a scalable data lake, enabling insights for multiple teams across the company.",
+  "responsibilities": [
+    "Build, deploy and manage highly scalable data pipelines from different kinds of data sources.",
+    "Collaborate with the product, business, design and engineering functions to be on top of your team\u2019s deliverables & milestones.",
+    "Timely delivery of highly reliable and scalable engineering architecture, and high quality, maintainable and operationally excellent code for your team.",
+    "Participate in design discussions and code reviews.",
+    "Set up best practices, gatekeeper, guidelines and standards in the team.",
+    "Identify and resolve performance and scalability issues."
+  ],
+  "required_skills": [
+    "Bachelor\u2019s/master\u2019s degree in Computer Science",
+    "Deep understanding of ETL frameworks eg. Spark",
+    "Building complex pipelines using orchestration frameworks like Apache Airflow, Argo or similar.",
+    "Building observability with technologies like logging, datadog, prometheus, sentry, grafana, splunk, EKS etc.",
+    "Sound knowledge of Scala and Python"
+  ],
+  "nice_to_have_skills": [
+    "Knowledge in public clouds (AWS, GCP etc.)"
+  ],
+  "required_experience_years": 2.0,
+  "education_level": "Bachelor\u2019s/master\u2019s degree",
+  "seniority_level": "Mid",
+  "salary_range": null,
+  "benefits": []
+}

@@ -1,0 +1,29 @@
+{
+  "summary": "Develop software models using industry-standard tools such as Simulink, Stateflow, or similar. Collaborate with system engineers to ensure that software models accurately reflect system behavior and requirements.",
+  "responsibilities": [
+    "Develop software models using industry-standard tools such as Simulink, Stateflow, or similar.",
+    "Translate system requirements into executable models and generate code for embedded systems.",
+    "Collaborate with system engineers to ensure that software models accurately reflect system behavior and requirements.",
+    "Perform model verification and validation to ensure the correctness and robustness of the software.",
+    "Work closely with software and hardware teams to integrate model-based software with other system components.",
+    "Participate in code reviews, testing, and debugging activities to maintain high software quality standards.",
+    "Stay up-to-date with the latest advancements in model-based development techniques and tools."
+  ],
+  "required_skills": [
+    "Bachelor's degree in Electronic and E&TC Engineering, or a related field.",
+    "3-5 years of experience in model-based software development.",
+    "Proficiency in model-based development tools such as Simulink, Stateflow, or similar.",
+    "Strong understanding of software engineering principles and best practices.",
+    "Experience with embedded systems development and real-time operating systems.",
+    "Excellent problem-solving and analytical skills.",
+    "Effective communication and collaboration skills."
+  ],
+  "nice_to_have_skills": [
+    "Ability to work independently and as part of a team in a fast-paced environment."
+  ],
+  "required_experience_years": 3.0,
+  "education_level": "Bachelor",
+  "seniority_level": "Mid",
+  "salary_range": null,
+  "benefits": []
+}

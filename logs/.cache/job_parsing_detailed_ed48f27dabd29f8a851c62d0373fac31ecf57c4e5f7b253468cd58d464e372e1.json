@@ -1,0 +1,31 @@
+{
+  "summary": "PearlThoughts is looking for motivated and curious AI Engineer Interns to join their growing remote team. This role is ideal for freshers or early-stage engineers who want hands-on exposure to RAG pipelines, code intelligence, AI agents, and legacy system modernization.",
+  "responsibilities": [
+    "Assist in building Retrieval-Augmented Generation (RAG) pipelines for code and documentation",
+    "Work on semantic search and vector embeddings for intelligent retrieval",
+    "Support development of AI agents for code analysis and migration tasks",
+    "Help design and maintain knowledge graphs for understanding code relationships",
+    "Work with LLMs (GPT, Claude, LLaMA) for code generation and reasoning",
+    "Parse and analyze source code using tools like tree-sitter",
+    "Collaborate with engineers to improve AI-driven automation and developer tooling"
+  ],
+  "required_skills": [
+    "Basic to intermediate knowledge of Python or JavaScript/TypeScript",
+    "Understanding of embeddings, vector search, and semantic similarity",
+    "Familiarity with LLMs and prompt engineering concepts",
+    "Basic knowledge of SQL and data structures",
+    "Interest in compilers, code analysis, or developer tools"
+  ],
+  "nice_to_have_skills": [
+    "Exposure to FastAPI, NestJS, or similar frameworks",
+    "Awareness of vector databases (LanceDB, Pinecone, Weaviate, etc.)"
+  ],
+  "required_experience_years": 0.0,
+  "education_level": "None",
+  "seniority_level": "Intern",
+  "salary_range": null,
+  "benefits": [
+    "Internship certificate upon successful completion",
+    "Growth Path: High-performing interns may be offered a paid internship or full-time opportunity"
+  ]
+}

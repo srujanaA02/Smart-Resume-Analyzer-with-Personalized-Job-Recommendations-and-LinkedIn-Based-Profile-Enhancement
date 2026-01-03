@@ -1,0 +1,25 @@
+{
+  "summary": "An experienced Python Developer to design, develop, and maintain high-quality software applications.",
+  "responsibilities": [
+    "Design, develop, and maintain high-quality software applications",
+    "Utilize strong background in Python programming, data structures, algorithms, and software development best practices"
+  ],
+  "required_skills": [
+    "Python: In-depth knowledge of Python programming, including syntax, data structures, and libraries like NumPy, pandas, and scikit-learn.",
+    "Data Structures: Strong understanding of data structures like lists, dictionaries, sets, and graphs.",
+    "Algorithms: Familiarity with algorithms like sorting, searching, and graph traversal.",
+    "Software Development: Experience with software development best practices, including version control, testing, and continuous integration.",
+    "Communication: Excellent communication and collaboration skills."
+  ],
+  "nice_to_have_skills": [
+    "Cloud Experience: Experience with cloud-based platforms, such as AWS, Azure, or Google Cloud.",
+    "Machine Learning: Experience with machine learning frameworks, such as TensorFlow, PyTorch, or Scikit-learn.",
+    "Data Science*: Experience with data science libraries, such as pandas, NumPy, or Matplotlib.",
+    "Certifications*: Relevant certifications, such as Python Institute's PCEP or Microsoft's Python certification"
+  ],
+  "required_experience_years": 4.0,
+  "education_level": "None",
+  "seniority_level": "Senior",
+  "salary_range": null,
+  "benefits": []
+}

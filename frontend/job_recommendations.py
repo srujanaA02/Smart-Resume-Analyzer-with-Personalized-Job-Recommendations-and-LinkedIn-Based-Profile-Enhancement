@@ -5,7 +5,8 @@ from backend.scraper import LinkedInJobScraper
 from utils.database import (
     get_job_recommendations, save_user_search_preferences,
     get_user_search_preferences, add_search_history_entry,
-    get_search_history, update_job_match_scores, update_job_status
+    get_search_history, update_job_match_scores, update_job_status,
+    get_user_analysis
 )
 from backend.recommendations import JobRecommender
 import time
@@ -85,12 +86,22 @@ def recommendations_page():
     # Layout: Sidebar for quick history, Main for Form & Results
     
     # --- SEARCH PREFERENCES FORM ---
-    with st.expander("🔍 **Search Preferences & Configuration**", expanded=True):
+    # Default to open, but can be closed by session state
+    if "search_expander_open" not in st.session_state:
+        st.session_state["search_expander_open"] = True
+        
+    # Reset Counter for forcing form clears
+    if "reset_counter" not in st.session_state:
+        st.session_state["reset_counter"] = 0
+    
+    suffix = f"_{st.session_state['reset_counter']}"
+
+    with st.expander("🔍 **Search Preferences & Configuration**", expanded=st.session_state["search_expander_open"]):
         with st.form("job_search_form"):
             c1, c2 = st.columns([1, 1])
             with c1:
-                job_title = st.text_input("Job Title", value=saved_prefs.get('job_title', 'Software Engineer'), placeholder="e.g. Data Scientist")
-                location = st.text_input("Location", value=saved_prefs.get('location', 'Remote'), placeholder="e.g. New York, Remote")
+                job_title = st.text_input("Job Title", value=saved_prefs.get('job_title', 'Software Engineer'), placeholder="e.g. Data Scientist", key=f"search_job_title{suffix}")
+                location = st.text_input("Location", value=saved_prefs.get('location', 'India'), placeholder="e.g. New York, Remote", key=f"search_location{suffix}")
             
             with c2:
                # Remote Preference (Single select simulating Radio for compactness)
@@ -104,7 +115,7 @@ def recommendations_page():
                except ValueError:
                    default_idx = 0
                    
-               remote_pref = st.selectbox("Workplace Type", ["Any", "Remote", "Hybrid", "On-site"], index=default_idx)
+               remote_pref = st.selectbox("Workplace Type", ["Any", "Remote", "Hybrid", "On-site"], index=default_idx, key=f"search_remote{suffix}")
 
                exp_levels = ["Internship", "Entry Level", "Mid Level", "Senior Level", "Director"]
                saved_exp = saved_prefs.get('experience_level', 'Mid Level')
@@ -112,7 +123,7 @@ def recommendations_page():
                exp_idx = 2
                if saved_exp in exp_levels:
                    exp_idx = exp_levels.index(saved_exp)
-               experience = st.selectbox("Experience Level", exp_levels, index=exp_idx)
+               experience = st.selectbox("Experience Level", exp_levels, index=exp_idx, key=f"search_experience{suffix}")
 
             # Job Types
             st.markdown("**Job Type**")
@@ -133,33 +144,37 @@ def recommendations_page():
             with st.expander("⚙️ Advanced Filters (Salary, Keywords, Company)"):
                 ac1, ac2 = st.columns(2)
                 with ac1:
-                    min_salary = st.number_input("Min Annual Salary ($)", value=int(saved_prefs.get('min_salary', 0)), step=5000)
-                    keywords_inc = st.text_input("Must-have Keywords", value=saved_prefs.get('keywords_include', ''), placeholder="python, machine learning")
-                    visa_support = st.checkbox("Visa Sponsorship Required", value=saved_prefs.get('visa_sponsorship', False))
+                    min_salary = st.number_input("Min Annual Salary ($)", value=int(saved_prefs.get('min_salary', 0)), step=5000, key=f"search_min_salary{suffix}")
+                    keywords_inc = st.text_input("Must-have Keywords", value=saved_prefs.get('keywords_include', ''), placeholder="python, machine learning", key=f"search_keywords_inc{suffix}")
+                    visa_support = st.checkbox("Visa Sponsorship Required", value=saved_prefs.get('visa_sponsorship', False), key=f"search_visa{suffix}")
 
                 with ac2:
                     default_inds = saved_prefs.get('industries', [])
                     if not isinstance(default_inds, list): default_inds = []
-                    industries = st.multiselect("Industries", ["Tech", "Finance", "Healthcare", "Education", "Retail", "Manufacturing"], default=default_inds)
-                    keywords_exc = st.text_input("Exclude Keywords", value=saved_prefs.get('keywords_exclude', ''), placeholder="sales, cold calling")
-                    commute_max = st.slider("Max Commute (mins)", 0, 120, int(saved_prefs.get('max_commute', 45)))
+                    industries = st.multiselect("Industries", ["Tech", "Finance", "Healthcare", "Education", "Retail", "Manufacturing"], default=default_inds, key=f"search_industries{suffix}")
+                    keywords_exc = st.text_input("Exclude Keywords", value=saved_prefs.get('keywords_exclude', ''), placeholder="sales, cold calling", key=f"search_keywords_exc{suffix}")
+                    commute_max = st.slider("Max Commute (mins)", 0, 120, int(saved_prefs.get('max_commute', 45)), key=f"search_commute{suffix}")
                 
-                preferred_companies = st.text_area("Preferred Companies", value=saved_prefs.get('preferred_companies', ''), placeholder="Google, Microsoft (comma separated)")
+                
+                preferred_companies = st.text_area("Preferred Companies", value=saved_prefs.get('preferred_companies', ''), placeholder="Google, Microsoft (comma separated)", key=f"search_companies{suffix}")
+                
+                # New Slider for Limit
+                jobs_limit = st.slider("Max Jobs to Search", 5, 50, int(saved_prefs.get('search_limit', 10)), step=5, key=f"search_limit{suffix}")
 
                 st.markdown("---")
                 st.markdown("⏰ **Auto-Scheduling (Beta)**")
-                schedule_freq = st.selectbox("Run this search automatically:", ["Off", "Daily", "Weekly"], index=["Off", "Daily", "Weekly"].index(saved_prefs.get('schedule_frequency', 'Off')))
+                schedule_freq = st.selectbox("Run this search automatically:", ["Off", "Daily", "Weekly"], index=["Off", "Daily", "Weekly"].index(saved_prefs.get('schedule_frequency', 'Off')), key=f"search_schedule{suffix}")
                 if schedule_freq != "Off":
                     st.caption("You will receive email notifications when new jobs are found.")
 
-            # Actions
+            # Actions (Main Form Level)
             col_act1, col_act2, col_act3 = st.columns([2, 1, 1])
             with col_act1:
                 search_submitted = st.form_submit_button("🔎 Find Jobs Now", type="primary")
             with col_act2:
                 # We can't have multiple submit buttons easily in Streamlit form in standard way, 
                 # but checkboxes work fine to modify the submit action.
-                save_prefs = st.checkbox("Save as Default", value=True)
+                save_prefs = st.checkbox("Save as Default", value=False)
             with col_act3:
                 # Reset needs to be outside form or handled differently, but Streamlit forms are strict.
                 # Actually, making reset a checkbox often works better inside logic, OR separate button OUTSIDE form.
@@ -167,16 +182,19 @@ def recommendations_page():
                 # Common pattern: Just one submit button. 
                 pass
 
-    # Reset Button Outside Form
-    if st.button("Reset Defaults"):
-        if save_user_search_preferences(user_id, {}):
-             st.toast("Preferences reset!")
-             time.sleep(0.5)
-             st.rerun()
+        if st.button("Reset Defaults"):
+            if save_user_search_preferences(user_id, {}):
+                # Increment reset counter to force all widgets to be recreated fresh
+                st.session_state["reset_counter"] += 1
+                        
+                st.toast("Preferences reset!")
+                time.sleep(0.5)
+                st.rerun()
 
     # --- HANDLING FORM SUBMISSION ---
+    # --- HANDLING FORM SUBMISSION (Part 1: Capture) ---
     if search_submitted:
-        # 1. Save Preferences
+        # 1. Build Prefs Object
         current_prefs = {
             "job_title": job_title,
             "location": location,
@@ -190,32 +208,49 @@ def recommendations_page():
             "max_commute": commute_max,
             "visa_sponsorship": visa_support,
             "preferred_companies": preferred_companies,
+            "search_limit": jobs_limit,
             "schedule_frequency": schedule_freq
         }
         
+        # Save if requested
         if save_prefs:
             save_user_search_preferences(user_id, current_prefs)
             st.toast("Preferences Saved.")
 
-        # 2. Logic to construct Scraper Query
+        # Store for execution and collapse UI
+        st.session_state['pending_search_params'] = current_prefs
+        st.session_state["search_expander_open"] = False
+        st.rerun()
+
+    # --- HANDLING EXECUTION (Part 2: Run) ---
+    if 'pending_search_params' in st.session_state:
+        # Unpack params
+        prefs = st.session_state['pending_search_params']
+        job_title = prefs['job_title']
+        location = prefs['location']
+        remote_pref = prefs['remote_type']
+        experience = prefs['experience_level']
+        selected_jts = prefs['job_type']
+        keywords_inc = prefs['keywords_include']
+        keywords_exc = prefs['keywords_exclude']
+        jobs_limit = prefs['search_limit']
+        
+        # Maps needed for logic
+        remote_map = {"Any": [], "Remote": ["remote"], "Hybrid": ["hybrid"], "On-site": ["on_site"]}
         
         # Merge includes and job title
         full_query = job_title
         if keywords_inc:
             full_query += " " + keywords_inc
         if keywords_exc:
-             # Add exclude logic (depends on scraper, mostly appending NOT)
-             # LinkedIn supports NOT operator
              excludes = [f'NOT "{k.strip()}"' for k in keywords_exc.split(',') if k.strip()]
              full_query += " " + " ".join(excludes)
              
         # Map Experience
-        # Map: 'Internship'->'internship', 'Entry Level'->'entry', 'Mid Level'->'mid_senior'
         exp_map_scraper = {
             "Internship": "internship", "Entry Level": "entry", 
             "Mid Level": "associate", "Senior Level": "mid_senior", "Director": "director" 
         }
-        # Note: LinkedIn 'associate' is often used for Mid-level in scraper map, or 'mid_senior'.
         
         # Map Job Type
         jt_map_scraper = {
@@ -227,10 +262,10 @@ def recommendations_page():
             "remote": remote_map.get(remote_pref, []),
             "experience": [exp_map_scraper.get(experience, "mid_senior")],
             "job_type": [jt_map_scraper.get(t) for t in selected_jts if t in jt_map_scraper],
-            "date_posted": "week" # Default to week for freshness
+            "date_posted": "week" 
         }
 
-        # 4. Run Scraper
+        # Progress UI
         progress_bar = st.progress(0)
         status_text = st.empty()
         
@@ -254,26 +289,61 @@ def recommendations_page():
                 jobs = scraper.search_jobs(
                     keywords=full_query,
                     location=location,
-                    limit=10, # User defaults to 10 for speed
+                    limit=jobs_limit,
                     filters=scraper_filters,
                     progress_callback=update_progress
                 )
                 
-                # 5. Log History
-                # Scraper skips existing jobs in DB, so all returned jobs are 'new' to the system.
+                # Log History
                 new_count = len(jobs)
-                add_search_history_entry(user_id, f"{job_title} - {location}", current_prefs, len(jobs), new_count)
+                add_search_history_entry(user_id, f"{job_title} - {location}", prefs, len(jobs), new_count)
+                
+                # --- CALCULATE & UPDATE MATCH SCORES ---
+                try:
+                    status_text.info("Calculating match scores for new jobs...")
+                    user_analysis = get_user_analysis(user_id)
+                    if user_analysis:
+                        all_jobs = get_job_recommendations(user_id)
+                        updates = []
+                        for job in all_jobs:
+                            if job.get('match_percentage', 0) == 0:
+                                analysis = job.get('job_analysis') or {}
+                                if isinstance(analysis, str):
+                                    try: analysis = json.loads(analysis)
+                                    except: analysis = {}
+                                score_data = recommender.calculate_match_score(user_analysis, analysis)
+                                updates.append((job['id'], score_data['overall']))
+                        
+                        if updates:
+                            update_job_match_scores(user_id, updates)
+                            status_text.info(f"Updated scores for {len(updates)} jobs.")
+                    else:
+                        status_text.warning("Profile analysis not found. Skipping scoring.")
+                except Exception as e:
+                    st.warning(f"Note: Could not calculate scores: {str(e)}")
+                # ---------------------------------------
                 
                 progress_bar.progress(1.0)
                 status_text.success(f"Search Complete! Found {len(jobs)} new jobs.")
                 time.sleep(1)
+                
+                # Clear pending state on success before rerun
+                del st.session_state['pending_search_params']
                 st.rerun()
             else:
                 st.error("Login failed. Check credentials.")
+                # Don't rerun automatically on failure so user sees error, 
+                # but we should clear pending params so it doesn't loop? 
+                # Or let them retry? If we keep params, it will retry on every reload. 
+                # Better to clear.
+                del st.session_state['pending_search_params']
+                
         except Exception as e:
             st.error(f"Search failed: {e}")
             import traceback
             st.code(traceback.format_exc())
+            if 'pending_search_params' in st.session_state:
+                del st.session_state['pending_search_params']
         finally:
             if 'scraper' in locals():
                 scraper.close()
@@ -304,10 +374,17 @@ def recommendations_page():
                      </div>
                      """, unsafe_allow_html=True)
                      if st.button("Rerun", key=f"hist_{item['id']}"):
-                         # Load params and rerun (simplified: just load into Session State to fill form?)
-                         # Ideally trigger search, but filling form is safer.
+                         # Load params and rerun
                          prefs = item['params']
                          save_user_search_preferences(user_id, prefs) # Set as current
+                         
+                         # Force form refresh to show new values
+                         if "reset_counter" in st.session_state:
+                             st.session_state["reset_counter"] += 1
+                         
+                         # Open the expander to show loaded settings
+                         st.session_state["search_expander_open"] = True
+                         
                          st.toast("Configuration loaded! Click 'Find Jobs Now'.")
                          time.sleep(0.5)
                          st.rerun()
@@ -330,7 +407,7 @@ def recommendations_page():
         st.markdown("---")
         
         # TABS
-        tab_rec, tab_saved, tab_compare = st.tabs(["🎯 Recommended", "📌 My List", "⚖️ Compare"])
+        tab_rec, tab_saved, tab_compare = st.tabs(["🎯 Recommended", "📌 Saved Jobs", "⚖️ Compare"])
         
         with tab_rec:
             # Sort controls
@@ -351,7 +428,7 @@ def recommendations_page():
                 display_jobs.sort(key=lambda x: x.get('applicant_count', 999))
 
             # Pagination
-            page_size = 5
+            page_size = 20
             if "job_page" not in st.session_state: st.session_state.job_page = 0
             
             total_pages = math.ceil(len(display_jobs) / page_size)
@@ -368,7 +445,7 @@ def recommendations_page():
                 st.info("No jobs found matching your criteria. Try adjusting filters or running a new search.")
             
             for job in page_items:
-                _render_job_card(job, recommender, user_id)
+                _render_job_card(job, recommender, user_id, context="search")
             
             # Pagination Controls
             if total_pages > 1:
@@ -388,7 +465,7 @@ def recommendations_page():
              saved_list = [j for j in raw_jobs if j.get('status') in ['saved', 'applied', 'interviewing']]
              if saved_list:
                  for job in saved_list:
-                      _render_job_card(job, recommender, user_id, mini=True)
+                      _render_job_card(job, recommender, user_id, context="saved")
              else:
                  st.info("No saved jobs yet.")
 
@@ -409,51 +486,77 @@ def recommendations_page():
                          st.write(f"👥 {j.get('applicant_count', 0)} applicants")
                          st.caption(j['job_description'][:150] + "...")
 
-def _render_job_card(job, recommender, user_id, mini=False):
+def _render_job_card(job, recommender, user_id, context="search"):
     """Render a single job card."""
     match = int(job.get('match_percentage', 0))
     color = "#00c853" if match > 75 else "#ffd700" if match > 50 else "#ff5252"
+    status = job.get('status', 'new')
     
+    # Badge logic for Saved Tab
+    status_badge = ""
+    if context == "saved":
+        if status == 'applied':
+            status_badge = f"<span style='background:#4CAF50; color:white; padding:2px 8px; border-radius:4px; font-size:0.8em; margin-left:10px'>✓ APPLIED</span>"
+        elif status == 'saved':
+             status_badge = f"<span style='background:#2196F3; color:white; padding:2px 8px; border-radius:4px; font-size:0.8em; margin-left:10px'>📌 SAVED</span>"
+
     with st.container():
-        st.markdown(f"""
-        <div class="job-card" style="border-left: 5px solid {color};">
-            <div style="display:flex; justify-content:space-between; align-items:start;">
-                <div>
-                    <a href="{job['job_url']}" target="_blank" style="text-decoration:none; color:#00ADB5; font-size:1.3em; font-weight:bold;">{job['job_title']}</a>
-                    <div style="color:#eee; font-size:1.1em; margin-bottom:5px;">{job['company_name']}</div>
-                    <div style="color:#aaa; font-size:0.9em;">📍 {job['location']} &nbsp;•&nbsp; 🗓️ Posted {job.get('posted_date', 'N/A')[:10]}</div>
-                </div>
-                <div style="text-align:right;">
-                    <span style="background:{color}33; color:{color}; padding:5px 10px; border-radius:15px; font-weight:bold;">{match}% Match</span>
-                    <br><span style="font-size:0.8em; color:#666;">{job.get('applicant_count', 0)} applicants</span>
-                </div>
-            </div>
-            <div style="margin-top:15px; color:#ccc; font-size:0.95em; line-height:1.5;">
-                {textwrap.shorten(job.get('job_description', ''), width=200, placeholder='...')}
-            </div>
-        </div>
-        """, unsafe_allow_html=True)
+        import html
+        desc_text = job.get('job_description', '')
+        desc = html.escape(textwrap.shorten(desc_text, width=200, placeholder='...'))
+        title = html.escape(job['job_title'])
+        company = html.escape(job['company_name'])
+        location = html.escape(job['location'])
+
+        # Minified HTML to prevent Markdown block interpretation
+        html_content = f"""<div style="border-left: 5px solid {color}; padding: 15px; background-color: #262730; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);"><div style="display: flex; justify-content: space-between; align-items: flex-start;"><div style="flex: 1;"><a href="{job['job_url']}" target="_blank" style="text-decoration: none; color: #00ADB5; font-size: 1.2rem; font-weight: bold;">{title}</a>{status_badge}<div style="color: #E0E0E0; font-size: 1rem; margin-top: 5px;">{company}</div><div style="color: #B0B0B0; font-size: 0.9rem; margin-top: 2px;">📍 {location} &nbsp;•&nbsp; 🗓️ Posted {job.get('posted_date', 'N/A')[:10]}</div></div><div style="text-align: right; min-width: 100px; margin-left: 15px;"><span style="background-color: {color}33; color: {color}; padding: 4px 12px; border-radius: 12px; font-weight: bold; font-size: 0.9rem;">{match}% Match</span><br><span style="display: inline-block; margin-top: 5px; font-size: 0.8rem; color: #888;">{job.get('applicant_count', 0)} applicants</span></div></div><div style="margin-top: 12px; color: #CCCCCC; font-size: 0.9rem; line-height: 1.5;">{desc}</div></div>"""
+        
+        st.markdown(html_content, unsafe_allow_html=True)
         
         # Action Buttons
         c1, c2, c3, c4 = st.columns([1, 1, 1, 2])
-        status = job.get('status', 'new')
         
-        if not mini:
+        if context == "search":
             with c1:
+                # Save Button Logic
                 if status != 'saved' and st.button("🔖 Save", key=f"s_{job['id']}"):
                     update_job_status(user_id, job['id'], 'saved')
                     st.rerun()
             with c2: 
+                # Ignore Button Logic
                 if status != 'rejected' and st.button("🚫 Ignore", key=f"i_{job['id']}"):
                     update_job_status(user_id, job['id'], 'rejected')
                     st.rerun()
             with c3:
-                # Tips logic
+                # Tips Logic
                 if st.button("💡 Tips", key=f"t_{job['id']}"):
                     with st.spinner("Analyzing..."):
                         tips = recommender.generate_detailed_application_guide(user_id, job)
                         if tips:
                             st.session_state[f"tips_{job['id']}"] = tips
+                            
+        elif context == "saved":
+            with c1:
+                # Toggle Applied
+                if status == 'saved':
+                    if st.button("✅ Applied", key=f"app_{job['id']}"):
+                        update_job_status(user_id, job['id'], 'applied')
+                        st.rerun()
+                elif status == 'applied':
+                     if st.button("⏪ Undo", key=f"unapp_{job['id']}", help="Mark as Saved"):
+                        update_job_status(user_id, job['id'], 'saved')
+                        st.rerun()
+            with c2:
+                # Remove Logic
+                if st.button("🗑️ Remove", key=f"rm_{job['id']}"):
+                    update_job_status(user_id, job['id'], 'rejected') 
+                    st.rerun()
+            with c3:
+                # Tips Logic for Saved
+                if st.button("💡 Tips", key=f"ts_{job['id']}"):
+                     with st.spinner("Analyzing..."):
+                        tips = recommender.generate_detailed_application_guide(user_id, job)
+                        if tips: st.session_state[f"tips_{job['id']}"] = tips
         
         # Display tips if generated
         if f"tips_{job['id']}" in st.session_state:

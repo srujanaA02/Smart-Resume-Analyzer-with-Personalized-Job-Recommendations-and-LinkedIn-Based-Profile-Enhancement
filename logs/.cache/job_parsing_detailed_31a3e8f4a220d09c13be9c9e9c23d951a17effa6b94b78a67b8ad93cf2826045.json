@@ -1,0 +1,29 @@
+{
+  "summary": "Join our Software (CE-SW) group to develop and improve software ecosystems for Arm's next generation architectures and systems.",
+  "responsibilities": [
+    "Active involvement in software design and test of reference application processor firmware",
+    "Low-level software development, testing, and debugging on various platforms",
+    "Creating software stacks for Arm's reference platforms for future Arm devices"
+  ],
+  "required_skills": [
+    "Excellent C/C++ programming skills with ability to add significant new functionality, analyse and fix complex defects",
+    "Demonstrated experience with software testing or software development",
+    "Expertise in application and low-level systems, with strong understanding of system architecture (preferably ARM)",
+    "Proficiency in Linux/Windows operating systems and driver development is preferred"
+  ],
+  "nice_to_have_skills": [
+    "Experience with Python programming and writing shell scripts",
+    "Basic understanding of the Linux kernel, system software and device drivers, and Android internals",
+    "Familiarity with open-source project development cycles and contribution processes",
+    "Experience of software profiling, instrumentation, and optimization"
+  ],
+  "required_experience_years": 3,
+  "education_level": "Bachelor or higher",
+  "seniority_level": "Mid-level",
+  "salary_range": null,
+  "benefits": [
+    "Breaks between interviews",
+    "Having documents read aloud",
+    "Office accessibility"
+  ]
+}

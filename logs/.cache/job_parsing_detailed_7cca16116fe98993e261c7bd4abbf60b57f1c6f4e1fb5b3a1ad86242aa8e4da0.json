@@ -1,0 +1,26 @@
+{
+  "summary": "The Architecture and Technology Group (ATG) at ARM develops technologies and products for ARM\u2019s future architecture roadmap. As part of the evolution of new architecture specifications, modeling is an integral and essential element that enables evaluation of the key architecture features in terms of performance and functionality.",
+  "responsibilities": [
+    "Understand architecture definitions, carry out investigations and feasibility studies, develop verification strategy and contribute to development of compliance product",
+    "Design verification testcases/scenarios in assembly/C/HVL and higher abstraction languages using automation techniques as needed"
+  ],
+  "required_skills": [
+    "Btech/B.S. or MTech/M.S./PhD in Computer Engineering/Computer Science or Electronics Engineering",
+    "2-3 Years of engineering experience (CPU/sophisticated IP verification is a plus)"
+  ],
+  "nice_to_have_skills": [
+    "Strong understanding of basic computer architecture",
+    "Good in logical programming using C/C++/ Assembly with experience in embracing software engineering standard methodologies.",
+    "Familiarity of Unix / Linux working environment",
+    "Experience in CPU verification would be a plus"
+  ],
+  "required_experience_years": 2.0,
+  "education_level": "Btech/B.S./MTech/M.S./PhD",
+  "seniority_level": "Mid",
+  "salary_range": null,
+  "benefits": [
+    "Accommodations at Arm",
+    "Hybrid Working at Arm",
+    "Equal Opportunities at Arm"
+  ]
+}

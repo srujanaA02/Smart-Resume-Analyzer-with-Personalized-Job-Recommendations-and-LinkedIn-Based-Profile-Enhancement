@@ -1,0 +1,37 @@
+{
+  "summary": "Join our growing IT Team as a QA Engineer and contribute to our software excellence, implementing innovative solutions for web and mobile applications.",
+  "responsibilities": [
+    "Develop, verify, and validate system test cases for web-based and mobile applications",
+    "Create and execute test plans, set up test environments, and understand + execute test scripts for database execution",
+    "Validate end-to-end functionality and enhancement requests",
+    "Resolve technical and business issues using strong analytical, troubleshooting, and debugging skills",
+    "Collaborate with leadership to implement effective testing solutions",
+    "Build cross-functional partnerships and collaborate with Developers, Project Managers, and UX Designers to solve complex challenges to maximize the customer experience"
+  ],
+  "required_skills": [
+    "Bachelor's degree in Computer Science or related field",
+    "3+ years of QA engineering experience or no degree with 6+ years of equivalent experience",
+    "3+ years of programming experience in Java, JavaScript, and SQL",
+    "2+ years of web automation experience utilizing page object modeling (POM) including proficiency with Cypress",
+    "2+ years of mobile automation experience using Appium",
+    "Experience in API testing, both automated and manual, for web, backend, and mobile applications using REST/RestAssured and Micro services"
+  ],
+  "nice_to_have_skills": [
+    "Additional experience with Selenium and Cucumber",
+    "Additional experience using WebDriver IO + Mocha + Chai"
+  ],
+  "required_experience_years": 0,
+  "education_level": "Bachelor's degree in Computer Science or related field",
+  "seniority_level": "Mid",
+  "salary_range": "$18,500 - $23,000 USD per year",
+  "benefits": [
+    "Comprehensive and affordable medical, dental, vision, and life insurance options",
+    "Competitive Provident Fund contributions",
+    "Paid time off and holidays",
+    "Mental health support and wellbeing program",
+    "Company-provided equipment",
+    "One-time $250 USD work from home stipend",
+    "$750 USD annual professional development budget",
+    "Company rewards and recognition program"
+  ]
+}

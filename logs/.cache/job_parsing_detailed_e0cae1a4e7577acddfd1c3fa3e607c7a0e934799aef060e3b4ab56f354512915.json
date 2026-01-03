@@ -1,0 +1,40 @@
+{
+  "summary": "Full Stack AI Engineer (Vibe Coding Focus) for a proactive, product-minded team to conceptualize, prototype, test, and scale AI-powered products for the media and entertainment ecosystem.",
+  "responsibilities": [
+    "Translate business and industry problems into AI-powered product features and workflows.",
+    "Define AI use cases, product scope, MVPs, and iteration roadmaps.",
+    "Collaborate with founders and stakeholders on AI product vision, positioning, and growth strategy.",
+    "Practice vibe coding: rapid iteration, experimentation, and shipping usable prototypes fast.",
+    "Build proof-of-concepts using modern AI stacks rather than overengineering early solutions.",
+    "Balance speed, functionality, and user experience while validating product-market fit.",
+    "Build end-to-end applications:",
+    "Frontend: React, Tailwind CSS, HTML/CSS",
+    "Backend: Node.js, Python, APIs, databases",
+    "Integrate AI agents and automation workflows into core product features.",
+    "Design, build, and optimize AI agents for research, content, analytics, and automation.",
+    "Develop and maintain prompt libraries, smart prompts, and agent logic.",
+    "Implement workflows using LLMs, retrieval systems, and orchestration frameworks.",
+    "Continuously improve prompts for accuracy, efficiency, and user outcomes."
+  ],
+  "required_skills": [
+    "Strong fundamentals in front-end development (React, JS, Tailwind, HTML/CSS)",
+    "Proficiency in Node.js and Python, especially for AI-driven workflows",
+    "Interest in AI products, LLMs, prompt engineering, and AI agents",
+    "Product-oriented mindset with strong problem-solving skills"
+  ],
+  "nice_to_have_skills": [
+    "AI tools: OpenAI APIs, Hugging Face, LangChain, AutoGen, CrewAI, or similar agent frameworks.",
+    "Experience with prompt engineering, RAG pipelines, or AI orchestration.",
+    "Growth experimentation, metrics, and analytics experience.",
+    "Automated testing tools (Jest, Cypress, Pytest).",
+    "Cloud platforms (AWS, GCP) and CI/CD pipelines."
+  ],
+  "required_experience_years": 0.0,
+  "education_level": "Bachelor",
+  "seniority_level": "Mid",
+  "salary_range": null,
+  "benefits": [
+    "Minimum 3-6 months Sap impact Fellowship or consulting engagement.",
+    "Willingness to travel with the company for at least 1\u20132 years."
+  ]
+}

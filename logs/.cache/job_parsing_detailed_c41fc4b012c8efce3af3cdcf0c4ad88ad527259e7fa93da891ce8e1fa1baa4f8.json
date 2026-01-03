@@ -1,0 +1,32 @@
+{
+  "summary": "We are looking for a detail oriented and proactive Automation Tester to design, develop and execute automated test scripts that ensure high quality software delivery.",
+  "responsibilities": [
+    "Test Automation Design",
+    "develop and maintain automated test scripts for web mobile and API applications",
+    "Framework Development Build and enhance reusable automation frameworks and libraries to improve test efficiency and scalability",
+    "Test Execution Execute automated test suites analyze results and report defects promptly",
+    "Integration Integrate automated tests within CICD pipelines for continuous testing and feedback",
+    "Collaboration Work closely with developers QA and product teams to understand requirements define test strategies and ensure quality coverage",
+    "Defect Tracking Log track and validate defects using tools such as JIRA Azure DevOps or similar platforms",
+    "Maintenance Regularly review and refactor existing automation scripts to ensure they remain effective and up to date",
+    "Reporting Generate and communicate test results metrics and automation progress to stakeholders"
+  ],
+  "required_skills": [
+    "3 6 years of experience in test automation within agile development environments",
+    "Strong experience with at least one test automation tool or framework such as Web Selenium Playwright Cypress TestNG or Cucumber",
+    "API Postman RestAssured Karate or SoapUI",
+    "Mobile Appium or Espresso",
+    "Proficiency in scripting or programming languages eg Java Python JavaScript or C",
+    "Solid understanding of QA methodologies SDLC and agile testing principles",
+    "Experience integrating tests with CICD tools Jenkins GitLab CI Azure DevOps etc",
+    "Familiarity with version control systems Git Bitbucket"
+  ],
+  "nice_to_have_skills": [
+    "Cucumber"
+  ],
+  "required_experience_years": 3.0,
+  "education_level": null,
+  "seniority_level": null,
+  "salary_range": null,
+  "benefits": []
+}

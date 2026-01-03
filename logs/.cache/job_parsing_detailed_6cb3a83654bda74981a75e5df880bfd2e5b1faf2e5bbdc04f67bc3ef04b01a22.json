@@ -1,0 +1,42 @@
+{
+  "summary": "Responsible for planning and designing new software and web applications. Edits new and existing applications. Implements, testing and debugging defined software components. Documents all development activity. Works with moderate guidance in own area of knowledge.",
+  "responsibilities": [
+    "Working knowledge of Java / Groovy, Spring , any Unit testing framework (Junit, Mockito etc), Maven, GIT , REST API development / consumption and Agile methodologies.",
+    "Good to be familiar with any one CI / CD tools like TeamCity, Jenkins, Concourse etc.",
+    "Nice to have knowledge: AWS and Python.",
+    "Analyzes and determines integration needs.",
+    "Contribute to the design and implementation of components and solutions for customer-specific consulting services agreements.",
+    "Design-review solutions to ensure best practices, avoid performance bottlenecks and identify improvements to our workflows.",
+    "Refining toolsets and contributing to improvements to process and delivery frameworks.",
+    "Assist in unit testing, performance testing, on-site installations, and application configuration.",
+    "Integrating and ingesting large data sets from our customers into our core products.",
+    "Many types of integrations and bespoke needs, for clients to connect, migrate, and export data and meta-data between systems.",
+    "Taking a client facing approach, participating in client workshops across the lifecycle of a customer engagement.",
+    "Working with globally distributed support teams to resolve production issues (3rd line support)",
+    "Develop robust ingest scripts to translate customer-specific metadata into our core objects.",
+    "Develop utility scripts to accomplish customer-specific requirements.",
+    "Create, maintain, and document customer implementations."
+  ],
+  "required_skills": [
+    "Java / Groovy",
+    "Spring",
+    "Unit testing framework (Junit, Mockito etc)",
+    "Maven",
+    "GIT",
+    "REST API development / consumption",
+    "Agile methodologies"
+  ],
+  "nice_to_have_skills": [
+    "CI / CD tools like TeamCity, Jenkins, Concourse",
+    "AWS",
+    "Python"
+  ],
+  "required_experience_years": 0.0,
+  "education_level": "Bachelor's Degree",
+  "seniority_level": "Mid",
+  "salary_range": null,
+  "benefits": [
+    "Best-in-class Benefits to eligible employees",
+    "Personalized support through expert guidance and always-on tools"
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "summary": "We are seeking a Manual Test Engineer with 2+ years of experience in the Banking and Financial Services domain. The ideal candidate should have hands-on experience in testing Internet Banking, Payments, Finacle, LOS, or LMS applications, with a strong understanding of manual testing processes and banking workflows.",
+  "responsibilities": [
+    "Analyze business and functional requirements related to banking applications",
+    "Design, review, and execute manual test cases and test scenarios",
+    "Perform Functional, Regression, Integration, and UAT testing",
+    "Validate Internet Banking and Payment workflows",
+    "Ensure data accuracy and compliance with banking standards",
+    "Log, track, and manage defects using defect tracking tools",
+    "Work closely with Business Analysts, Developers, and Product teams",
+    "Prepare test execution reports and provide daily/weekly status updates"
+  ],
+  "required_skills": [
+    "2+ years of experience in Manual Testing",
+    "Strong experience in Banking domain testing",
+    "Hands-on exposure to one or more of the following: Internet Banking, Payments systems, Finacle, LOS (Loan Origination System), LMS (Loan Management System)",
+    "Knowledge of SDLC & STLC",
+    "Experience in test case creation and defect life cycle",
+    "Familiarity with defect tracking tools (JIRA, ALM, etc.)"
+  ],
+  "nice_to_have_skills": [
+    "Experience in UAT coordination",
+    "Knowledge of SQL for basic data validation",
+    "Exposure to Agile/Scrum methodology"
+  ],
+  "required_experience_years": 2.0,
+  "education_level": null,
+  "seniority_level": null,
+  "salary_range": null,
+  "benefits": [
+    "Opportunity to work on critical banking applications",
+    "Collaborative and growth-oriented work environment",
+    "Career development opportunities in BFSI domain"
+  ]
+}

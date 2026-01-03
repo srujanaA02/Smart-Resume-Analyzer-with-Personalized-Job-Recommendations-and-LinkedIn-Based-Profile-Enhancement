@@ -1,0 +1,25 @@
+{
+  "summary": "Datamark, Inc. is seeking a motivated and talented Software Developer to join our innovative team.",
+  "responsibilities": [
+    "Designing, developing, and maintaining software solutions that meet our clients' needs",
+    "Working on diverse projects utilizing various technologies and frameworks",
+    "Utilizing systems development life cycle and structured programming methods"
+  ],
+  "required_skills": [
+    "Software Developer must have experience with systems development life cycle and structured programming methods (both traditional and agile)",
+    "Demonstrates proficiency in the following languages and frameworks: C#, .NET Framework, ASP.NET Web Forms, ASP.NET Web API, Windows Forms, Entity Framework",
+    "Demonstrates proficiency in at least one of the following databases: MSSQL, Oracle"
+  ],
+  "nice_to_have_skills": [
+    "Experience working in an ITIL environment. Knowledge of industry standards for Incident Management, Problem Management, Change Management, Release Management, Configuration Management."
+  ],
+  "required_experience_years": 5,
+  "education_level": "Bachelor",
+  "seniority_level": "Mid-level Software Developer",
+  "salary_range": null,
+  "benefits": [
+    "Provident Fund (PF) - Statutory savings and retirement benefit.",
+    "Gratuity - Provided as per applicable laws to reward long-term tenure.",
+    "Mediclaim Insurance - Comprehensive health insurance coverage for employees and dependent."
+  ]
+}

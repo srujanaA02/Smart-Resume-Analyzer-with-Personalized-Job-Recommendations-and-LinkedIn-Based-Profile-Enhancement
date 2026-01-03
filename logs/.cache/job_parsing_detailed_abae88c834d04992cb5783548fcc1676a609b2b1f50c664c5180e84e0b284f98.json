@@ -1,0 +1,32 @@
+{
+  "summary": "Join our core team as a passionate and committed Backend Developer to contribute to the development and scaling of the backend infrastructure powering multiple product modules.",
+  "responsibilities": [
+    "Design, develop, and maintain secure, scalable, and well-documented APIs",
+    "Collaborate with front-end developers to integrate and deploy features",
+    "Manage and structure databases using SQL (Supabase)",
+    "Implement user authentication, authorization, and role management",
+    "Build backend logic for ERP modules (inventory, billing, HR, etc.)",
+    "Ensure high application performance, scalability, and reliability",
+    "Debug and optimize backend code for speed and stability",
+    "Maintain clear documentation of system architecture and backend processes"
+  ],
+  "required_skills": [
+    "authorisations",
+    "backend development",
+    "API design",
+    "Node.js",
+    "SQL / PostgreSQL",
+    "Supabase",
+    "PostgreSQL",
+    "JavaScript frameworks",
+    "Experience in ERP or accounting modules (invoices, ledgers, taxes, etc.)"
+  ],
+  "nice_to_have_skills": [
+    "experience with Firebase"
+  ],
+  "required_experience_years": 1.0,
+  "education_level": "Bachelor's degree",
+  "seniority_level": "Mid",
+  "salary_range": null,
+  "benefits": []
+}

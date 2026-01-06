@@ -52,7 +52,7 @@ logger = logging.getLogger(__name__)
 # --------------------------------------------------
 # WebDriver Setup
 # --------------------------------------------------
-def get_driver(headless=False, user_agent=None):
+def get_driver(headless=True, user_agent=None):
     options = Options()
     if headless:
         options.add_argument("--headless=new")
@@ -137,7 +137,7 @@ class LinkedInJobScraper:
             logger.error(f"Login error: {e}")
             return False
 
-    def search_jobs(self, keywords: str, location: str, limit: int = 20, filters: Optional[Dict[str, Any]] = None, progress_callback=None):
+    def search_jobs(self, keywords: str, location: str, limit: int = 50, filters: Optional[Dict[str, Any]] = None, progress_callback=None):
         """
         Navigate to jobs page and search with filters.
         

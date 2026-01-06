@@ -1,0 +1,35 @@
+{
+  "summary": "We are seeking a talented Node.js Backend Developer to build and maintain robust, scalable backend systems.",
+  "responsibilities": [
+    "Design, develop, and maintain RESTful APIs and backend services using Node.js.",
+    "Work extensively with MySQL or PostgreSQL \u2014 including schema design, query optimization, and performance tuning.",
+    "Develop and integrate backend logic with web and mobile applications.",
+    "Ensure application security, data integrity, and high availability.",
+    "Write reusable, efficient, and testable code following best practices.",
+    "Integrate with third-party services and internal systems.",
+    "Implement and maintain authentication and authorization systems (JWT/OAuth).",
+    "Participate in code reviews, testing, and deployment activities.",
+    "Collaborate closely with frontend, mobile, and DevOps teams."
+  ],
+  "required_skills": [
+    "Strong proficiency in JavaScript and TypeScript.",
+    "Expertise in Node.js frameworks such as Express.js or NestJS.",
+    "Solid experience with SQL databases \u2014 MySQL or PostgreSQL (query writing, indexing, stored procedures).",
+    "Understanding of RESTful API design, error handling, and logging.",
+    "Familiarity with Git, Docker, and CI/CD processes.",
+    "Knowledge of asynchronous programming, Promises, and event-driven architecture.",
+    "Basic understanding of cloud environments (AWS / Azure / GCP).",
+    "Good communication and analytical skills."
+  ],
+  "nice_to_have_skills": [
+    "Experience with Redis, RabbitMQ, or Kafka.",
+    "Exposure to microservices or serverless architecture.",
+    "Knowledge of unit testing frameworks (Jest, Mocha, Chai).",
+    "Experience working in Agile / Scrum environments."
+  ],
+  "required_experience_years": 0,
+  "education_level": "Bachelor\u2019s degree in Computer Science, Engineering, or equivalent practical experience.",
+  "seniority_level": "Mid",
+  "salary_range": null,
+  "benefits": []
+}

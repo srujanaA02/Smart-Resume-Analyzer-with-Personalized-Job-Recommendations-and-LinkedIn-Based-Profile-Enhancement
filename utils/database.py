@@ -203,6 +203,40 @@ def get_user_by_email(email):
     conn.close()
     return user
 
+def get_user_by_id(user_id):
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM users WHERE id = ?", (user_id,))
+    user = cursor.fetchone()
+    conn.close()
+    return user
+
+def update_user_password(user_id, hashed_password):
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    try:
+        cursor.execute("UPDATE users SET password = ? WHERE id = ?", (hashed_password, user_id))
+        conn.commit()
+        return True
+    except Exception as e:
+        logger.error(f"Error updating password: {e}")
+        return False
+    finally:
+        conn.close()
+
+def update_user_name(user_id, new_name):
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    try:
+        cursor.execute("UPDATE users SET name = ? WHERE id = ?", (new_name, user_id))
+        conn.commit()
+        return True
+    except Exception as e:
+        logger.error(f"Error updating user name: {e}")
+        return False
+    finally:
+        conn.close()
+
 def save_resume_analysis(user_id, extracted_text, strengths, weaknesses, skills, suggestions, analysis_scores=None):
     """Save comprehensive resume analysis to database with proper JSON formatting.
     analysis_scores should be a JSON-serializable dict with summary metrics.

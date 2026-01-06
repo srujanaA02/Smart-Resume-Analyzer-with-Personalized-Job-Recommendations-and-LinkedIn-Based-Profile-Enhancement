@@ -1,0 +1,31 @@
+{
+  "summary": "Join Copods, an experience focussed digital product design and fullstack engineering services company on a steep growth trajectory with global partnerships.",
+  "responsibilities": [
+    "Develop robust and maintainable web applications using React.",
+    "Ensure pixel-perfect UI/UX implementation and contribute to the design process.",
+    "Optimize applications for performance and scalability.",
+    "Work closely with product managers, designers, and other engineers to gather requirements and scope out projects.",
+    "Provide technical leadership and mentorship to junior developers.",
+    "Ensure excellent communication with team members and stakeholders."
+  ],
+  "required_skills": [
+    "Proficiency in React",
+    "Experience in Node JS",
+    "A keen eye for pixel-perfect UI and a strong understanding of UI/UX principles",
+    "Familiarity with containerization technologies like Docker",
+    "Excellent communication skills, both verbal and written"
+  ],
+  "nice_to_have_skills": [
+    "Experience in CI/CD pipelines",
+    "Strong knowledge of web accessibility and internationalization"
+  ],
+  "required_experience_years": 2.0,
+  "education_level": null,
+  "seniority_level": null,
+  "salary_range": "$100k - $120k",
+  "benefits": [
+    "Competitive Salary",
+    "Flexible Work Hours",
+    "Career Development Opportunities"
+  ]
+}

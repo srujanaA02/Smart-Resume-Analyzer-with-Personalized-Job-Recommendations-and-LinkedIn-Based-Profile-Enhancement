@@ -1,0 +1,26 @@
+{
+  "summary": "TCS is hiring professionals for Python Developer for Hyderabad/Chennai/Kolkata Location",
+  "responsibilities": [
+    "Writing reusable, testable, and efficient code",
+    "Design and implementation of low-latency, high-availability, and performant applications",
+    "Integration of user-facing elements developed by front-end developers with server-side logic",
+    "Implementation of security and data protection",
+    "Integration of data storage solutions { {may include databases, key-value stores, blob stores, etc."
+  ],
+  "required_skills": [
+    "Python Programming for data preparation",
+    "Expert in Python, with knowledge of at least one Python web framework",
+    "Familiarity with some ORM (Object Relational Mapper) libraries",
+    "Able to integrate multiple data sources and databases into one systems",
+    "Understanding of the threading limitations of Python, and multi-process architecture",
+    "Good understanding of server-side templating languages"
+  ],
+  "nice_to_have_skills": [
+    "Text mining, data analytics, data mining"
+  ],
+  "required_experience_years": 4.0,
+  "education_level": "None",
+  "seniority_level": "Mid",
+  "salary_range": null,
+  "benefits": []
+}

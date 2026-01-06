@@ -1,0 +1,27 @@
+{
+  "summary": "Join us as a Full Stack Developer at Barclays where you will spearhead the evolution of our infrastructure and deployment pipelines, driving innovation and operational excellence.",
+  "responsibilities": [
+    "Development and delivery of high-quality software solutions by using industry aligned programming languages, frameworks, and tools. Ensuring that code is scalable, maintainable, and optimized for performance.",
+    "Cross-functional collaboration with product managers, designers, and other engineers to define software requirements, devise solution strategies, and ensure seamless integration and alignment with business objectives."
+  ],
+  "required_skills": [
+    "Java8/17/21, SpringBoot3, Spring Security",
+    "React JS/ React Native",
+    "HTML, CSS, JavaScript",
+    "Redux"
+  ],
+  "nice_to_have_skills": [
+    "Message Queue services (JMS, ActiveMQ, RabbitMQ)",
+    "Database technologies (JPA/Hibernate, PostgreSQL/MySQL) and microservices architecture",
+    "DevOps tools (Docker, GitLab CI/CD, Maven/Gradle) and testing frameworks (JUnit, Jest, React Testing Library)"
+  ],
+  "required_experience_years": 0.0,
+  "education_level": null,
+  "seniority_level": null,
+  "salary_range": null,
+  "benefits": [
+    "Collaboration with peers, participate in code reviews, and promote a culture of code quality and knowledge sharing.",
+    "Stay informed of industry technology trends and innovations and actively contribute to the organization\u2019s technology communities to foster a culture of technical excellence and growth.",
+    "Adherence to secure coding practices to mitigate vulnerabilities, protect sensitive data, and ensure secure software solutions."
+  ]
+}

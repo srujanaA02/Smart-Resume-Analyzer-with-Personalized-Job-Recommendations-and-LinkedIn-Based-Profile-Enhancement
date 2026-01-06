@@ -1,0 +1,24 @@
+{
+  "summary": "We are seeking a QA Engineer (Dev-Tester) specialized in voice technology to ensure the reliability of our real-time AI platforms. You will move beyond functional testing to perform deep protocol analysis, load testing, and root-cause isolation across SIP and media layers.",
+  "responsibilities": [
+    "Voice Flow Validation: Test complex call lifecycles across telephony stacks (FreeSWITCH, Asterisk, Kamailio, or Twilio/Exotel).",
+    "Protocol Analysis: Use sngrep, Wireshark, and Homer (HEPv3) to debug SIP signaling and RTP media streams.",
+    "Network Performance Testing: Analyze the impact of latency, jitter, and packet loss on voice quality and ASR/NLU accuracy.",
+    "API & Integration Testing: Validate REST/WebSocket APIs and event-driven architectures (Kafka/Redis).",
+    "Performance Engineering: Conduct load tests to define and verify concurrent call capacity.",
+    "Test Automation: Build and maintain automated regression suites using Python, Node.js, or Bash."
+  ],
+  "required_skills": [
+    "Telephony: Practical exposure to SIP/RTP fundamentals and real-time call flows.",
+    "Debugging: Expert level in Linux log debugging and SIP trace analysis.",
+    "Tools: Proficient with Postman, sngrep, and cloud environments (AWS)."
+  ],
+  "nice_to_have_skills": [
+    "Experience with ASR/NLU testing, dialer campaigns, and CI/CD pipelines."
+  ],
+  "required_experience_years": 0,
+  "education_level": "None",
+  "seniority_level": "Junior",
+  "salary_range": null,
+  "benefits": []
+}

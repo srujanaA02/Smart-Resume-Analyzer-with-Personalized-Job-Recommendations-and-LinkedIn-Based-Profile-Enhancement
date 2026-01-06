@@ -1,0 +1,28 @@
+{
+  "summary": "QA SDET 1: Responsible for manual and automation testing of software products, working with development and product teams to deliver high-quality features.",
+  "responsibilities": [
+    "Manual and automation testing for software products",
+    "Working in partnership with development and product teams",
+    "Building automated testing solutions for application, services, and database testing requirements"
+  ],
+  "required_skills": [
+    "1-3 years of work experience in testing web, mobile, and backend applications",
+    "Good understanding of STLC and experience working in agile teams",
+    "Web application automation using Selenium",
+    "Mobile testing and automation using Appium",
+    "API and microservices testing",
+    "API automation using RestAssured",
+    "Java and OOPs concept"
+  ],
+  "nice_to_have_skills": [
+    "Performance testing using JMeter or similar tools",
+    "Network response mocking and debugging tools like Charles, Fiddler",
+    "CI/CD tools like Jenkins",
+    "Cloud technologies like AWS, Azure"
+  ],
+  "required_experience_years": 1.0,
+  "education_level": null,
+  "seniority_level": null,
+  "salary_range": null,
+  "benefits": []
+}

@@ -1,0 +1,27 @@
+{
+  "summary": "A software engineering lead position requiring deep technical skills and strong team leadership experience.",
+  "responsibilities": [
+    "Experience piloting new technologies and designing implementation strategies",
+    "Experience designing and implementing enterprise best practices regarding existing or new technology/tooling",
+    "Dev Code Reviews",
+    "Change management ",
+    "Building technical roadmaps/backlogs"
+  ],
+  "required_skills": [
+    "Deep technical skills: Hands-on coding, debugging knowledge in Java, J2EE, Spring boot microservices, Spring batch, Postgres, Redis, GraphQL with knowledge of cloud platforms preferably GCP.",
+    "GCP: Cloud Build and Cloud Run, Secret Manager, Pub Sub, Schedulers",
+    "Code Quality Tools: Fossa, SonarQube, Checkmarx, Cycode, 42Crunch",
+    "Strong team leadership: Mentorship, code reviews, support.",
+    "Proactive risk management: Identifying and mitigating technical risks.",
+    "Delivery focus: Meeting sprint goals, high-quality code.",
+    "Positive team attitude: Collaboration, knowledge sharing & Effective communication"
+  ],
+  "nice_to_have_skills": [
+    "Experience in API automation tool Newman and Jmeter."
+  ],
+  "required_experience_years": 10.0,
+  "education_level": "B.E / BTech",
+  "seniority_level": "Senior",
+  "salary_range": null,
+  "benefits": []
+}

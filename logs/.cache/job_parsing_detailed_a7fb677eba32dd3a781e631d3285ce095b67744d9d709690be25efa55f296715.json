@@ -1,0 +1,45 @@
+{
+  "summary": "Join our team as a Cloud Engineer at Fidelity International and work with senior business leaders, product owners, and technology teams to develop or enhance the record-keeping platform.",
+  "responsibilities": [
+    "Provide technical expertise in design and coding.",
+    "Collaborate with product owners to identify improvements and customer requirements.",
+    "Ensure timely, efficient, and cost-effective delivery.",
+    "Manage stakeholders across Technology and Business teams.",
+    "Ensure technical solutions meet functional and non-functional requirements and align with Global Technology Strategies.",
+    "Serve as a trusted advisor to the business.",
+    "Partner with Architecture, business, and central groups within a global team."
+  ],
+  "required_skills": [
+    "Agile environment experience using tools like Jira and Confluence",
+    "Knowledge of cloud architecture, networking, DevOps toolchains",
+    "Proficiency in Python and Unix scripting"
+  ],
+  "nice_to_have_skills": [
+    "Extensive experience with Kubernetes (K8s) for deploying, managing, and maintaining containerized applications.",
+    "In-depth knowledge of AWS services, including EC2, VPC, IAM, Serverless offerings, RDS, Route 53, and CloudFront.",
+    "Proficiency in leveraging generative AI for daily tasks, utilizing agents and co-pilots to build, test, and manage applications and code.",
+    "Comprehensive understanding of agentic, A2A, MCP, RAG, and AI concepts.",
+    "Experience with monitoring and logging tools for Kubernetes clusters.",
+    "Strong working knowledge of containerization technologies such as Docker.",
+    "Proven experience in managing monolithic record-keeping platforms within DevOps and deployment pipelines.",
+    "Understanding of UNIX system architecture.",
+    "Solid grasp of networking core concepts.",
+    "Advanced knowledge and expertise in serverless architecture and related AWS offerings.",
+    "Proficiency in Terraform, including core concepts and hands-on implementation.",
+    "Hands-on experience with Unix scripting and Python programming.",
+    "Practical experience with CI/CD tools such as Jenkins and Ansible.",
+    "Familiarity with container technologies which will be advantageous.",
+    "Working knowledge of APIs, caching mechanisms, and messaging systems.",
+    "Mastery of at least one programming language or framework, such as Java, NodeJS, or Python.",
+    "Expertise in test-driven development (TDD) and pair programming best practices alongside CI/CD pipelines."
+  ],
+  "required_experience_years": 6.0,
+  "education_level": "None",
+  "seniority_level": "Mid",
+  "salary_range": null,
+  "benefits": [
+    "Comprehensive benefits package.",
+    "Flexibility about where and when you work \u2013 finding a balance that works for all of us.",
+    "Support for your development."
+  ]
+}

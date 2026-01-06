@@ -701,6 +701,17 @@ def analysis_page():
             st.info("No resume text found for suggestions.")
         else:
             redo = st.button("🔄 Redo Improvement Suggestions", use_container_width=True)
+            
+            # Clear previous application state on redo
+            if redo:
+                if "applied_suggestions" in st.session_state:
+                    del st.session_state["applied_suggestions"]
+                
+                # Also clear the widget states to reset UI
+                keys_to_clear = [k for k in st.session_state.keys() if k.startswith("radio_suggestion_")]
+                for k in keys_to_clear:
+                    del st.session_state[k]
+
             use_cache = not redo
             with st.spinner("Generating personalized improvement suggestions..." if not redo else "Regenerating improvement suggestions ..."):
                 suggestions_result = analyzer.analyze_resume(
@@ -715,7 +726,10 @@ def analysis_page():
             suggestions = suggestions_result.get("suggestions", [])
             if suggestions_result.get("cached") and not redo:
                 st.info("Loaded from cache for this resume. Redo to refresh.")
-            if not suggestions:
+            
+            if "error" in suggestions_result:
+                st.error(f"Analysis Error: {suggestions_result['error']}")
+            elif not suggestions:
                 st.info("No improvement suggestions available.")
             else:
                 if "applied_suggestions" not in st.session_state:

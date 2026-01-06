@@ -1,0 +1,31 @@
+{
+  "summary": "About the job\nKey Areas of Responsibilities",
+  "responsibilities": [
+    "Perform POC for latest technologies and new enhancement",
+    "Maintain / Enhance the system as and when any client request comes",
+    "Come up with high level component design & system architecture for new changes",
+    "Cover all non-functional aspects during software development",
+    "Follow best dev ops practices",
+    "Work closely with cross functional teams with different jurisdiction",
+    "Stay updated with emerging technologies and industry best practices; apply them to improve development processes",
+    "Ensure applications adhere to security standards and company policies",
+    "Participate in unit testing and debugging to ensure reliable software delivery"
+  ],
+  "required_skills": [
+    "Bachelor\u2019s degree in computer engineering or related fields",
+    "Minimum 5-8 years of relevant experience",
+    "Experience in Java & related technologies, good knowledge on SQL/PLSQL",
+    "Basic understanding of python scripts",
+    "Familiarity with agile development environment and concepts of Scrum",
+    "Good to have knowledge on Docker, GitHub, GitHub Actions"
+  ],
+  "nice_to_have_skills": [
+    "Strong Problem-solving skills",
+    "Excellent command of / fluent in both spoken and written in English"
+  ],
+  "required_experience_years": 5.0,
+  "education_level": "Bachelor\u2019s degree",
+  "seniority_level": "Mid",
+  "salary_range": null,
+  "benefits": []
+}

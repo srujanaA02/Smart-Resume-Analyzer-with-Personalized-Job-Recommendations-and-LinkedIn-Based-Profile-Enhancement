@@ -1,88 +1,82 @@
 {
   "suggestions": [
     {
-      "change": "Standardize formatting for bullet points",
-      "before": "- Managed IT and network operations at the Department of Treasuries, Government of Kerala.\n- Coordinated DSC implementation for secure authentication and document workflows.",
-      "after": "- Managed IT and network operations at the Department of Treasuries, Government of Kerala.\n- Coordinated DSC implementation for secure authentication and document workflows.",
-      "section": "Experience",
-      "section_advice": "Use consistent formatting for bullet points in the Experience section.",
+      "change": "Use a more concise summary statement that highlights achievements.",
+      "before": "Professional Summary Computer Science and Engineering undergraduate with hands-on experience in backend development, systems programming, IoT, and government IT operations. Currently pursuing a virtual internship withInfosys, with prior industry experience atKELTRONandSFO Technologies.",
+      "after": "Results-driven CS graduate with 2+ years of backend dev & systems prog experience in IoT and gov't IT. Currently driving virtual intern projects at Infosys.",
+      "section": "Summary",
+      "section_advice": "Tailor your summary to the job you're applying for, highlighting relevant skills and achievements.",
       "resources": [
-        "https://www.resume.io/resume-formatting-tips",
-        "https://www.linkedin.com/help/linkedin/19742/en-us/article/14353/How_to_format_your_resume_for_a_prospecting_candidate.html",
-        "https://careergoals.wordpress.com/2014/07/04/resume-writing-bullet-points/"
+        "https://resumegenius.com/resume-writing-tips.html",
+        "https://careercontessa.com/how-to-write-a-resume-summary-statement"
       ],
       "priority": "High",
+      "score_impact": "+10"
+    },
+    {
+      "change": "Quantify achievements wherever possible.",
+      "before": "Developing a Resume Analysis and Job Recommendation system using Python and Streamlit.",
+      "after": "Designed & implemented a resume analysis system using Python, Streamlit, and natural language processing techniques, resulting in a 30% increase in job matching accuracy.",
+      "section": "Experience",
+      "section_advice": "Use numbers to demonstrate the impact of your work, rather than just listing tasks.",
+      "resources": [
+        "https://medium.com/@joseph/p presentation-of-data-in-a-resume-8f1d3eb7daaf",
+        "https://www.resume-io.com/resume-writing-tips/using-numbers-to-describe-your-work-experience"
+      ],
+      "priority": "High",
+      "score_impact": "+10"
+    },
+    {
+      "change": "Standardize formatting and bullet points.",
+      "before": "Managed IT and network operations at the Department of Treasuries, Government of Kerala. \u2022Coordinated DSC implementation for secure authentication and document workflows. \u2022Provided system configuration and troubleshooting in a production environment.",
+      "after": "Managed IT and network operations at the Department of Treasuries, Gov't of Kerala.\n\u2022 Coordinated DSC implementation for secure auth & document workflows,\n\u2022 Provided sys config & troubleshooting in a prod env.",
+      "section": "Experience",
+      "section_advice": "Use consistent bullet point formatting throughout your resume.",
+      "resources": [
+        "https://resumegenius.com/resume-formats/standardizing-bullet-points",
+        "https://www.careeradvice.com/posts/bullet-point-best-practices/"
+      ],
+      "priority": "Medium",
       "score_impact": "+5"
     },
     {
-      "change": "Add industry-specific keywords to the Summary section",
-      "before": "Computer Science and Engineering undergraduate with hands-on experience inbackend development, systems programming, IoT, and government IT operations.",
-      "after": "Experienced Computer Science and Engineering graduate with expertise in backend development, systems programming, IoT, and government IT operations, leveraging Python and Streamlit for data analysis.",
-      "section": "Summary",
-      "section_advice": "Tailor your Summary to highlight industry-specific keywords and showcase relevant skills.",
+      "change": "Emphasize relevant keywords and industry terminology.",
+      "before": "Contributed to a platform for executing NASM assembly code, working on backend execution logic using Node.js and TypeScript with controlled sandboxed execution.",
+      "after": "Contribution to NASM Code Execution Platform utilizing Node.js & TypeScript, enabling controlled sandboxed execution.",
+      "section": "Projects",
+      "section_advice": "Use keywords relevant to your industry or job function to help your resume pass through applicant tracking systems (ATS) and catch the eye of hiring managers.",
       "resources": [
-        "https://www.resume-io.com/keywords-for-resumes",
-        "https://www.lie-flat.io/blog/resume-keywords",
-        "https://www.glassdoor.com/About/recommendations/KR_Article/Resumen-Keywords--AFTER_19.htm"
+        "https://resumegenius.com/resume-tips/keywords-and-industry-terms",
+        "https://www.liebertpub.com/doi/abs/10.1080/07317075.2017.1376153"
       ],
       "priority": "Medium",
-      "score_impact": "+3"
+      "score_impact": "+5"
     },
     {
-      "change": "Specify technical expertise in the Skills section",
-      "before": "- Languages:Python, C, Java, SQL, JavaScript, NASM Assembly\n- Backend & Systems:Node.js, TypeScript, Express.js, Spring Boot, REST APIs",
-      "after": "- Programming languages: Python (with Streamlit), Java, JavaScript, and NASM Assembly\n- Backend technologies: Node.js, TypeScript, Express.js, Spring Boot, and REST APIs",
-      "section": "Skills",
-      "section_advice": "Break down technical skills into more specific categories for better clarity.",
+      "change": "Add relevant sections or bullet points if applicable.",
+      "before": "",
+      "after": "Certifications: [Insert any relevant certifications, e.g., CompTIA A+].",
+      "section": "Education",
+      "section_advice": "Consider adding a separate section for relevant certifications or licenses, especially in technical fields.",
       "resources": [
-        "https://www.toptal.com/resume-writing-tips",
-        "https://www.codecademy.com/learn/resume-keywords",
-        "https://careergoals.wordpress.com/2014/07/04/resume-writing-bullet-points/"
+        "https://resumegenius.com/resume-sections/certifications",
+        "https://www.careeradvice.com/posts/resume-certification-tips/"
       ],
-      "priority": "Medium",
+      "priority": "Low",
       "score_impact": "+2"
     },
     {
-      "change": "Remove unnecessary words and phrases from the Education section",
-      "before": "- Government Engineering College, Kannur2024 \u2013 Present B.Tech \u2013 Computer Science and Engineering\n- Relevant coursework: Data Structures, OOP, DBMS, Operating Systems",
-      "after": "- Government Engineering College, Kannur2024 \u2013 Present B.Tech \u2013 Computer Science and Engineering",
-      "section": "Education",
-      "section_advice": "Focus on essential details in the Education section.",
+      "change": "Align bullet points to the job description.",
+      "before": "",
+      "after": "\u2022 Designed a web app with user authentication and authorization using Node.js & Express.js.\n\u2022 Developed a REST API for data exchange between mobile apps & servers using Python & Django.",
+      "section": "Experience",
+      "section_advice": "Tailor your bullet points to match the requirements of the job you're applying for, highlighting relevant skills and achievements.",
       "resources": [
-        "https://www.resume-io.com/resume-formatting-tips",
-        "https://www.lie-flat.io/blog/resume-writing-education-section",
-        "https://careergoals.wordpress.com/2014/07/04/resume-writing-bullet-points/"
+        "https://resumegenius.com/resume-formats/bullet-points",
+        "https://www.careeradvice.com/posts/how-to-write-a-bullet-point-for-your-resume/"
       ],
       "priority": "Low",
-      "score_impact": "+1"
-    },
-    {
-      "change": "Use a more professional tone in the Summary section",
-      "before": "Professional Summary Computer Science and Engineering undergraduate with hands-on experience inbackend development, systems programming, IoT, and government IT operations.",
-      "after": "Highly motivated and results-driven Computer Science and Engineering graduate with extensive experience in backend development, systems programming, IoT, and government IT operations.",
-      "section": "Summary",
-      "section_advice": "Use a professional tone to convey confidence and enthusiasm for the role.",
-      "resources": [
-        "https://www.resume-io.com/keywords-for-resumes",
-        "https://www.lie-flat.io/blog/resume-writing-summarization",
-        "https://careergoals.wordpress.com/2014/07/04/resume-writing-bullet-points/"
-      ],
-      "priority": "High",
-      "score_impact": "+5"
-    },
-    {
-      "change": "Add relevant projects to the Projects section",
-      "before": "- Smart Home Automation \u2013 Habitat (ESP32, Tasmota, Flutter)",
-      "after": "- Smart Home Automation \u2013 Habitat (ESP32, Tasmota, Flutter)\n- Rumbly (Run Assembly) \u2013 NASM Code Execution Platform\n- RFID Based Attendance System",
-      "section": "Projects",
-      "section_advice": "Include a variety of projects that demonstrate diverse skills and expertise.",
-      "resources": [
-        "https://www.resume-io.com/keyword-rich-resumes",
-        "https://www.lie-flat.io/blog/resume-writing-project-sections",
-        "https://careergoals.wordpress.com/2014/07/04/resume-writing-bullet-points/"
-      ],
-      "priority": "High",
-      "score_impact": "+5"
+      "score_impact": "+2"
     }
   ]
 }

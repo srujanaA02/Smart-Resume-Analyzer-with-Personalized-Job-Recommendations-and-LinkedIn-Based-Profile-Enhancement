@@ -1,0 +1,27 @@
+{
+  "summary": "Full Stack Developer will play a key role in building and enhancing a scalable, use-case-agnostic IoT cloud platform.",
+  "responsibilities": [
+    "Requirement Analysis & Understanding",
+    "Collaborate with Product Owners and Tech Leads to understand feature requirements and user journeys.",
+    "Analyze functional scope, technical feasibility, system integration points, and device/cloud data interaction patterns.",
+    "..."
+  ],
+  "required_skills": [
+    "3\u20137 years of experience in full-stack application development using Node.js and React (TypeScript preferred).",
+    "Hands-on experience working with Azure cloud services (e.g., Event Grid, Function Apps, Cosmos DB, Redis Cache, ADLS).",
+    "..."
+  ],
+  "nice_to_have_skills": [
+    "Familiarity with common IoT communication protocols such as MQTT and LoRa.",
+    "Practical experience with REST API design, microservices, event-driven architecture, and async communication.",
+    "..."
+  ],
+  "required_experience_years": 3,
+  "education_level": "None",
+  "seniority_level": "Mid",
+  "salary_range": null,
+  "benefits": [
+    "Ability to troubleshoot, optimize, and improve application performance and reliability.",
+    "Strong understanding of secure coding practices, identity & access control, and data protection."
+  ]
+}

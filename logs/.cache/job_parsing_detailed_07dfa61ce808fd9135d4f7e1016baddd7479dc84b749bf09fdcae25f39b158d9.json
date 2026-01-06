@@ -1,0 +1,29 @@
+{
+  "summary": "We are looking for a skilled engineer to lead the implementation and optimization of a Service Mesh architecture across our microservices ecosystem. The ideal candidate will have hands-on experience with Istio, Linkerd, Consul, or AWS App Mesh, and will be responsible for defining architecture, enabling observability, enforcing policies, and improving security and traffic management.",
+  "responsibilities": [
+    "Design, deploy, and manage a Service Mesh (e.g., Istio, Linkerd) to support secure, scalable, and observable microservices communication.",
+    "Define traffic routing policies, such as canary releases, blue-green deployments, and retries/failovers.",
+    "Implement mutual TLS (mTLS), authorization, and access policies for service-to-service communication."
+  ],
+  "required_skills": [
+    "Strong understanding of Kubernetes architecture and networking",
+    "Hands-on experience with Service Mesh framework - Istio ",
+    "Experience with mTLS, service discovery, sidecar injection, and ingress/egress gateways.",
+    "Familiarity with Helm, Kustomize, or other Kubernetes deployment tools.",
+    "Knowledge of CI/CD integration and GitOps practices.",
+    "Experience with observability tools: Prometheus, Grafana, Jaeger, Kiali, Fluentd, ELK stack, etc.",
+    "Proficiency in scripting (Bash, Python, or Go preferred).",
+    "Solid understanding of cloud platforms (AWS, Azure, or GCP).",
+    "Knowledge of security principles for microservices and zero-trust architecture."
+  ],
+  "nice_to_have_skills": [
+    "Experience with Linkerd, Consul, or AWS App Mesh",
+    "Expertise in monitoring tools like Prometheus, Grafana, Jaeger, etc.",
+    "Proficiency in languages like Java, Python, or C++"
+  ],
+  "required_experience_years": 0,
+  "education_level": "Bachelor",
+  "seniority_level": "Mid",
+  "salary_range": null,
+  "benefits": []
+}

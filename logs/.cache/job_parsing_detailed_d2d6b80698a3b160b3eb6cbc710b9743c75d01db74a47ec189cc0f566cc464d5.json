@@ -1,0 +1,33 @@
+{
+  "summary": "HCL Tech is seeking a Full Stack Java Developer to design, develop, and maintain web application components using Java. The candidate will collaborate with other teams to define requirements and deliver solutions.",
+  "responsibilities": [
+    "Developing user interfaces using frontend technologies like HTML, CSS, JavaScript, React, Angular or Polymer.",
+    "Creating logic with Java and frameworks such as Spring and Hibernate.",
+    "Integrating frontend and backend through RESTful APIs.",
+    "Managing databases for data integrity and performance.",
+    "Writing clean and scalable code.",
+    "Ensuring applications are responsive and optimized.",
+    "Collaborating with other teams to define requirements and deliver solutions.",
+    "Troubleshooting and resolving technical issues.",
+    "Participating in code reviews.",
+    "Contributing to architectural decisions.",
+    "Implementing security measures."
+  ],
+  "required_skills": [
+    "Strong knowledge of Java programming and core concepts",
+    "Expertise in Java frameworks like Spring Boot, Spring, and Hibernate",
+    "Experience with web development frameworks and tools (HTML, CSS, JavaScript, React, Angular, or Vue.js)",
+    "Understanding of RESTful APIs and microservices",
+    "Experience with databases such as MySQL, PostgreSQL",
+    "Familiarity with Git and CI/CD pipelines",
+    "Knowledge of cloud platforms like AWS or Azure will be added advantage"
+  ],
+  "nice_to_have_skills": [
+    "Knowledge of cloud platforms like AWS or Azure"
+  ],
+  "required_experience_years": 6.0,
+  "education_level": "Bachelor",
+  "seniority_level": "Mid",
+  "salary_range": null,
+  "benefits": []
+}

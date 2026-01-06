@@ -1,0 +1,25 @@
+{
+  "summary": "As a data engineer, you will work on data modeling for OLAP, warehousing and building ETL pipelines on cloud using AWS technologies.",
+  "responsibilities": [
+    "Data modeling for OLAP, warehousing",
+    "Building ETL pipelines on cloud"
+  ],
+  "required_skills": [
+    "1-3 years of data engineering experience",
+    "Experience with SQL and NoSQL databases",
+    "Practical Knowledge of Linux or Unix shell scripting.",
+    "Experience in at least one programming language, such as Python or Javascript",
+    "Experience partnering with business owners directly to understand their requirements"
+  ],
+  "nice_to_have_skills": [
+    "Experience with emerging technologies in space like Kafka, ClickHouse",
+    "Experience with column oriented data, data modeling, warehousing and building ETL pipelines",
+    "Experience with big data technologies such as: Hadoop, Hive, Spark,EMR",
+    "Experience with non-relational databases / data stores (object storage, document or key-value stores, column-family databases)"
+  ],
+  "required_experience_years": 0.0,
+  "education_level": null,
+  "seniority_level": null,
+  "salary_range": null,
+  "benefits": []
+}

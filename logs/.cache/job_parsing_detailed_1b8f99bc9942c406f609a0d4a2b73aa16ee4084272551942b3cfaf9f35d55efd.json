@@ -1,0 +1,29 @@
+{
+  "summary": "We are looking for a skilled UI Developer with strong experience in React or Angular to build scalable, high-performance web applications.",
+  "responsibilities": [
+    "Develop and maintain web applications using React.js or Angular",
+    "Convert UI/UX designs into high-quality, reusable components",
+    "Optimize applications for performance, responsiveness, and cross-browser compatibility",
+    "Collaborate with backend teams to integrate APIs",
+    "Write clean, maintainable, and well-documented code",
+    "Participate in code reviews and follow best UI development practices"
+  ],
+  "required_skills": [
+    "Strong hands-on experience with React.js or Angular",
+    "Proficiency in HTML5, CSS3, JavaScript, TypeScript",
+    "Experience with REST APIs and JSON",
+    "Knowledge of responsive design and modern UI frameworks (Bootstrap, Tailwind, Material UI, etc.)",
+    "Familiarity with Git and version control"
+  ],
+  "nice_to_have_skills": [
+    "Experience with state management (Redux, NgRx)",
+    "Knowledge of unit testing frameworks (Jest, Jasmine, Karma)",
+    "Basic understanding of UI/UX principles",
+    "Experience working in SaaS or product-based companies"
+  ],
+  "required_experience_years": 0,
+  "education_level": null,
+  "seniority_level": null,
+  "salary_range": null,
+  "benefits": []
+}

@@ -7,3 +7,6 @@ ollama>=0.0.50
 requests==2.31.0
 plotly==5.18.0
 selenium==4.39.0
+reportlab>=4.0.0
+kaleido==0.2.1
+pandas>=2.0.0

@@ -1,17 +1,38 @@
+# General
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.DS_Store
+Thumbs.db
+Desktop.ini
+
 # Virtual Environment
 venv/
-
-# Environment variables
+.venv/
+env/
 .env
 
-# Python cache
-__pycache__/
-*.pyc
-
-# IDEs
-.idea/
+# Text Editors / IDEs
 .vscode/
+.idea/
+*.swp
+*.swo
 
-# Data
+# Streamlit
+.streamlit/secrets.toml
+# Note: config.toml usually can be committed, but secrets MUST NOT
+
+# Project Logs
+logs/
+*.log
+
+# Application Data & Secrets
 data/
+!data/.gitkeep
 linkedin_cookies.txt
+
+# Testing & Caching
+.pytest_cache/
+.cache/
+tests/__pycache__/

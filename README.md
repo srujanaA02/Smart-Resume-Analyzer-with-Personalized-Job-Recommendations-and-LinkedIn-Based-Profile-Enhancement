@@ -8,7 +8,10 @@ An intelligent application that analyzes user resumes and provides personalized 
 - [Project Structure](#project-structure)
 - [Setup & Installation](#setup--installation)
 - [Running the Application](#running-the-application)
-- [Resume Analysis & Strengths/Weaknesses Analyzer](#resume-analysis--strengthsweaknesses-analyzer)
+- [Resume Analysis](#resume-analysis--strengthsweaknesses-analyzer)
+- [Resume Scoring System](#resume-scoring-system)
+- [Skills Gap Analysis](#skills-gap-analysis)
+- [Job Recommendations](#job-recommendations)
 - [LLM Setup](#llm-setup)
 - [Database Schema](#database-schema)
 - [Contributing](#contributing)
@@ -26,13 +29,13 @@ An intelligent application that analyzes user resumes and provides personalized 
 ✅ **Database Storage**: Persistent storage of analysis results linked to user profiles
 ✅ **Interactive Visualizations**: Plotly charts for skills distribution and gap analysis
 ✅ **Learning Recommendations**: Prioritized skill recommendations with resources and learning paths
-✅ **User Dashboard**: Central hub for navigation and quick stats
-✅ **Profile Management**: User profile and settings pages
-✅ **Job Recommendations**: Personalized job recommendations based on resume analysis
+✅ **User Dashboard**: Central hub for navigation, quick stats, and application tracking
+✅ **Job Recommendations**: Personalized job recommendations based on resume analysis with specific 'Match %'
+✅ **Application Tracker**: Track status of jobs (Saved, Applied, Rejected)
 
 ## Project Structure
 
-````
+```
 ResumeAnalysisAndJobRecommendationSystem/
 ├── app.py                          # Main Streamlit entry point
 ├── requirements.txt                # Python dependencies
@@ -44,7 +47,9 @@ ResumeAnalysisAndJobRecommendationSystem/
 │   ├── auth.py                    # Authentication & session management
 │   ├── resume_parser.py           # PDF/DOCX text extraction
 │   ├── llm_analyzer.py            # LLM-based analysis
-│   └── resume_scorer.py           # Resume scoring system
+│   ├── resume_scorer.py           # Resume scoring system
+│   ├── recommendations.py         # Job matching logic
+│   └── scraper.py                 # LinkedIn job scraper
 ├── frontend/
 │   ├── __init__.py
 │   ├── pages.py                   # Page routing configuration
@@ -53,7 +58,7 @@ ResumeAnalysisAndJobRecommendationSystem/
 │   ├── dashboard.py               # Main dashboard
 │   ├── profile.py                 # User profile page
 │   ├── resume_analysis.py         # Resume analysis page
-│   ├── analysis.py                # Analysis results display (NEW)
+│   ├── analysis.py                # Analysis results display
 │   ├── resume_scoring.py          # Resume scoring page
 │   ├── skills_gap.py              # Skills gap analysis page
 │   ├── job_recommendations.py     # Job recommendations page
@@ -64,22 +69,7 @@ ResumeAnalysisAndJobRecommendationSystem/
 └── data/
     ├── database.db                # SQLite database
     └── resumes/                   # Uploaded resume files
-```│   ├── login.py                   # Login page
-│   ├── registration.py            # Registration page
-│   ├── dashboard.py               # Main dashboard
-│   ├── profile.py                 # User profile page
-│   ├── resume_analysis.py         # Resume analysis page
-│   ├── resume_scoring.py          # Resume scoring page (NEW)
-│   ├── skills_gap.py              # Skills gap analysis page
-│   ├── job_recommendations.py     # Job recommendations page
-│   └── settings.py                # User settings page
-├── utils/
-│   ├── __init__.py
-│   └── database.py                # Database connection & CRUD operations
-└── data/
-    ├── database.db                # SQLite database
-    └── resumes/                   # Uploaded resume files
-````
+```
 
 ## Setup & Installation
 
@@ -99,12 +89,12 @@ cd ResumeAnalysisAndJobRecommendationSystem
 
 ```bash
 # On Windows
-python -m venv venv
-venv\Scripts\activate
+python -m venv .venv
+.venv\Scripts\activate
 
 # On macOS/Linux
-python3 -m venv venv
-source venv/bin/activate
+python3 -m venv .venv
+source .venv/bin/activate
 ```
 
 ### Step 3: Install Dependencies
@@ -121,14 +111,17 @@ Create a `.env` file in the project root directory:
 # Database configuration
 DB_PATH=data/database.db
 
+# Optional: LinkedIn Credentials for Scraping
+LINKEDIN_EMAIL=your_email
+LINKEDIN_PASSWORD=your_password
+
 # API Keys (add as needed for future integrations)
 # OPENAI_API_KEY=your_key_here
-# LANGCHAIN_API_KEY=your_key_here
 ```
 
 ### Step 5: Initialize the Database
 
-The database is automatically initialized when `utils/database.py` is imported. Tables are created on first run if they don't exist.
+The database is automatically initialized when the application starts.
 
 ## Running the Application
 
@@ -137,10 +130,8 @@ The database is automatically initialized when `utils/database.py` is imported. 
 Ollama must be running before starting the Streamlit app. Open a terminal and run:
 
 ```bash
-ollama serve --host localhost:11434
+ollama serve
 ```
-
-This starts the LLM service that powers the resume analysis features.
 
 ### Start the Streamlit Server
 
@@ -148,15 +139,7 @@ This starts the LLM service that powers the resume analysis features.
 streamlit run app.py
 ```
 
-The application will be available at `http://localhost:8501`
-
-### Development Mode
-
-For development with auto-reload:
-
-```bash
-streamlit run app.py --logger.level=debug
-```
+The application will be available at `http://localhost:8501`.
 
 ---
 
@@ -166,206 +149,11 @@ streamlit run app.py --logger.level=debug
 
 AI-powered analyzer using Ollama LLM to identify resume strengths and weaknesses with detailed categorization, severity levels, and actionable recommendations.
 
-### Analysis Types
-
-#### **1. Strengths Analysis**
-
-- Identifies 5-7 key strengths in order of importance
-- Categories: formatting, content, skills, experience, education, achievements
-- Importance levels: critical, high, medium
-- Confidence scoring (0-100%)
-- Specific examples from resume text
-
-#### **2. Weaknesses Analysis**
-
-- Identifies 5-7 key weaknesses
-- Categories: formatting, content, skills, experience, missing_info, grammar, gaps
-- Severity levels: critical, moderate, minor
-- Location information (which section has the issue)
-- Impact assessment on candidacy
-- Specific fix recommendations
-
-#### **3. Skills Extraction**
-
-- Automatic detection of technical & soft skills
-- Categorization by skill type
-- JSON-structured output for integration
-
-#### **4. Job Matching**
-
-- Compare resume against job descriptions
-- Match percentage calculation
-- Gap analysis with recommendations
-
-### Architecture
-
-**Backend Components:**
-
-1. **Enhanced LLMAnalyzer** (`backend/llm_analyzer.py`)
-
-   - `AnalysisCache` class for intelligent caching with SHA-256 hashing
-   - Specialized prompts for strength/weakness identification
-   - Token tracking and retry logic with exponential backoff
-   - Methods: `get_strengths()`, `get_weaknesses()`, `get_skills()`, `get_improvements()`, `match_job()`
-
-2. **Database Integration** (`utils/database.py`)
-
-   - `save_resume_analysis()` - Store analysis results with JSON serialization
-   - `get_user_analysis()` - Retrieve user's latest analysis
-   - Enhanced schema with strengths/weaknesses JSON fields
-
-3. **Frontend Display** (`frontend/resume_analysis.py`)
-   - Rich visual display with color-coded indicators
-   - Support for all analysis types
-   - Cache status indicator (⚡ badge)
-   - Automatic database storage on completion
-
-### Caching System
-
-- **Two-level caching**: Memory (fast) + Disk (persistent)
-- **SHA-256 hashing** for resume fingerprinting
-- **~100x speedup** for re-analyzed resumes
-- Automatic cache lookup before LLM calls
-
-### Usage Example
-
-1. Navigate to **Resume Analysis** in the dashboard
-2. Select analysis type (Strengths, Weaknesses, etc.)
-3. (Optional) Provide job description for job matching
-4. Click analyze - results display with confidence scores
-5. Results automatically saved to database and cached
-
----
-
-## Resume Analysis Results Page
-
-### Overview
-
-A comprehensive, visually appealing page that displays all analysis results in an easy-to-understand format with interactive charts, categorized cards, and actionable insights.
-
-### Features
-
-✨ **Overall Score Gauge** - Large circular progress indicator with color-coding
-✨ **Component Breakdown Charts** - Horizontal bar charts for each scoring dimension
-✨ **Strength Cards** - Green-themed cards with icons showing key strengths
-✨ **Weakness Cards** - Severity-colored cards with actionable improvement suggestions
-✨ **Skills Tags** - Interactive skill chips organized by category
-✨ **PDF Report Generation** - One-click PDF download of complete analysis
-✨ **Action Buttons** - Quick navigation to scoring, job matching, and re-analysis
-✨ **5 Tab Interface** - Organized views for overview, strengths, weaknesses, skills, and reports
-
-### Page Sections
-
-#### **1. Overview Tab**
-
-- Overall score gauge chart
-- Classification badge
-- Quick statistics (strength/weakness count, skill count)
-- Component score breakdown bar chart
-- Summary information and analysis timestamp
-
-#### **2. Strengths Tab**
-
-- Cards for each identified strength
-- Category and importance level badges
-- Examples from resume text
-- Expandable sections for detailed information
-- Green accent colors for positive feedback
-
-#### **3. Weaknesses Tab**
-
-- Cards for each identified weakness
-- Severity indicators (Critical 🔴, Moderate 🟠, Minor 🟡)
-- Location information showing where issue occurs
-- Actionable fix recommendations
-- Orange/red color scheme based on severity
-
-#### **4. Skills Tab**
-
-- Identified skills displayed as tags/chips
-- Recommended skills to learn in highlighted section
-- Skills organized by category (Technical, Soft Skills, Tools, etc.)
-- Visual distinction between current and needed skills
-
-#### **5. Report Tab**
-
-- PDF generation with complete analysis results
-- Download button for formatted report
-- Quick action buttons for related features
-- Next steps guidance for resume improvement
-
-### PDF Report Generation
-
-**Features:**
-
-- Comprehensive analysis summary
-- Overall score and classification
-- Component scores table
-- Top strengths and weaknesses (first 5 each)
-- Professional formatting with headers and styling
-- Generated timestamp and candidate name
-- Ready for sharing with mentors or career coaches
-
-**Requirements:**
-
-- `reportlab` library (included in requirements.txt)
-- Handles missing data gracefully
-
-### Action Buttons
-
-Located in the Report tab for easy navigation:
-
-- **Re-analyze Resume** - Go back to Resume Analysis
-- **Score Resume** - Navigate to Resume Scoring System
-- **Find Jobs** - View Job Recommendations
-- **Skills Gap Analysis** - Assess skills needed for target role
-
-### Color Coding System
-
-| Category        | Color            | Meaning                   |
-| --------------- | ---------------- | ------------------------- |
-| Excellent Score | Green (#00CC88)  | 90-100 range              |
-| Good Score      | Blue (#3366FF)   | 75-89 range               |
-| Average Score   | Yellow (#FFAA00) | 60-74 range               |
-| Poor Score      | Red (#EE4444)    | <60 range                 |
-| Critical        | 🔴 Red           | Urgent improvement needed |
-| Moderate        | 🟠 Orange        | Important to address      |
-| Minor           | 🟡 Yellow        | Nice to improve           |
-
-### Architecture
-
-**Frontend Components:**
-
-- `frontend/analysis.py` - Main analysis results display page
-- 5 tab interface for different views
-- Plotly charts for visualizations
-- Streamlit containers for card-based layouts
-
-**Visualization Functions:**
-
-- `create_overall_score_gauge()` - Gauge chart for score
-- `create_component_bars()` - Bar chart for components
-- `create_strengths_cards()` - Strength cards display
-- `create_weaknesses_cards()` - Weakness cards display
-- `create_skills_tags()` - Skills tag/chip display
-- `create_pdf_report()` - PDF generation with ReportLab
-
-**Integration:**
-
-- Retrieves data from database via `get_user_analysis()`
-- Uses Plotly for interactive charts
-- ReportLab for PDF generation
-- Streamlit components for UI
-
-### Usage Flow
-
-1. Complete resume upload in **Resume Analysis**
-2. Select analysis type and run analysis
-3. View results automatically displayed
-4. Navigate to **Analysis Results** page
-5. Explore different tabs (Overview, Strengths, etc.)
-6. Download PDF report if needed
-7. Use action buttons to improve resume or find jobs
+### Key Features
+- **Strengths Identification**: Highlights top 5-7 strengths with importance levels (Critical, High, Medium).
+- **Weakness Detection**: Identifies improvement areas with severity (Critical, Moderate, Minor) and location context.
+- **Skills Extraction**: Automatically parses Technical and Soft skills.
+- **Visual Reports**: Interactive charts and a downloadable **PDF Report**.
 
 ---
 
@@ -373,178 +161,60 @@ Located in the Report tab for easy navigation:
 
 ### Overview
 
-Comprehensive scoring system that evaluates resumes on multiple criteria using a weighted multi-factor algorithm combined with LLM-based analysis. Provides detailed breakdown, improvement suggestions, and tracks scoring history for progress monitoring.
+Comprehensive scoring system that evaluates resumes on multiple criteria using a weighted multi-factor algorithm.
 
-### Scoring Components
+### Scoring Components (Weights)
+1.  **Completeness (25%)**: Checks for essential sections (Summary, Experience, Education, etc.).
+2.  **Content Quality (30%)**: Analyzes action verbs, quantifiable metrics, and impact.
+3.  **Formatting (15%)**: Evaluates structure, length, and readability.
+4.  **Keyword Relevance (20%)**: Checks validation against industry standards.
+5.  **Experience (10%)**: Validates career progression and timeline.
 
-The system evaluates resumes across 5 dimensions with specific weights:
+### Classification
+*   **Excellent (90-100)**
+*   **Good (75-89)**
+*   **Average (60-74)**
+*   **Needs Improvement (<60)**
 
-#### **1. Completeness Score (25%)**
+---
 
-- Evaluates presence of essential resume sections
-- Checks for: contact info, professional summary, work experience, education, skills
-- Each section identified adds points toward score
-- Missing sections get identified for improvement
+## Skills Gap Analysis
 
-#### **2. Content Quality Score (30%)** - Highest Weight
-
-- Uses LLM to analyze achievement statements and professionalism
-- Counts action verbs (led, created, developed, improved, etc.)
-- Identifies quantifiable metrics (20% increase, $500K savings, etc.)
-- Evaluates relevance and impact of accomplishments
-- Combines LLM assessment (60%) with manual metrics (40%)
-
-#### **3. Formatting Score (15%)**
-
-- Evaluates document length (optimal: 400-2000 words)
-- Checks formatting consistency (bullet points, spacing, structure)
-- Assesses section clarity and organization
-- Reviews special character usage for cleanliness
-
-#### **4. Keyword Relevance Score (20%)**
-
-- Identifies industry-specific and technical keywords
-- Compares found vs. expected keywords for target role
-- Detects common tech skills (Python, AWS, React, etc.)
-- Provides suggestions for missing keywords
-
-#### **5. Experience Score (10%)**
-
-- Extracts and validates years of experience
-- Assesses career progression (entry → mid → senior)
-- Evaluates coherence and relevance of career path
-- Uses LLM to validate experience quality
-
-### Classification System
-
-Resumes are classified into 4 tiers based on overall score:
-
-- **Excellent (90-100)** 🌟 - Outstanding resume, ready for applications
-- **Good (75-89)** 👍 - Solid resume, minor improvements possible
-- **Average (60-74)** ⚠️ - Functional resume, significant improvements needed
-- **Needs Improvement (<60)** 📍 - Critical issues to address
+### Overview
+This module bridges the gap between your current profile and your target role (e.g., "Full Stack Developer", "Data Scientist").
 
 ### Features
+*   **Target Role Comparison**: Compares your resume skills against the requirements of specific job roles and seniority levels (Entry, Mid, Senior).
+*   **Readiness Score**: A 0-100 score indicating how qualified you are for the target role.
+*   **Missing Skills Detection**:
+    *   **Critical Skills**: Must-haves for the role that you are missing.
+    *   **Nice-to-Haves**: Bonus skills to boost your candidacy.
+*   **Learning Roadmap**:
+    *   Provides a structured learning path.
+    *   Recommends specific courses, project ideas, and certifications.
+    *   Estimates time to close the gap.
 
-✨ **Multi-Factor Analysis**: 5 weighted components for comprehensive evaluation
-✨ **LLM-Powered Assessment**: AI analyzes content quality, structure, and relevance
-✨ **Detailed Breakdown**: Component-by-component scores with visual charts
-✨ **Improvement Suggestions**: Personalized, actionable recommendations
-✨ **Score Tracking**: Historical scores to monitor improvements over time
-✨ **Trend Analysis**: Visual charts showing score progression
-✨ **Statistical Insights**: Current, best, average, and improvement metrics
-✨ **Interactive Dashboard**: 4 tabs for scoring, breakdown, history, and tips
+---
 
-### Frontend Pages
+## Job Recommendations
 
-Navigate to **Resume Scoring** page for:
+### Overview
+An intelligent job search engine that not only finds jobs but "matches" them to your resume using semantic analysis.
 
-1. **Score Your Resume Tab**
-
-   - Upload/select resume to score
-   - Optional target role keywords input
-   - Real-time scoring with LLM analysis
-
-2. **Score Breakdown Tab**
-
-   - Gauge chart of overall score with classification
-   - Bar chart showing component scores with weights
-   - Radar chart for multi-dimensional view
-   - Expandable detailed analysis for each component
-
-3. **Score History Tab**
-
-   - Statistics: current, best, average, improvement
-   - Trend chart showing score progression over evaluations
-   - Historical table with all evaluation records
-   - Track improvement over time
-
-4. **Improvement Tips Tab**
-   - Personalized suggestions based on scores
-   - Priority-ranked improvement areas
-   - Component-specific action items
-   - General best practices for resume writing
-
-### Database Schema
-
-```sql
-CREATE TABLE resume_scores (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    user_id INTEGER NOT NULL,
-    overall_score INTEGER NOT NULL,
-    classification TEXT NOT NULL,
-    completeness_score INTEGER,
-    content_quality_score INTEGER,
-    formatting_score INTEGER,
-    keyword_relevance_score INTEGER,
-    experience_score INTEGER,
-    component_scores TEXT,           -- JSON with all component details
-    improvement_suggestions TEXT,    -- JSON array of suggestions
-    scoring_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES users (id)
-)
-```
-
-### Usage Flow
-
-1. Upload resume in **Resume Analysis** section
-2. Navigate to **Resume Scoring** page
-3. (Optional) Enter target role keywords for relevance
-4. Click "Score Resume Now"
-5. View detailed breakdown with component scores
-6. Review improvement recommendations
-7. Check score history to track progress
-8. Make improvements and re-score to see progress
-
-### Backend Implementation
-
-**ResumeScorer Class** (`backend/resume_scorer.py`)
-
-Key methods:
-
-- `score_resume()` - Main scoring orchestrator
-- `calculate_completeness_score()` - Section presence check
-- `calculate_content_quality_score()` - LLM-based content analysis
-- `calculate_formatting_score()` - Document format evaluation
-- `calculate_keyword_relevance_score()` - Keyword detection
-- `calculate_experience_score()` - Career analysis
-- `_generate_improvement_suggestions()` - Personalized tips
-
-Database functions (`utils/database.py`):
-
-- `save_resume_score()` - Store scoring results
-- `get_resume_scores()` - Retrieve history (latest N)
-- `get_latest_resume_score()` - Get most recent score
-- `get_score_statistics()` - Calculate trends and metrics
-
-### Example Output
-
-```json
-{
-  "overall_score": 78,
-  "classification": "Good",
-  "timestamp": "2024-12-20T10:30:45.123456",
-  "component_scores": {
-    "completeness": {
-      "score": 100,
-      "weight": 0.25,
-      "weighted_score": 25,
-      "details": { ... }
-    },
-    "content_quality": {
-      "score": 72,
-      "weight": 0.30,
-      "weighted_score": 22,
-      "details": { ... }
-    },
-    ...
-  },
-  "improvement_suggestions": [
-    "Improve content quality by using more action verbs...",
-    "Include more industry-relevant keywords..."
-  ]
-}
-```
+### Features
+*   **Smart Search**:
+    *   **Filters**: Location, Remote/Hybrid, Salary, Experience Level.
+    *   **Scraper**: Integrated LinkedIn scraper (Headless or Browser mode) to fetch real-time listings.
+*   **AI Match Scoring**:
+    *   Instead of just keywords, the AI analyzes the *context* of the job description vs. your resume.
+    *   Assigns a **Match %** (e.g., "85% Match") to every job.
+*   **Application Guide**:
+    *   Click "💡 Tips" on any job card to generate a tailored strategy.
+    *   Includes **Cover Letter Points** and **Interview Prep Questions** specific to that job description.
+*   **Application Tracker**:
+    *   **Save** interesting jobs.
+    *   Mark as **Applied** or **Rejected**.
+    *   View your history and status in the "My Profile" page.
 
 ---
 
@@ -552,127 +222,41 @@ Database functions (`utils/database.py`):
 
 ### Environment Configuration (.env)
 
-The application uses the following LLM configuration:
+The application uses the following LLM configuration defaults:
 
 ```env
 OLLAMA_HOST=http://localhost:11434
-LLM_MODEL=llama
+LLM_MODEL=llama3.2:latest   # or mistral, llama2, etc.
 LLM_TEMPERATURE=0.7
-LLM_MAX_TOKENS=2000
-LLM_TIMEOUT=60
-LLM_MAX_RETRIES=3
+LLM_MAX_TOKENS=3000
 ```
 
 ### Supported Models
+- **llama3.2** (Recommended for speed/quality balance)
+- **mistral**
+- **gemma**
 
-- **llama** (recommended) - 7B parameter model, good balance of speed/quality
-- **mistral** - Faster alternative, good for quick analyses
-- Custom models - Any Ollama-compatible model can be used
-
-### Dependencies
-
-All LLM integration packages are in `requirements.txt`:
-
-- langchain
-- langchain-community
-- ollama
-- requests
-- python-dotenv
-
-### Completed Features
-
-✅ User authentication with bcrypt password hashing
-✅ Resume upload & text extraction (PDF/DOCX)
-✅ Resume analysis with AI-powered strengths & weaknesses detection
-✅ **Resume Scoring System** with multi-factor weighted evaluation
-✅ Intelligent caching system for performance
-✅ Database storage with JSON serialization
-✅ User dashboard with navigation
-✅ Profile management & settings pages
-✅ Job recommendations engine
-✅ Token tracking & retry logic
-✅ Score tracking and trend analysis
+---
 
 ## Database Schema
 
-### Users Table
+The application uses SQLite with the following core tables:
 
-```sql
-CREATE TABLE users (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    name TEXT NOT NULL,
-    email TEXT NOT NULL UNIQUE,
-    password TEXT NOT NULL,
-    registration_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    resume_file_path TEXT
-)
-```
+*   **users**: Identity and resume file path.
+*   **resume_analysis**: Stored JSON results of LLM analysis (Strengths, Weaknesses).
+*   **resume_scores**: Structured scoring history with component breakdowns.
+*   **skills_gap_analysis**: Cache for gap analysis sessions.
+*   **job_recommendations**: Scraped jobs with match scores and user status (saved/applied).
+*   **search_history**: Log of user search parameters and results counts.
 
-### Resume Analysis Table
-
-```sql
-CREATE TABLE resume_analysis (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    user_id INTEGER NOT NULL,
-    extracted_text TEXT,
-    analysis_scores TEXT,
-    strengths TEXT,
-    weaknesses TEXT,
-    identified_skills TEXT,
-    recommended_skills TEXT,
-    analysis_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES users (id)
-)
-```
-
-### Resume Scores Table
-
-```sql
-CREATE TABLE resume_scores (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    user_id INTEGER NOT NULL,
-    overall_score INTEGER NOT NULL,
-    classification TEXT NOT NULL,
-    completeness_score INTEGER,
-    content_quality_score INTEGER,
-    formatting_score INTEGER,
-    keyword_relevance_score INTEGER,
-    experience_score INTEGER,
-    component_scores TEXT,
-    improvement_suggestions TEXT,
-    scoring_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES users (id)
-)
-```
-
-### Job Recommendations Table
-
-```sql
-CREATE TABLE job_recommendations (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    user_id INTEGER NOT NULL,
-    job_title TEXT,
-    company_name TEXT,
-    location TEXT,
-    job_description TEXT,
-    job_url TEXT,
-    match_percentage REAL,
-    scraping_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES users (id)
-)
-```
+---
 
 ## Contributing
 
-1. Create a new branch for your feature
-2. Make your changes
-3. Test thoroughly
-4. Submit a pull request with a clear description
+1.  Create a new branch for your feature.
+2.  Make your changes and test thoroughly.
+3.  Submit a pull request with a clear description.
 
 ## License
 
-This project is licensed under the MIT License - see LICENSE file for details.
-
-## Support
-
-For issues or questions, please open an issue on the GitHub repository.
+This project is licensed under the MIT License.

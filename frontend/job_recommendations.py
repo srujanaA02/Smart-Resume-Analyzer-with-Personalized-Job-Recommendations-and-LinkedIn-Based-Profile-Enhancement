@@ -16,56 +16,6 @@ import json
 from datetime import datetime
 
 def recommendations_page():
-    # --- Custom CSS for Premium Look ---
-    st.markdown("""
-        <style>
-        .stButton>button {
-            width: 100%;
-            border-radius: 8px;
-            font-weight: 600;
-        }
-        .job-card {
-            background-color: #1a1a1a;
-            padding: 24px;
-            border-radius: 12px;
-            margin-bottom: 20px;
-            border: 1px solid #333;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        .job-card:hover {
-            transform: translateY(-4px);
-            border-color: #00ADB5;
-            box-shadow: 0 10px 20px rgba(0, 173, 181, 0.15);
-        }
-        .metric-card {
-            background-color: #262626;
-            padding: 15px;
-            border-radius: 10px;
-            border-left: 4px solid #00ADB5;
-            text-align: center;
-        }
-        .history-item {
-            padding: 10px;
-            border-bottom: 1px solid #333;
-            font-size: 0.9rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .history-item:hover {
-            background-color: #333;
-        }
-        
-        /* Form Styling */
-        div[data-testid="stForm"] {
-            background-color: #1e1e1e;
-            padding: 20px;
-            border-radius: 10px;
-            border: 1px solid #444;
-        }
-        </style>
-    """, unsafe_allow_html=True)
-
     user_id = get_logged_in_user_id()
     if not user_id:
         st.warning("Please log in to view recommendations.")
@@ -509,7 +459,7 @@ def _render_job_card(job, recommender, user_id, context="search"):
         location = html.escape(job['location'])
 
         # Minified HTML to prevent Markdown block interpretation
-        html_content = f"""<div style="border-left: 5px solid {color}; padding: 15px; background-color: #262730; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);"><div style="display: flex; justify-content: space-between; align-items: flex-start;"><div style="flex: 1;"><a href="{job['job_url']}" target="_blank" style="text-decoration: none; color: #00ADB5; font-size: 1.2rem; font-weight: bold;">{title}</a>{status_badge}<div style="color: #E0E0E0; font-size: 1rem; margin-top: 5px;">{company}</div><div style="color: #B0B0B0; font-size: 0.9rem; margin-top: 2px;">📍 {location} &nbsp;•&nbsp; 🗓️ Posted {job.get('posted_date', 'N/A')[:10]}</div></div><div style="text-align: right; min-width: 100px; margin-left: 15px;"><span style="background-color: {color}33; color: {color}; padding: 4px 12px; border-radius: 12px; font-weight: bold; font-size: 0.9rem;">{match}% Match</span><br><span style="display: inline-block; margin-top: 5px; font-size: 0.8rem; color: #888;">{job.get('applicant_count', 0)} applicants</span></div></div><div style="margin-top: 12px; color: #CCCCCC; font-size: 0.9rem; line-height: 1.5;">{desc}</div></div>"""
+        html_content = f"""<div style="border-left: 5px solid {color}; padding: 1.5rem; background-color: #1e293b; border: 1px solid #334155; border-radius: 12px; margin-bottom: 20px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);"><div style="display: flex; justify-content: space-between; align-items: flex-start;"><div style="flex: 1;"><a href="{job['job_url']}" target="_blank" style="text-decoration: none; color: #3b82f6; font-size: 1.25rem; font-weight: 700;">{title}</a>{status_badge}<div style="color: #f8fafc; font-size: 1.1rem; font-weight: 500; margin-top: 5px;">{company}</div><div style="color: #94a3b8; font-size: 0.95rem; margin-top: 4px;">📍 {location} &nbsp;•&nbsp; 🗓️ Posted {job.get('posted_date', 'N/A')[:10]}</div></div><div style="text-align: right; min-width: 100px; margin-left: 15px;"><span style="background-color: {color}33; color: {color}; padding: 4px 12px; border-radius: 9999px; font-weight: 600; font-size: 0.875rem;">{match}% Match</span><br><span style="display: inline-block; margin-top: 8px; font-size: 0.875rem; color: #94a3b8;">{job.get('applicant_count', 0)} applicants</span></div></div><div style="margin-top: 1rem; color: #cbd5e1; font-size: 0.95rem; line-height: 1.6;">{desc}</div></div>"""
         
         st.markdown(html_content, unsafe_allow_html=True)
         

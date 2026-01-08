@@ -5,6 +5,7 @@ from frontend import login, registration
 
 # Ensure database tables and data directories exist on startup
 from utils.database import create_tables
+from frontend.modern_components import init_modern_ui
 
 # Initialize DB and required directories (idempotent)
 create_tables()
@@ -12,6 +13,7 @@ create_tables()
 
 def main():
     st.set_page_config(layout="wide", page_title="Resume Analyst & Job Recommender")
+    init_modern_ui()
     st.sidebar.title("Navigation")
 
     if 'page' not in st.session_state:

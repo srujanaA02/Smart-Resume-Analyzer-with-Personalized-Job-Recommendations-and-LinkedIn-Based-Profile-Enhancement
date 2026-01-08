@@ -6,6 +6,7 @@ import time
 from backend.auth import is_user_logged_in, get_current_user_name
 from utils.database import get_db_connection
 from backend.resume_parser import parse_resume
+from frontend.modern_components import ModernUI
 
 MAX_FILE_SIZE = 5 * 1024 * 1024
 
@@ -189,31 +190,30 @@ def dashboard_page():
         ("Apply", "📨"),
     ]
 
-    # Render cards with arrows to the right of each card (except the last)
-    total_cols = (len(steps) * 2) - 1
-    cols = st.columns(total_cols)
-    col_index = 0
-    card_style = (
-        "border:1px solid #ddd; border-radius:8px; "
-        "padding:10px; text-align:center; "
-        "width:132px; height:100px; "
-        "display:flex; flex-direction:column; align-items:center; justify-content:center;"
-    )
-    
+    cols = st.columns(len(steps))
     for i, (label, icon) in enumerate(steps):
-        with cols[col_index]:
+        with cols[i]:
             st.markdown(
-                f"<div style='{card_style}'>"
-                f"<div style='font-size:22px'>{icon}</div>"
-                f"<div style='font-weight:600; margin-top:6px'>{label}</div>"
-                f"</div>",
-                unsafe_allow_html=True,
+                f"""
+                <div style="
+                    background-color: #1e293b;
+                    border: 1px solid #334155;
+                    border-radius: 8px;
+                    padding: 1rem;
+                    text-align: center;
+                    height: 100%;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    justify-content: center;
+                    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+                ">
+                    <div style="font-size: 2rem; margin-bottom: 0.5rem;">{icon}</div>
+                    <div style="font-weight: 600; color: #f8fafc; font-size: 0.9rem;">{label}</div>
+                </div>
+                """,
+                unsafe_allow_html=True
             )
-        col_index += 1
-        if i < len(steps) - 1:
-            with cols[col_index]:
-                st.markdown("<div style='text-align:center; font-size:22px; padding-top:14px'></div>", unsafe_allow_html=True)
-            col_index += 1
 
     st.header("Recent Activity")
     st.write("This section is under construction.")

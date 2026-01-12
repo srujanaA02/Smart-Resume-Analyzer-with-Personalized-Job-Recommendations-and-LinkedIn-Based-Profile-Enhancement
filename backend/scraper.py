@@ -710,6 +710,6 @@ if __name__ == "__main__":
         if scraper.login(email, password):
             jobs = scraper.search_jobs("Python Developer", "Remote", limit=5)
             logger.info(f"Scraped {len(jobs)} jobs.")
-            # print(json.dumps(jobs, indent=2))
+
     finally:
         scraper.close()

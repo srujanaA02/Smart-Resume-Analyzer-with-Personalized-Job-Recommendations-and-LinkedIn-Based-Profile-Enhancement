@@ -1,4 +1,4 @@
-from frontend import dashboard, profile, resume_analysis, analysis, job_recommendations, settings, showdatabase, skills_gap, resume_scoring
+from frontend import dashboard, profile, resume_analysis, analysis, job_recommendations, settings, skills_gap, resume_scoring
 
 
 LOGGED_IN_PAGES = {
@@ -9,7 +9,6 @@ LOGGED_IN_PAGES = {
     "Resume Scoring": resume_scoring.scoring_page,
     "Skills Gap Analysis": skills_gap.skills_gap_page,
     "Job Recommendations": job_recommendations.recommendations_page,
-    "Database Status": showdatabase.database_status_page,
     "Settings": settings.settings_page,
 }
 

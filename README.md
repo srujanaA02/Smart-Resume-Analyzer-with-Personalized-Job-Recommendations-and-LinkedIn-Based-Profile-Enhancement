@@ -226,7 +226,7 @@ The application uses the following LLM configuration defaults:
 
 ```env
 OLLAMA_HOST=http://localhost:11434
-LLM_MODEL=llama3.2:latest   # or mistral, llama2, etc.
+OLLAMA_MODEL=mistral   # or llama3.2, llama2, etc.
 LLM_TEMPERATURE=0.7
 LLM_MAX_TOKENS=3000
 ```

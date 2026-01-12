@@ -3,10 +3,24 @@ import os
 import PyPDF2
 import docx
 import time
+from datetime import datetime
 from backend.auth import is_user_logged_in, get_current_user_name
 from utils.database import get_db_connection
 from backend.resume_parser import parse_resume
 from frontend.modern_components import ModernUI
+
+
+def format_date(date_str):
+    """Normalize timestamp strings to a readable date."""
+    if not date_str:
+        return "N/A"
+    try:
+        # Accept ISO-like strings and strip timezone Z if present
+        dt = datetime.fromisoformat(str(date_str).replace('Z', '+00:00'))
+        return dt.strftime("%B %d, %Y")
+    except Exception:
+        return str(date_str).split(" ")[0]
+
 
 MAX_FILE_SIZE = 5 * 1024 * 1024
 
@@ -216,5 +230,90 @@ def dashboard_page():
             )
 
     st.header("Recent Activity")
-    st.write("This section is under construction.")
+
+    # Aggregate recent user activities: searches, resume analyses, and job interactions
+    activities = []
+
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor()
+
+        # Recent searches
+        cursor.execute("SELECT query_summary, search_timestamp, jobs_found_count, new_jobs_count FROM search_history WHERE user_id = ? ORDER BY search_timestamp DESC LIMIT 5", (user_id,))
+        for r in cursor.fetchall():
+            activities.append({
+                "type": "search",
+                "label": r[0],
+                "meta": f"{r[2]} results ({r[3]} new)",
+                "timestamp": r[1]
+            })
+
+        # Recent resume analyses
+        cursor.execute("SELECT analysis_timestamp FROM resume_analysis WHERE user_id = ? ORDER BY analysis_timestamp DESC LIMIT 5", (user_id,))
+        for r in cursor.fetchall():
+            activities.append({
+                "type": "analysis",
+                "label": "Resume Analysis",
+                "meta": "Detailed insights generated",
+                "timestamp": r[0]
+            })
+
+        # Recent job interactions/additions
+        cursor.execute("SELECT job_title, company_name, status, match_percentage, scraping_date FROM job_recommendations WHERE user_id = ? ORDER BY scraping_date DESC LIMIT 6", (user_id,))
+        for r in cursor.fetchall():
+            title = r[0] or "(untitled)"
+            comp = r[1] or ""
+            status = r[2] or "new"
+            match = int(r[3]) if r[3] is not None else 0
+            activities.append({
+                "type": "job",
+                "label": f"{title} @ {comp}",
+                "meta": f"{status.upper()} — {match}% match",
+                "timestamp": r[4] or ''
+            })
+    except Exception as e:
+        st.error(f"Could not fetch recent activity: {e}")
+    finally:
+        try:
+            conn.close()
+        except Exception:
+            pass
+
+    # Normalize and sort by timestamp (most recent first)
+    def _parse_ts(ts):
+        if not ts:
+            return datetime.min
+        try:
+            return datetime.fromisoformat(str(ts).replace('Z', '+00:00'))
+        except Exception:
+            try:
+                return datetime.strptime(str(ts).split(" ")[0], "%Y-%m-%d")
+            except Exception:
+                return datetime.min
+
+    activities.sort(key=lambda x: _parse_ts(x.get('timestamp')), reverse=True)
+
+    if not activities:
+        st.info("No recent activity to show yet. Start a search or analyze your resume to populate this list.")
+    else:
+        for a in activities:
+            icon = ""
+            if a['type'] == 'search': icon = '🔎'
+            elif a['type'] == 'analysis': icon = '🧠'
+            elif a['type'] == 'job': icon = '💼'
+            ts = a.get('timestamp') or ''
+            display_ts = format_date(ts)
+
+            st.markdown(f"""
+            <div style='display:flex; justify-content:space-between; align-items:center; padding:0.6rem 0.4rem; border-bottom:1px solid rgba(255,255,255,0.03);'>
+                <div style='display:flex; gap:12px; align-items:center;'>
+                    <div style='font-size:1.2rem;'>{icon}</div>
+                    <div>
+                        <div style='font-weight:700; color:#f8fafc;'>{a['label']}</div>
+                        <div style='color:#94a3b8; font-size:0.9rem; margin-top:3px;'>{a['meta']}</div>
+                    </div>
+                </div>
+                <div style='color:#94a3b8; font-size:0.85rem;'>{display_ts}</div>
+            </div>
+            """, unsafe_allow_html=True)
 

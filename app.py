@@ -16,6 +16,21 @@ def main():
     init_modern_ui()
     st.sidebar.title("Navigation")
 
+    # Icon mapping for navigation labels
+    ICONS = {
+        "Dashboard": "🏠",
+        "My Profile": "👤",
+        "Resume Analysis": "📝",
+        "Analysis Results": "📊",
+        "Resume Scoring": "🎯",
+        "Skills Gap Analysis": "🔍",
+        "Job Recommendations": "💼",
+        "Settings": "⚙️",
+        "Login": "🔐",
+        "Registration": "✍️",
+        "Logout": "🚪",
+    }
+
     if 'page' not in st.session_state:
         st.session_state['page'] = 'Login' if not is_user_logged_in() else 'Dashboard'
 
@@ -27,16 +42,18 @@ def main():
         if st.session_state.get('page') not in pages:
             st.session_state['page'] = 'Dashboard'
 
-        if st.sidebar.button("Logout"):
+        # Logout with icon
+        if st.sidebar.button(f"{ICONS.get('Logout','')} Logout"):
             logout_user()
             st.session_state['page'] = 'Login'
             st.rerun()
 
         st.sidebar.divider()
 
-        # Navigation buttons instead of radio
+        # Navigation buttons with icons
         for page_name in page_names:
-            if st.sidebar.button(page_name, use_container_width=True):
+            label = f"{ICONS.get(page_name, '')} {page_name}"
+            if st.sidebar.button(label, use_container_width=True):
                 st.session_state['page'] = page_name
                 st.rerun()
 
@@ -51,10 +68,10 @@ def main():
             st.session_state['page'] = 'Login'
 
         for page_name in pages.keys():
-            if st.sidebar.button(page_name, use_container_width=True):
+            label = f"{ICONS.get(page_name, '')} {page_name}"
+            if st.sidebar.button(label, use_container_width=True):
                 st.session_state['page'] = page_name
                 st.rerun()
-
     # Safely render the resolved page
     pages[st.session_state['page']]()
 

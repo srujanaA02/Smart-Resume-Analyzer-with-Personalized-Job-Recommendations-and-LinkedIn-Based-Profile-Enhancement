@@ -318,7 +318,7 @@ def recommendations_page():
                             <span style="color:#888; font-size:0.8em">{item['timestamp'][:10]}</span>
                         </div>
                         <div style="text-align:right">
-                            <span style="color:#00ADB5; font-weight:bold">+{item['new']}</span><br>
+                            <span style="color:#ffd700; font-weight:bold">+{item['new']}</span><br>
                             <span style="color:#666; font-size:0.8em">new</span>
                         </div>
                      </div>

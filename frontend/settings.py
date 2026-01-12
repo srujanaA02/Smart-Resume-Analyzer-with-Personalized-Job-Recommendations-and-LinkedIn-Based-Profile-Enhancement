@@ -68,7 +68,7 @@ def settings_page():
             
             if connection_status["status"] == "success":
                 st.success(f"✅ {connection_status['message']}")
-                with st.expander("Available Models"):
+                with st.expander("Available Models",expanded=True):
                     for model in connection_status.get("available_models", []):
                         st.write(f"- {model}")
             elif connection_status["status"] == "warning":

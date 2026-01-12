@@ -765,7 +765,7 @@ def analysis_page():
                         ]
                         priority = "High"
                         score_impact = "+5"
-                    with st.expander(display_text, expanded=(idx <= 2)):
+                    with st.expander(display_text):
                         col1, col2 = st.columns([3, 1])
                         with col1:
                             st.markdown("**Before/After Example:**")

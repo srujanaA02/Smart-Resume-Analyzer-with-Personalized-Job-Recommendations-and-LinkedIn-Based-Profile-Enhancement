@@ -50,12 +50,19 @@ def main():
 
         st.sidebar.divider()
 
-        # Navigation buttons with icons
+        # Navigation buttons with icons; highlight current page
         for page_name in page_names:
             label = f"{ICONS.get(page_name, '')} {page_name}"
-            if st.sidebar.button(label, use_container_width=True):
-                st.session_state['page'] = page_name
-                st.rerun()
+            if page_name == st.session_state.get('page'):
+                # Render highlighted static label for active page
+                st.sidebar.markdown(
+                    f"<div style='background: linear-gradient(90deg, var(--primary-color), #a78bfa); color: white; padding: 0.6rem; border-radius: 8px; font-weight: 700; text-align: left; margin-bottom: 0.5rem;'>{ICONS.get(page_name, '')} {page_name}</div>",
+                    unsafe_allow_html=True
+                )
+            else:
+                if st.sidebar.button(label, use_container_width=True):
+                    st.session_state['page'] = page_name
+                    st.rerun()
 
     else:
         pages = {
@@ -69,9 +76,15 @@ def main():
 
         for page_name in pages.keys():
             label = f"{ICONS.get(page_name, '')} {page_name}"
-            if st.sidebar.button(label, use_container_width=True):
-                st.session_state['page'] = page_name
-                st.rerun()
+            if page_name == st.session_state.get('page'):
+                st.sidebar.markdown(
+                    f"<div style='background: linear-gradient(90deg, var(--primary-color), #a78bfa); color: white; padding: 0.6rem; border-radius: 8px; font-weight: 700; text-align: left; margin-bottom: 0.5rem;'>{ICONS.get(page_name, '')} {page_name}</div>",
+                    unsafe_allow_html=True
+                )
+            else:
+                if st.sidebar.button(label, use_container_width=True):
+                    st.session_state['page'] = page_name
+                    st.rerun()
     # Safely render the resolved page
     pages[st.session_state['page']]()
 

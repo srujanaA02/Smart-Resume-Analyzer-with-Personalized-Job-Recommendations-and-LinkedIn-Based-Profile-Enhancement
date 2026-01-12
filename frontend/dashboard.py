@@ -170,7 +170,7 @@ def dashboard_page():
                 st.write(f"📁 Path: {current_path}")
                 st.write(f"⏱️ Last parsed: {latest['analysis_timestamp'] if latest else 'Never'}")
 
-            st.warning("To upload a new resume, delete the current one.")
+            st.markdown("To upload a new resume, delete the current one.")
             if st.button("🗑️ Delete Current Resume", use_container_width=True):
                 try:
                     if os.path.exists(current_path or ''):

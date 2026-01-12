@@ -3,6 +3,7 @@ import json
 import sys
 import os
 from datetime import datetime
+import html
 import pandas as pd
 from io import BytesIO
 
@@ -190,23 +191,33 @@ def create_weaknesses_cards(weaknesses: list) -> None:
 
 
 def create_skills_tags(skills_data: dict) -> None:
-    """Display skills as interactive tags with categories."""
+    """Display skills using compact, card-style components."""
     st.subheader("🛠️ Skills Analysis")
-    
+
     if not skills_data:
         st.info("No skills data available")
         return
-    
-    col1, col2 = st.columns(2)
-    
-    def format_skill_chip(item, icon="🏷️"):
-        if isinstance(item, dict) and item.get("skill"):
-            prof = item.get("proficiency")
-            suffix = f" ({prof})" if prof else ""
-            return f"{icon} `{item['skill']}`{suffix}"
-        return f"{icon} `{item}`"
 
-    # Identified Skills
+    col1, col2 = st.columns(2)
+
+    color_map = {"advanced": "#a855f7", "intermediate": "#60a5fa", "beginner": "#94a3b8", "expert": "#f472b6"}
+
+    def _skill_card_html(name: str, prof: str = "") -> str:
+        prof_text = str(prof).title() if prof else ""
+        color = color_map.get(str(prof).lower(), "#94a3b8") if prof else "#94a3b8"
+        prof_html = f"<div class='skill-badge' style='color:{color};'>{prof_text}</div>" if prof_text else ""
+        return f"<div class='skill-card'><div class='skill-title'>{html.escape(name)}</div>{prof_html}</div>"
+
+    def _priority_badge_html(priority: str) -> str:
+        p = str(priority).lower()
+        cls = "priority-low"
+        if p == "high" or p == "critical":
+            cls = "priority-high"
+        elif p == "medium":
+            cls = "priority-medium"
+        return f"<div class='{cls}'>{str(priority).title()}</div>"
+
+    # Identified Skills (left column)
     with col1:
         st.write("### ✅ Identified Skills")
         identified = skills_data.get("identified_skills", []) if isinstance(skills_data, dict) else []
@@ -217,24 +228,49 @@ def create_skills_tags(skills_data: dict) -> None:
             st.caption(summary_text)
 
         if identified:
+            html_chunks = []
             if isinstance(identified, dict):
                 for category, skills_list in identified.items():
                     if category == "summary":
                         continue
                     if not isinstance(skills_list, list):
                         continue
-                    chips = [format_skill_chip(s) for s in skills_list if s]
-                    if chips:
-                        st.write(f"**{category}**")
-                        st.markdown(" ".join(chips[:12]))
+                    cards = []
+                    for s in skills_list:
+                        if isinstance(s, dict):
+                            name = s.get("skill") or s.get("name") or ""
+                            prof = s.get("proficiency", "")
+                        else:
+                            name = str(s)
+                            prof = ""
+                        if not name:
+                            continue
+                        cards.append(_skill_card_html(name, prof))
+                    if cards:
+                        html_chunks.append(f"<div class='skill-section'><strong>{category}</strong><div class='skill-grid'>{''.join(cards[:24])}</div></div>")
             elif isinstance(identified, list):
-                chips = [format_skill_chip(s) for s in identified if s]
-                if chips:
-                    st.markdown(" ".join(chips[:20]))
+                cards = []
+                for s in identified:
+                    if isinstance(s, dict):
+                        name = s.get("skill") or s.get("name") or ""
+                        prof = s.get("proficiency", "")
+                    else:
+                        name = str(s)
+                        prof = ""
+                    if not name:
+                        continue
+                    cards.append(_skill_card_html(name, prof))
+                if cards:
+                    html_chunks.append(f"<div class='skill-grid'>{''.join(cards[:40])}</div>")
+
+            if html_chunks:
+                st.markdown(''.join(html_chunks), unsafe_allow_html=True)
+            else:
+                st.info("No identified skills found")
         else:
             st.info("No identified skills found")
-    
-    # Recommended Skills
+
+    # Recommended Skills (right column)
     with col2:
         st.write("### 💡 Skills to Learn")
         recommended = skills_data.get("recommended_skills", []) if isinstance(skills_data, dict) else skills_data.get("suggestions", []) if isinstance(skills_data, dict) else []
@@ -246,27 +282,46 @@ def create_skills_tags(skills_data: dict) -> None:
                 st.caption(rec_summary)
 
         if recommended:
+            rec_chunks = []
             if isinstance(recommended, dict):
                 for category, skills_list in recommended.items():
                     if category == "summary":
                         continue
                     if not isinstance(skills_list, list):
                         continue
-                    chips = []
+                    cards = []
                     for s in skills_list:
                         # If dict improvement format
-                        if isinstance(s, dict) and s.get("improvement"):
+                        if isinstance(s, dict) and (s.get("improvement") or s.get("skill") or s.get("name")):
+                            name = s.get("improvement") or s.get("skill") or s.get("name") or ""
                             pr = s.get("priority", "")
-                            chips.append(f"📌 `{s['improvement']}` ({pr})")
+                            badge = _priority_badge_html(pr) if pr else ""
+                            cards.append(f"<div class='skill-card'>{html.escape(name)}{badge}</div>")
                         else:
-                            chips.append(format_skill_chip(s, icon="📌"))
-                    if chips:
-                        st.write(f"**{category}**")
-                        st.markdown(" ".join(chips[:12]))
+                            if isinstance(s, dict):
+                                name = s.get("skill") or s.get("name") or ""
+                            else:
+                                name = str(s)
+                            cards.append(_skill_card_html(name, ""))
+                    if cards:
+                        rec_chunks.append(f"<div class='skill-section'><strong>{category}</strong><div class='skill-grid'>{''.join(cards[:24])}</div></div>")
             elif isinstance(recommended, list):
-                chips = [format_skill_chip(s, icon="📌") for s in recommended if s]
-                if chips:
-                    st.markdown(" ".join(chips[:20]))
+                cards = []
+                for s in recommended:
+                    if isinstance(s, dict):
+                        name = s.get("improvement") or s.get("skill") or s.get("name") or ""
+                        pr = s.get("priority", "")
+                        badge = _priority_badge_html(pr) if pr else ""
+                        cards.append(f"<div class='skill-card'>{html.escape(name)}{badge}</div>")
+                    else:
+                        cards.append(_skill_card_html(str(s), ""))
+                if cards:
+                    rec_chunks.append(f"<div class='skill-grid'>{''.join(cards[:40])}</div>")
+
+            if rec_chunks:
+                st.markdown(''.join(rec_chunks), unsafe_allow_html=True)
+            else:
+                st.info("No additional skills recommended")
         else:
             st.info("No additional skills recommended")
 

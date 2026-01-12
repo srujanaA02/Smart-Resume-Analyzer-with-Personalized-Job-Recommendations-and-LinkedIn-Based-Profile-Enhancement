@@ -200,6 +200,72 @@ CSS = """
         margin-top: 0.25rem !important;
     }
 
+    /* Skill Cards */
+    .skill-grid {
+        display: flex !important;
+        flex-wrap: wrap !important;
+        gap: 10px !important;
+        margin-top: 8px !important;
+    }
+
+    .skill-card {
+        min-width: 140px !important;
+        max-width: 260px !important;
+        background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(0,0,0,0.03)) !important;
+        border: 1px solid rgba(255,255,255,0.03) !important;
+        padding: 10px 12px !important;
+        border-radius: 10px !important;
+        box-shadow: 0 6px 14px rgba(2,6,23,0.6) !important;
+    }
+
+    .skill-title {
+        font-weight: 700 !important;
+        color: var(--text-color) !important;
+        margin-bottom: 6px !important;
+    }
+
+    .skill-badge {
+        font-size: 0.85rem !important;
+        opacity: 0.95 !important;
+        font-weight: 700 !important;
+    }
+
+    .priority-high {
+        background: linear-gradient(90deg,#dc2626,#ef4444) !important;
+        color: white !important;
+        padding: 4px 8px !important;
+        border-radius: 999px !important;
+        font-size: 0.75rem !important;
+        display: inline-block !important;
+        margin-top: 6px !important;
+    }
+
+    .priority-medium {
+        background: linear-gradient(90deg,#f59e0b,#f97316) !important;
+        color: white !important;
+        padding: 4px 8px !important;
+        border-radius: 999px !important;
+        font-size: 0.75rem !important;
+        display: inline-block !important;
+        margin-top: 6px !important;
+    }
+
+    .priority-low {
+        background: linear-gradient(90deg,#10b981,#34d399) !important;
+        color: white !important;
+        padding: 4px 8px !important;
+        border-radius: 999px !important;
+        font-size: 0.75rem !important;
+        display: inline-block !important;
+        margin-top: 6px !important;
+    }
+
+    .skill-section strong {
+        display: block !important;
+        margin-bottom: 6px !important;
+        color: var(--text-gray) !important;
+    }
+
 </style>
 """
 

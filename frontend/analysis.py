@@ -236,6 +236,7 @@ def create_skills_tags(skills_data: dict) -> None:
                     if not isinstance(skills_list, list):
                         continue
                     cards = []
+                    pretty_cat = str(category).replace('_', ' ').title()
                     for s in skills_list:
                         if isinstance(s, dict):
                             name = s.get("skill") or s.get("name") or ""
@@ -247,7 +248,7 @@ def create_skills_tags(skills_data: dict) -> None:
                             continue
                         cards.append(_skill_card_html(name, prof))
                     if cards:
-                        html_chunks.append(f"<div class='skill-section'><strong>{category}</strong><div class='skill-grid'>{''.join(cards[:24])}</div></div>")
+                        html_chunks.append(f"<div class='skill-section'><strong>{pretty_cat}</strong><div class='skill-grid'>{''.join(cards[:24])}</div></div>")
             elif isinstance(identified, list):
                 cards = []
                 for s in identified:
@@ -290,6 +291,7 @@ def create_skills_tags(skills_data: dict) -> None:
                     if not isinstance(skills_list, list):
                         continue
                     cards = []
+                    pretty_cat = str(category).replace('_', ' ').title()
                     for s in skills_list:
                         # If dict improvement format
                         if isinstance(s, dict) and (s.get("improvement") or s.get("skill") or s.get("name")):
@@ -304,7 +306,7 @@ def create_skills_tags(skills_data: dict) -> None:
                                 name = str(s)
                             cards.append(_skill_card_html(name, ""))
                     if cards:
-                        rec_chunks.append(f"<div class='skill-section'><strong>{category}</strong><div class='skill-grid'>{''.join(cards[:24])}</div></div>")
+                        rec_chunks.append(f"<div class='skill-section'><strong>{pretty_cat}</strong><div class='skill-grid'>{''.join(cards[:24])}</div></div>")
             elif isinstance(recommended, list):
                 cards = []
                 for s in recommended:

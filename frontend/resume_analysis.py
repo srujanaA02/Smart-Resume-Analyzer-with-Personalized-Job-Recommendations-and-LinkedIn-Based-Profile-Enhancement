@@ -312,24 +312,24 @@ def analysis_page():
                     if summary:
                         st.info(f"Summary: {summary}")
                     st.subheader("🔧 Technical Skills")
-                    technical = skills_data.get("technical", [])
+                    technical = skills_data.get("technical", []) or skills_data.get("technical_skills", []) or skills_data.get("technicalSkills", [])
                     if technical:
                         for skill in technical:
                             if isinstance(skill, dict):
-                                name = skill.get("skill", "N/A")
-                                proficiency = skill.get("proficiency", "intermediate")
+                                name = skill.get("skill", skill.get("name", "N/A"))
+                                proficiency = str(skill.get("proficiency", "intermediate")).title()
                                 st.markdown(f"- **{name}** ({proficiency})")
                             else:
                                 st.markdown(f"- {skill}")
                     else:
                         st.info("No technical skills identified.")
                     st.subheader("💼 Soft Skills")
-                    soft = skills_data.get("soft_skills", [])
+                    soft = skills_data.get("soft_skills", []) or skills_data.get("softSkills", []) or skills_data.get("soft", [])
                     if soft:
                         for skill in soft:
                             if isinstance(skill, dict):
-                                name = skill.get("skill", "N/A")
-                                proficiency = skill.get("proficiency", "intermediate")
+                                name = skill.get("skill", skill.get("name", "N/A"))
+                                proficiency = str(skill.get("proficiency", "intermediate")).title()
                                 st.markdown(f"- **{name}** ({proficiency})")
                             else:
                                 st.markdown(f"- {skill}")
@@ -342,14 +342,14 @@ def analysis_page():
                     summary = suggestions_data.get("summary")
                     if summary:
                         st.info(f"Roadmap: {summary}")
-                    improvements = suggestions_data.get("priority_improvements", [])
+                    improvements = suggestions_data.get("priority_improvements", []) or suggestions_data.get("priorityImprovements", []) or suggestions_data.get("improvements", [])
                     if improvements:
-                        st.markdown(f"**{len(improvements)} priority items:**")
+                        st.markdown(f"**{len(improvements)} Priority Improvements:**")
                         for imp in improvements:
                             title = imp.get("improvement", "N/A")
                             meta = []
                             if imp.get("priority"):
-                                meta.append(f"Priority: {imp['priority']}")
+                                meta.append(f"Priority: {str(imp['priority']).title()}")
                             if imp.get("impact"):
                                 meta.append(f"Impact: {imp['impact']}")
                             if imp.get("timeline"):

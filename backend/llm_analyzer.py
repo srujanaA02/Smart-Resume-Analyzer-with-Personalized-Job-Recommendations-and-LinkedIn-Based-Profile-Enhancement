@@ -139,10 +139,10 @@ class LLMAnalyzer:
         
         self.ollama_host = os.getenv("OLLAMA_HOST", "http://localhost:11434")
         self.model = model or os.getenv("OLLAMA_MODEL", "mistral")
-        self.max_retries = int(os.getenv("MAX_RETRIES", "3"))
-        self.timeout = int(os.getenv("REQUEST_TIMEOUT", "30"))
+        self.max_retries = int(os.getenv("MAX_RETRIES", "2"))
+        self.timeout = int(os.getenv("REQUEST_TIMEOUT", "240"))
         self.temperature = float(os.getenv("TEMPERATURE", "0.2"))
-        self.max_tokens = int(os.getenv("MAX_TOKENS", "1024"))
+        self.max_tokens = int(os.getenv("MAX_TOKENS", "10000"))
         self.use_langchain = os.getenv("USE_LANGCHAIN", "false").lower() == "true"
         
         self.token_counter = TokenCounter()

@@ -150,9 +150,11 @@ class LLMAnalyzer:
         self.client = None
         self.lc_model = None
         
-        logger.info(f"Initializing LLMAnalyzer with model: {self.model}, host: {self.ollama_host}")
-        self._initialize_client()
-        self._initialize_langchain()
+        logger.debug(f"Initializing LLMAnalyzer with model: {self.model}, host: {self.ollama_host}")
+        # Defer client initialization to when it's first needed to reduce noise on page refreshes
+        # and avoid repeated external calls during every Streamlit rerun.
+        # self._initialize_client()
+        # self._initialize_langchain()
     
     def _initialize_client(self):
         """Initialize Ollama client with error handling."""
@@ -161,7 +163,7 @@ class LLMAnalyzer:
             # Set the Ollama host from environment
             os.environ["OLLAMA_HOST"] = self.ollama_host
             self.client = ollama.Client(host=self.ollama_host)
-            logger.info("Ollama client initialized successfully")
+            logger.debug("Ollama client initialized successfully (debug)")
         except Exception as e:
             logger.error(f"Failed to initialize Ollama client: {e}")
             self.client = None

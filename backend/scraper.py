@@ -71,15 +71,20 @@ def get_driver(headless=True, user_agent=None):
         # Default modern user agent
         options.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36")
 
-    # Path to chromedriver - adjust if needed or use webdriver_manager
-    chromedriver_path = r"C:\ChromeDriver\chromedriver.exe"
-    if os.path.exists(chromedriver_path):
-        service = Service(chromedriver_path)
-        driver = webdriver.Chrome(service=service, options=options)
+    # Path to chromedriver - read from environment variable (CHROMEDRIVER_PATH)
+    chromedriver_path = os.getenv("CHROMEDRIVER_PATH", "").strip()
+    if chromedriver_path:
+        # Use provided chromedriver binary
+        if os.path.exists(chromedriver_path):
+            service = Service(chromedriver_path)
+            driver = webdriver.Chrome(service=service, options=options)
+        else:
+            logger.warning(f"CHROMEDRIVER_PATH is set to '{chromedriver_path}' but file does not exist. Falling back to system chromedriver on PATH.")
+            driver = webdriver.Chrome(options=options)
     else:
-        # Fallback to default path (assumes in PATH)
+        # No path provided — use chromedriver from PATH
         driver = webdriver.Chrome(options=options)
-        
+
     return driver
 
 # --------------------------------------------------

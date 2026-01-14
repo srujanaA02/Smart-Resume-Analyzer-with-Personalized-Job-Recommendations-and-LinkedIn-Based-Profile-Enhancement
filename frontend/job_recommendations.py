@@ -109,7 +109,7 @@ def recommendations_page():
                 preferred_companies = st.text_area("Preferred Companies", value=saved_prefs.get('preferred_companies', ''), placeholder="Google, Microsoft (comma separated)", key=f"search_companies{suffix}")
                 
                 # New Slider for Limit
-                jobs_limit = st.slider("Max Jobs to Search", 5, 50, int(saved_prefs.get('search_limit', 10)), step=5, key=f"search_limit{suffix}")
+                jobs_limit = st.slider("Max Jobs to Search", 5, 50, int(saved_prefs.get('search_limit', 5)), step=5, key=f"search_limit{suffix}")
 
                 st.markdown("---")
                 st.markdown("⏰ **Auto-Scheduling (Beta)**")

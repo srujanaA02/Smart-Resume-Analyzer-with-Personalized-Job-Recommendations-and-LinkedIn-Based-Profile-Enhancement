@@ -23,6 +23,8 @@ env/
 .streamlit/secrets.toml
 # Note: config.toml usually can be committed, but secrets MUST NOT
 
+linkedin_cookies.txt
+scraper.log
 # Project Logs
 logs/
 *.log

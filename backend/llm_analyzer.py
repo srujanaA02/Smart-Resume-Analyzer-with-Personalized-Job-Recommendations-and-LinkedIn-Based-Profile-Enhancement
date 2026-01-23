@@ -31,18 +31,18 @@ logger = logging.getLogger(__name__)
 
 class TokenCounter:
     """Track token usage for cost monitoring."""
-    
+
     def __init__(self):
         self.total_tokens = 0
         self.requests_count = 0
         self.api_calls_log = []
-    
+
     def add_tokens(self, prompt_tokens: int, response_tokens: int, model: str):
         """Add token count from a request."""
         total = prompt_tokens + response_tokens
         self.total_tokens += total
         self.requests_count += 1
-        
+
         log_entry = {
             "timestamp": datetime.now().isoformat(),
             "model": model,
@@ -51,14 +51,15 @@ class TokenCounter:
             "total_tokens": total
         }
         self.api_calls_log.append(log_entry)
-        
-        logger.info(f"Tokens used: {total} | Total so far: {self.total_tokens} | Request #{self.requests_count}")
-    
+
+        logger.info(f"Tokens used: {total} | Total so far: {
+                    self.total_tokens} | Request #{self.requests_count}")
+
     def estimate_tokens(self, text: str) -> int:
         """Estimate token count for text (approximation for Ollama)."""
         # Rough estimate: ~4 characters per token
         return len(text) // 4
-    
+
     def get_stats(self) -> Dict[str, Any]:
         """Get token usage statistics."""
         return {
@@ -70,26 +71,26 @@ class TokenCounter:
 
 class AnalysisCache:
     """Cache analysis results to avoid re-analyzing the same resume."""
-    
+
     def __init__(self):
         self.cache = {}
         self.cache_dir = "logs/.cache"
         os.makedirs(self.cache_dir, exist_ok=True)
-    
+
     def _generate_key(self, resume_text: str, analysis_type: str) -> str:
         """Generate a cache key based on resume hash and analysis type."""
         resume_hash = hashlib.sha256(resume_text.encode()).hexdigest()
         return f"{analysis_type}_{resume_hash}"
-    
+
     def get(self, resume_text: str, analysis_type: str) -> Optional[Dict[str, Any]]:
         """Retrieve cached analysis result."""
         key = self._generate_key(resume_text, analysis_type)
-        
+
         # Check in-memory cache
         if key in self.cache:
             logger.info(f"Cache hit for {analysis_type}")
             return self.cache[key].copy()
-        
+
         # Check disk cache
         cache_file = os.path.join(self.cache_dir, f"{key}.json")
         if os.path.exists(cache_file):
@@ -101,16 +102,16 @@ class AnalysisCache:
                     return data.copy()
             except Exception as e:
                 logger.warning(f"Error reading cache file: {e}")
-        
+
         return None
-    
+
     def set(self, resume_text: str, analysis_type: str, result: Dict[str, Any]):
         """Cache an analysis result."""
         key = self._generate_key(resume_text, analysis_type)
-        
+
         # Store in memory
         self.cache[key] = result.copy()
-        
+
         # Store on disk
         try:
             cache_file = os.path.join(self.cache_dir, f"{key}.json")
@@ -119,7 +120,7 @@ class AnalysisCache:
             logger.info(f"Cached {analysis_type} result")
         except Exception as e:
             logger.warning(f"Error writing cache file: {e}")
-    
+
     def clear(self):
         """Clear all caches."""
         self.cache.clear()
@@ -136,26 +137,28 @@ class AnalysisCache:
 class LLMAnalyzer:
 
     def __init__(self, model: Optional[str] = None):
-        
+
         self.ollama_host = os.getenv("OLLAMA_HOST", "http://localhost:11434")
         self.model = model or os.getenv("OLLAMA_MODEL", "mistral")
         self.max_retries = int(os.getenv("MAX_RETRIES", "2"))
         self.timeout = int(os.getenv("REQUEST_TIMEOUT", "240"))
         self.temperature = float(os.getenv("TEMPERATURE", "0.2"))
         self.max_tokens = int(os.getenv("MAX_TOKENS", "10000"))
-        self.use_langchain = os.getenv("USE_LANGCHAIN", "false").lower() == "true"
-        
+        self.use_langchain = os.getenv(
+            "USE_LANGCHAIN", "false").lower() == "true"
+
         self.token_counter = TokenCounter()
         self.cache = AnalysisCache()
         self.client = None
         self.lc_model = None
-        
-        logger.debug(f"Initializing LLMAnalyzer with model: {self.model}, host: {self.ollama_host}")
+
+        logger.debug(f"Initializing LLMAnalyzer with model: {
+                     self.model}, host: {self.ollama_host}")
         # Defer client initialization to when it's first needed to reduce noise on page refreshes
         # and avoid repeated external calls during every Streamlit rerun.
         # self._initialize_client()
         # self._initialize_langchain()
-    
+
     def _initialize_client(self):
         """Initialize Ollama client with error handling."""
         try:
@@ -173,7 +176,8 @@ class LLMAnalyzer:
         if not self.use_langchain:
             return
         # Disable LangChain pathway to avoid unsupported options and /api/chat warnings
-        logger.info("LangChain support disabled to avoid unsupported options; using direct Ollama generate API")
+        logger.info(
+            "LangChain support disabled to avoid unsupported options; using direct Ollama generate API")
         self.use_langchain = False
         return
         try:
@@ -188,24 +192,26 @@ class LLMAnalyzer:
         except Exception as e:
             logger.error(f"Failed to initialize LangChain ChatOllama: {e}")
             self.lc_model = None
-    
+
     def test_connection(self) -> Dict[str, Any]:
         """Test connection to Ollama server."""
         logger.info("Testing Ollama connection...")
-        
+
         try:
             # Try to list available models
             response = requests.get(
                 f"{self.ollama_host}/api/tags",
                 timeout=self.timeout
             )
-            
+
             if response.status_code == 200:
                 data = response.json()
-                models = [m.get("name", "unknown") for m in data.get("models", [])]
-                
-                if self.model in models:
-                    logger.info(f"Connection successful. Model '{self.model}' is available.")
+                models = [m.get("name", "unknown")
+                          for m in data.get("models", [])]
+
+                if self.model in models or self.model+":latest" in models:
+                    logger.info(f"Connection successful. Model '{
+                                self.model}' is available.")
                     return {
                         "status": "success",
                         "message": f"Ollama connected successfully. Model '{self.model}' available.",
@@ -213,7 +219,8 @@ class LLMAnalyzer:
                         "available_models": models
                     }
                 else:
-                    logger.warning(f"Model '{self.model}' not found. Available: {models}")
+                    logger.warning(
+                        f"Model '{self.model}' not found. Available: {models}")
                     return {
                         "status": "warning",
                         "message": f"Model '{self.model}' not found. Pull it with: ollama pull {self.model}",
@@ -227,7 +234,7 @@ class LLMAnalyzer:
                     "message": f"Ollama server returned status {response.status_code}",
                     "host": self.ollama_host
                 }
-                
+
         except requests.exceptions.ConnectionError as e:
             logger.error(f"Connection error: {e}")
             return {
@@ -242,12 +249,12 @@ class LLMAnalyzer:
                 "message": f"Unexpected error: {str(e)}",
                 "error": str(e)
             }
-    
+
     # ============ PROMPT TEMPLATES ============
-    
+
     def get_strengths_prompt(self, resume_text: str) -> str:
         """Generate specialized prompt for identifying resume strengths with confidence scoring."""
-        return f"""You are an expert career coach and resume analyzer. 
+        return f"""You are an expert career coach and resume analyzer.
 Analyze the resume and identify 5-7 key strengths in order of importance.
 
 Resume:
@@ -283,7 +290,7 @@ Rules:
 - Include location/section when available.
 - Provide a confidence score (0-100) based on evidence clarity.
 - Return ONLY valid JSON, no extra text."""
-    
+
     def get_weaknesses_prompt(self, resume_text: str) -> str:
         """Generate specialized prompt for identifying resume weaknesses with severity levels."""
         return f"""You are an expert career coach and resume analyzer.
@@ -323,7 +330,7 @@ Rules:
 - Provide specific examples and locations in the resume for each weakness.
 - Include confidence (0-100) per weakness based on evidence clarity.
 - Return ONLY valid JSON, no extra text."""
-    
+
     def get_skills_extraction_prompt(self, resume_text: str) -> str:
         """Generate prompt for extracting skills."""
         return f"""You are an expert resume analyst. Carefully extract ALL technical and soft skills from the resume below.
@@ -343,10 +350,11 @@ Resume:
 {resume_text}
 
 Provide your analysis as a JSON object with the following structure:
-{{"technical_skills": ["skill1", "skill2", "skill3", ...], "soft_skills": ["skill1", "skill2", "skill3", ...]}}
+{{"technical_skills": ["skill1", "skill2", "skill3", ...],
+    "soft_skills": ["skill1", "skill2", "skill3", ...]}}
 
 Include all relevant skills found. Return ONLY valid JSON, no additional text."""
-    
+
     def get_improvement_suggestions_prompt(self, resume_text: str) -> str:
         """Generate prompt for improvement suggestions with dynamic advice and resources."""
         return f"""
@@ -391,7 +399,7 @@ Return ONLY valid JSON, no additional text.
 Resume:
 {resume_text}
 """
-    
+
     def get_job_match_prompt(self, resume_text: str, job_description: str) -> str:
         """Generate prompt for job matching analysis."""
         return f"""You are an expert recruiter and career matcher.
@@ -413,9 +421,9 @@ Provide your analysis as a JSON object with the following structure:
 }}
 
 Return ONLY valid JSON, no additional text."""
-    
+
     # ============ LLM CALL METHODS ============
-    
+
     def _call_ollama_with_retry(self, prompt: str) -> Optional[str]:
         """Call Ollama API (LangChain if enabled) with retry logic and error handling."""
         if self.use_langchain and self.lc_model:
@@ -423,8 +431,9 @@ Return ONLY valid JSON, no additional text."""
 
         for attempt in range(self.max_retries):
             try:
-                logger.info(f"Calling Ollama (attempt {attempt + 1}/{self.max_retries})...")
-                
+                logger.info(f"Calling Ollama (attempt {
+                            attempt + 1}/{self.max_retries})...")
+
                 response = requests.post(
                     f"{self.ollama_host}/api/generate",
                     json={
@@ -436,50 +445,58 @@ Return ONLY valid JSON, no additional text."""
                     },
                     timeout=self.timeout
                 )
-                
+
                 if response.status_code == 200:
                     data = response.json()
                     logger.info("Ollama response received successfully")
                     return data.get("response", "")
                 elif response.status_code == 429:
-                    logger.warning(f"Rate limited (429). Retrying in {2 ** attempt}s...")
+                    logger.warning(f"Rate limited (429). Retrying in {
+                                   2 ** attempt}s...")
                     time.sleep(2 ** attempt)
                 else:
-                    logger.error(f"Ollama returned status {response.status_code}: {response.text}")
+                    logger.error(f"Ollama returned status {
+                                 response.status_code}: {response.text}")
                     if attempt < self.max_retries - 1:
                         time.sleep(2 ** attempt)
-                        
+
             except requests.exceptions.Timeout:
-                logger.warning(f"Request timeout (attempt {attempt + 1}/{self.max_retries})")
+                logger.warning(f"Request timeout (attempt {
+                               attempt + 1}/{self.max_retries})")
                 if attempt < self.max_retries - 1:
                     time.sleep(2 ** attempt)
             except requests.exceptions.ConnectionError as e:
-                logger.warning(f"Connection error (attempt {attempt + 1}/{self.max_retries}): {e}")
+                logger.warning(f"Connection error (attempt {
+                               attempt + 1}/{self.max_retries}): {e}")
                 if attempt < self.max_retries - 1:
                     time.sleep(2 ** attempt)
             except Exception as e:
                 logger.error(f"Unexpected error during API call: {e}")
                 if attempt < self.max_retries - 1:
                     time.sleep(2 ** attempt)
-        
-        logger.error(f"Failed to get response from Ollama after {self.max_retries} attempts")
+
+        logger.error(f"Failed to get response from Ollama after {
+                     self.max_retries} attempts")
         return None
 
     def _call_langchain_with_retry(self, prompt: str) -> Optional[str]:
         """Call Ollama via LangChain ChatOllama with retry logic."""
         for attempt in range(self.max_retries):
             try:
-                logger.info(f"Calling LangChain ChatOllama (attempt {attempt + 1}/{self.max_retries})...")
+                logger.info(f"Calling LangChain ChatOllama (attempt {
+                            attempt + 1}/{self.max_retries})...")
                 result = self.lc_model.invoke(prompt)
                 # ChatOllama returns an AIMessage; cast to string
                 return str(result.content if hasattr(result, "content") else result)
             except Exception as e:
-                logger.warning(f"LangChain call failed (attempt {attempt + 1}/{self.max_retries}): {e}")
+                logger.warning(f"LangChain call failed (attempt {
+                               attempt + 1}/{self.max_retries}): {e}")
                 if attempt < self.max_retries - 1:
                     time.sleep(2 ** attempt)
-        logger.error(f"Failed to get response from LangChain/Ollama after {self.max_retries} attempts")
+        logger.error(
+            f"Failed to get response from LangChain/Ollama after {self.max_retries} attempts")
         return None
-    
+
     def analyze_resume(
         self,
         resume_text: str,
@@ -489,12 +506,12 @@ Return ONLY valid JSON, no additional text."""
     ) -> Dict[str, Any]:
         """
         Analyze resume using the provided prompt function with caching.
-        
+
         Args:
             resume_text: The resume text to analyze
             prompt_func: Function that takes resume_text and returns a prompt
             analysis_type: Type of analysis for caching (strengths, weaknesses, skills, etc.)
-        
+
         Returns:
             Dictionary with analysis results or error message
         """
@@ -505,24 +522,25 @@ Return ONLY valid JSON, no additional text."""
                 if cached_result:
                     cached_result["cached"] = True
                     return cached_result
-            
+
             # Generate prompt
             prompt = prompt_func(resume_text)
             prompt_tokens = self.token_counter.estimate_tokens(prompt)
-            
+
             # Call LLM
             response_text = self._call_ollama_with_retry(prompt)
-            
+
             if not response_text:
                 logger.error("No response from Ollama")
                 return {"error": "No response from Ollama. Check connection."}
-            
+
             # Parse response
             parsed = self._parse_response(response_text)
             response_tokens = self.token_counter.estimate_tokens(response_text)
-            
+
             # Track tokens
-            self.token_counter.add_tokens(prompt_tokens, response_tokens, self.model)
+            self.token_counter.add_tokens(
+                prompt_tokens, response_tokens, self.model)
 
             # If parsing failed and we only have the raw response, surface as an error
             if "raw_response" in parsed and len(parsed.keys()) == 1:
@@ -530,18 +548,18 @@ Return ONLY valid JSON, no additional text."""
                     "error": "LLM response was not valid JSON; see raw_response",
                     "raw_response": parsed.get("raw_response")
                 }
-            
+
             # Cache the result (only when enabled)
             if use_cache and "error" not in parsed:
                 self.cache.set(resume_text, analysis_type, parsed)
                 parsed["cached"] = False
-            
+
             return parsed
-            
+
         except Exception as e:
             logger.error(f"Error during resume analysis: {e}")
             return {"error": f"Analysis failed: {str(e)}"}
-    
+
     def _parse_response(self, response_text: str) -> Dict[str, Any]:
         """
         Parse LLM response and extract JSON.
@@ -563,7 +581,7 @@ Return ONLY valid JSON, no additional text."""
                 start = cleaned.find("{")
                 end = cleaned.rfind("}")
                 if start != -1 and end != -1 and end > start:
-                    snippet = cleaned[start : end + 1]
+                    snippet = cleaned[start: end + 1]
                     try:
                         return json.loads(snippet)
                     except json.JSONDecodeError:
@@ -580,9 +598,10 @@ Return ONLY valid JSON, no additional text."""
                     pass
 
             # If all parsing fails, return the raw response for visibility
-            logger.warning("Could not parse response as JSON. Returning raw response.")
+            logger.warning(
+                "Could not parse response as JSON. Returning raw response.")
             return {"raw_response": response_text}
-            
+
         except json.JSONDecodeError as e:
             logger.error(f"JSON parsing error: {e}")
             return {"error": "Failed to parse LLM response as JSON", "raw_response": response_text}
@@ -634,7 +653,8 @@ Return ONLY valid JSON, no additional text."""
             weaknesses_list = weaknesses.get("items", [])
             summary = weaknesses.get("summary", summary)
         else:
-            weaknesses_list = weaknesses if isinstance(weaknesses, list) else []
+            weaknesses_list = weaknesses if isinstance(
+                weaknesses, list) else []
 
         for item in weaknesses_list:
             if not isinstance(item, dict):
@@ -659,47 +679,49 @@ Return ONLY valid JSON, no additional text."""
             )
 
         return {"summary": summary, "items": items}
-    
+
     # ============ ANALYSIS METHODS ============
-    
+
     def get_strengths(self, resume_text: str) -> Dict[str, Any]:
         """Identify resume strengths with detailed scoring."""
         logger.info("Analyzing resume strengths...")
-        result = self.analyze_resume(resume_text, self.get_strengths_prompt, "strengths")
+        result = self.analyze_resume(
+            resume_text, self.get_strengths_prompt, "strengths")
         if "error" in result:
             return result
         return {"strengths": self._normalize_strengths(result), "cached": result.get("cached", False)}
-    
+
     def get_weaknesses(self, resume_text: str) -> Dict[str, Any]:
         """Identify resume weaknesses with severity levels."""
         logger.info("Analyzing resume weaknesses...")
-        result = self.analyze_resume(resume_text, self.get_weaknesses_prompt, "weaknesses")
+        result = self.analyze_resume(
+            resume_text, self.get_weaknesses_prompt, "weaknesses")
         if "error" in result:
             return result
         return {"weaknesses": self._normalize_weaknesses(result), "cached": result.get("cached", False)}
-    
+
     def get_skills(self, resume_text: str) -> Dict[str, Any]:
         """Extract skills from resume."""
         logger.info("Extracting skills...")
         return self.analyze_resume(resume_text, self.get_skills_extraction_prompt, "skills")
-    
+
     def get_improvements(self, resume_text: str) -> Dict[str, Any]:
         """Get improvement suggestions."""
         logger.info("Generating improvement suggestions...")
         return self.analyze_resume(resume_text, self.get_improvement_suggestions_prompt, "suggestions")
-    
+
     def extract_detailed_skills(self, resume_text: str) -> Dict[str, Any]:
         """
         Extract comprehensive skills with experience levels and categorization.
         Returns structured skills data for gap analysis.
         """
         logger.info("Extracting detailed skills with experience levels...")
-        
+
         # Check cache first
         cached_result = self.cache.get(resume_text, "detailed_skills")
         if cached_result:
             return cached_result
-        
+
         prompt = f"""You are an expert technical recruiter and resume analyst. Extract ALL skills from this resume with maximum detail.
 
 Resume:
@@ -710,28 +732,36 @@ Extract and categorize EVERY skill mentioned or demonstrated. Be thorough and co
 Return ONLY valid JSON with this structure:
 {{
     "programming_languages": [
-        {{"name": "Python", "proficiency": "advanced|intermediate|beginner", "years_experience": "3", "context": "Used in 5 projects"}}
+        {{"name": "Python", "proficiency": "advanced|intermediate|beginner",
+            "years_experience": "3", "context": "Used in 5 projects"}}
     ],
     "frameworks": [
-        {{"name": "React", "proficiency": "intermediate", "years_experience": "1", "context": "Frontend development"}}
+        {{"name": "React", "proficiency": "intermediate",
+            "years_experience": "1", "context": "Frontend development"}}
     ],
     "tools": [
-        {{"name": "Docker", "proficiency": "intermediate", "years_experience": "2", "context": "DevOps work"}}
+        {{"name": "Docker", "proficiency": "intermediate",
+            "years_experience": "2", "context": "DevOps work"}}
     ],
     "databases": [
-        {{"name": "MongoDB", "proficiency": "intermediate", "years_experience": "1", "context": "Backend projects"}}
+        {{"name": "MongoDB", "proficiency": "intermediate",
+            "years_experience": "1", "context": "Backend projects"}}
     ],
     "platforms": [
-        {{"name": "AWS", "proficiency": "beginner", "years_experience": "0.5", "context": "Cloud deployment"}}
+        {{"name": "AWS", "proficiency": "beginner",
+            "years_experience": "0.5", "context": "Cloud deployment"}}
     ],
     "methodologies": [
-        {{"name": "Agile", "proficiency": "intermediate", "years_experience": "2", "context": "Team development"}}
+        {{"name": "Agile", "proficiency": "intermediate",
+            "years_experience": "2", "context": "Team development"}}
     ],
     "soft_skills": [
-        {{"name": "Leadership", "proficiency": "intermediate", "context": "Led team of 3 developers"}}
+        {{"name": "Leadership", "proficiency": "intermediate",
+            "context": "Led team of 3 developers"}}
     ],
     "domain_knowledge": [
-        {{"name": "IoT", "proficiency": "advanced", "years_experience": "2", "context": "Smart home automation"}}
+        {{"name": "IoT", "proficiency": "advanced",
+            "years_experience": "2", "context": "Smart home automation"}}
     ],
     "certifications": [
         {{"name": "AWS Certified", "issued_by": "Amazon", "year": "2024"}}
@@ -745,28 +775,29 @@ Return ONLY valid JSON, no additional text."""
         try:
             response_text = self._call_ollama_with_retry(prompt)
             parsed = self._parse_response(response_text)
-            
+
             if parsed and not isinstance(parsed.get("error"), str):
                 # Cache the result
                 self.cache.set(resume_text, "detailed_skills", parsed)
                 return parsed
             else:
                 return {"error": "Failed to parse skills extraction response"}
-                
+
         except Exception as e:
             logger.error(f"Error in detailed skills extraction: {e}")
             return {"error": str(e)}
-    
+
     def get_industry_skills(self, target_role: str, experience_level: str = "mid") -> Dict[str, Any]:
         """
         Get industry-standard required skills for a target role.
-        
+
         Args:
             target_role: Job title/role (e.g., "Backend Developer", "Data Scientist")
             experience_level: "junior", "mid", "senior"
         """
-        logger.info(f"Fetching industry skills for {target_role} ({experience_level} level)...")
-        
+        logger.info(f"Fetching industry skills for {
+                    target_role} ({experience_level} level)...")
+
         prompt = f"""You are an expert technical recruiter with deep knowledge of industry skill requirements.
 
 For a {experience_level}-level {target_role} position in 2025, list the required technical skills.
@@ -776,13 +807,16 @@ Return ONLY valid JSON with this structure:
     "role": "{target_role}",
     "level": "{experience_level}",
     "must_have_skills": [
-        {{"skill": "Python", "category": "programming_language", "importance": "critical", "typical_years": "3+"}}
+        {{"skill": "Python", "category": "programming_language",
+            "importance": "critical", "typical_years": "3+"}}
     ],
     "nice_to_have_skills": [
-        {{"skill": "GraphQL", "category": "framework", "importance": "beneficial", "typical_years": "1+"}}
+        {{"skill": "GraphQL", "category": "framework",
+            "importance": "beneficial", "typical_years": "1+"}}
     ],
     "emerging_skills": [
-        {{"skill": "LangChain", "category": "framework", "importance": "growing", "adoption_trend": "high"}}
+        {{"skill": "LangChain", "category": "framework",
+            "importance": "growing", "adoption_trend": "high"}}
     ]
 }}
 
@@ -793,12 +827,12 @@ Return ONLY valid JSON, no additional text."""
         try:
             response_text = self._call_ollama_with_retry(prompt)
             parsed = self._parse_response(response_text)
-            
+
             if parsed and not isinstance(parsed.get("error"), str):
                 return parsed
             else:
                 return {"error": "Failed to parse industry skills response"}
-                
+
         except Exception as e:
             logger.error(f"Error fetching industry skills: {e}")
             return {"error": str(e)}
@@ -808,7 +842,7 @@ Return ONLY valid JSON, no additional text."""
         Parse unstructured job description into structured data with detailed fields.
         """
         logger.info("Parsing job description...")
-        
+
         prompt = f"""You are an expert HR assistant. Parse the following job description into structured JSON data.
 
 Job Description:
@@ -840,40 +874,40 @@ Return ONLY valid JSON with this structure:
 """
         return self.analyze_resume(job_text, lambda _: prompt, "job_parsing_detailed", use_cache=True)
 
-
-    
     def analyze_skills_gap(self, resume_text: str, identified_skills: Dict = None, target_role: str = None, experience_level: str = "mid") -> Dict[str, Any]:
         """
         Comprehensive skills gap analysis comparing resume skills against industry standards.
-        
+
         Args:
             resume_text: Resume content
             identified_skills: Pre-extracted skills from database (optional, will extract if None)
             target_role: Target job role (if None, inferred from resume)
             experience_level: "junior", "mid", "senior"
-        
+
         Returns:
             Comprehensive gap analysis with recommendations
         """
         logger.info("Starting comprehensive skills gap analysis...")
-        
+
         # Check cache
-        cache_key = f"{target_role}_{experience_level}" if target_role else "inferred"
+        cache_key = f"{target_role}_{
+            experience_level}" if target_role else "inferred"
         cached_result = self.cache.get(resume_text, f"skills_gap_{cache_key}")
         if cached_result:
             logger.info("Returning cached skills gap analysis")
             return cached_result
-        
+
         # Step 1: Use provided skills or extract from resume
         if identified_skills:
             logger.info("Using pre-extracted skills from database")
-            extracted_skills = self._convert_db_skills_to_detailed_format(identified_skills)
+            extracted_skills = self._convert_db_skills_to_detailed_format(
+                identified_skills)
         else:
             logger.info("Extracting skills from resume")
             extracted_skills = self.extract_detailed_skills(resume_text)
             if "error" in extracted_skills:
                 return extracted_skills
-        
+
         # Step 2: Infer target role if not provided
         if not target_role:
             logger.info("Inferring target role from resume...")
@@ -884,22 +918,25 @@ Resume:
 
 Return ONLY a JSON object:
 {{"target_role": "job title", "experience_level": "junior|mid|senior", "reasoning": "brief explanation"}}"""
-            
+
             try:
                 response_text = self._call_ollama_with_retry(infer_prompt)
                 inferred = self._parse_response(response_text)
                 target_role = inferred.get("target_role", "Software Developer")
-                experience_level = inferred.get("experience_level", experience_level)
-                logger.info(f"Inferred role: {target_role} ({experience_level})")
+                experience_level = inferred.get(
+                    "experience_level", experience_level)
+                logger.info(f"Inferred role: {
+                            target_role} ({experience_level})")
             except Exception as e:
                 logger.warning(f"Failed to infer role: {e}. Using default.")
                 target_role = "Software Developer"
-        
+
         # Step 3: Get industry requirements
-        industry_skills = self.get_industry_skills(target_role, experience_level)
+        industry_skills = self.get_industry_skills(
+            target_role, experience_level)
         if "error" in industry_skills:
             return industry_skills
-        
+
         # Step 4: Perform gap analysis
         gap_analysis_prompt = f"""You are a career coach analyzing skills gaps.
 
@@ -920,13 +957,16 @@ Analyze the gap and provide recommendations. Return ONLY valid JSON:
         "readiness_score": 0-100
     }},
     "present_skills": [
-        {{"skill": "Python", "category": "programming_language", "proficiency": "advanced", "matches_requirement": true}}
+        {{"skill": "Python", "category": "programming_language",
+            "proficiency": "advanced", "matches_requirement": true}}
     ],
     "missing_critical_skills": [
-        {{"skill": "Docker", "category": "tool", "priority": "high", "typical_learning_time": "2-4 weeks", "why_important": "Essential for deployment"}}
+        {{"skill": "Docker", "category": "tool", "priority": "high",
+            "typical_learning_time": "2-4 weeks", "why_important": "Essential for deployment"}}
     ],
     "missing_nice_to_have": [
-        {{"skill": "GraphQL", "category": "framework", "priority": "medium", "typical_learning_time": "1-2 weeks", "why_important": "Modern API standard"}}
+        {{"skill": "GraphQL", "category": "framework", "priority": "medium",
+            "typical_learning_time": "1-2 weeks", "why_important": "Modern API standard"}}
     ],
     "skill_recommendations": [
         {{
@@ -940,8 +980,10 @@ Analyze the gap and provide recommendations. Return ONLY valid JSON:
             "prerequisites": ["Docker", "Linux"],
             "learning_path": ["Start with Docker", "Learn K8s concepts", "Practice with minikube"],
             "resources": [
-                {{"type": "course", "name": "Kubernetes for Beginners", "url": "example.com", "cost": "free|paid"}},
-                {{"type": "documentation", "name": "Official K8s Docs", "url": "kubernetes.io"}},
+                {{"type": "course", "name": "Kubernetes for Beginners",
+                    "url": "example.com", "cost": "free|paid"}},
+                {{"type": "documentation", "name": "Official K8s Docs",
+                    "url": "kubernetes.io"}},
                 {{"type": "practice", "name": "KodeKloud Labs", "url": "example.com"}}
             ],
             "use_cases": ["Deploy microservices", "Scale applications", "Manage containers"]
@@ -965,22 +1007,23 @@ Return ONLY valid JSON, no additional text."""
         try:
             response_text = self._call_ollama_with_retry(gap_analysis_prompt)
             gap_analysis = self._parse_response(response_text)
-            
+
             if gap_analysis and not isinstance(gap_analysis.get("error"), str):
                 # Enhance with metadata
                 gap_analysis["target_role"] = target_role
                 gap_analysis["experience_level"] = experience_level
                 gap_analysis["analysis_date"] = datetime.now().isoformat()
                 gap_analysis["extracted_skills"] = extracted_skills
-                
+
                 # Cache the result
-                self.cache.set(resume_text, f"skills_gap_{cache_key}", gap_analysis)
-                
+                self.cache.set(resume_text, f"skills_gap_{
+                               cache_key}", gap_analysis)
+
                 logger.info("Skills gap analysis completed successfully")
                 return gap_analysis
             else:
                 return {"error": "Failed to parse gap analysis response"}
-                
+
         except Exception as e:
             logger.error(f"Error in skills gap analysis: {e}")
             return {"error": str(e)}
@@ -989,20 +1032,20 @@ Return ONLY valid JSON, no additional text."""
         """
         Skills gap analysis using pre-extracted skills from resume analysis.
         This is more efficient and reuses the skills already extracted.
-        
+
         Args:
             extracted_skills: Pre-extracted skills dict from comprehensive analysis
             target_role: Target job role
             experience_level: "junior", "mid", or "senior"
-        
+
         Returns:
             Gap analysis with recommendations
         """
         logger.info("Starting skills gap analysis from extracted skills...")
-        
+
         # Format extracted skills nicely for the prompt
         skills_summary = self._format_skills_for_prompt(extracted_skills)
-        
+
         gap_analysis_prompt = f"""You are an expert career advisor analyzing skills gaps.
 
 CANDIDATE'S CURRENT SKILLS:
@@ -1024,13 +1067,16 @@ Return ONLY valid JSON with ALL of these fields:
         "readiness_score": 0-100
     }},
     "present_skills": [
-        {{"skill": "skill_name", "category": "category", "proficiency": "level", "matches_requirement": true/false}}
+        {{"skill": "skill_name", "category": "category",
+            "proficiency": "level", "matches_requirement": true/false}}
     ],
     "missing_critical_skills": [
-        {{"skill": "skill_name", "category": "category", "priority": "high|medium|low", "typical_learning_time": "timeframe", "why_important": "reason"}}
+        {{"skill": "skill_name", "category": "category", "priority": "high|medium|low",
+            "typical_learning_time": "timeframe", "why_important": "reason"}}
     ],
     "missing_nice_to_have": [
-        {{"skill": "skill_name", "category": "category", "priority": "medium|low", "typical_learning_time": "timeframe", "why_important": "reason"}}
+        {{"skill": "skill_name", "category": "category", "priority": "medium|low",
+            "typical_learning_time": "timeframe", "why_important": "reason"}}
     ],
     "skill_recommendations": [
         {{
@@ -1044,7 +1090,8 @@ Return ONLY valid JSON with ALL of these fields:
             "prerequisites": ["skill1"],
             "learning_path": ["step1", "step2"],
             "resources": [
-                {{"type": "course|documentation|practice", "name": "name", "url": "url", "cost": "free|paid"}}
+                {{"type": "course|documentation|practice",
+                    "name": "name", "url": "url", "cost": "free|paid"}}
             ],
             "use_cases": ["use_case1"]
         }}
@@ -1066,32 +1113,34 @@ Be comprehensive and thorough. Include all required fields."""
         try:
             response_text = self._call_ollama_with_retry(gap_analysis_prompt)
             gap_analysis = self._parse_response(response_text)
-            
+
             if gap_analysis and not isinstance(gap_analysis.get("error"), str):
                 # Enhance with metadata
                 gap_analysis["target_role"] = target_role or "Professional"
                 gap_analysis["experience_level"] = experience_level
                 gap_analysis["analysis_date"] = datetime.now().isoformat()
                 gap_analysis["extracted_skills"] = extracted_skills
-                
+
                 # Cache the result
-                skills_key = f"{target_role}_{experience_level}" if target_role else "inferred"
-                self.cache.set(json.dumps(extracted_skills), f"skills_gap_{skills_key}", gap_analysis)
-                
+                skills_key = f"{target_role}_{
+                    experience_level}" if target_role else "inferred"
+                self.cache.set(json.dumps(extracted_skills),
+                               f"skills_gap_{skills_key}", gap_analysis)
+
                 logger.info("Skills gap analysis completed successfully")
                 return gap_analysis
             else:
                 logger.error(f"Gap analysis parsing failed: {gap_analysis}")
                 return {"error": "Failed to parse gap analysis response", "raw_response": response_text}
-                
+
         except Exception as e:
             logger.error(f"Error in skills gap analysis: {e}")
             return {"error": str(e)}
-    
+
     def _format_skills_for_prompt(self, extracted_skills: Dict[str, Any]) -> str:
         """Format extracted skills nicely for the LLM prompt."""
         formatted = ""
-        
+
         for category, skills in extracted_skills.items():
             if isinstance(skills, list) and skills:
                 formatted += f"\n{category.replace('_', ' ').title()}:\n"
@@ -1100,31 +1149,33 @@ Be comprehensive and thorough. Include all required fields."""
                         name = skill.get('name', skill.get('skill', 'Unknown'))
                         proficiency = skill.get('proficiency', 'unknown')
                         years = skill.get('years_experience', '')
-                        formatted += f"  - {name} ({proficiency}{', ' + years + ' years' if years else ''})\n"
+                        formatted += f"  - {name} ({proficiency}{', ' +
+                                                                 years + ' years' if years else ''})\n"
                     else:
                         formatted += f"  - {skill}\n"
-        
+
         return formatted
 
     def analyze_skills_gap(self, resume_text: str, target_role: str = None, experience_level: str = "mid") -> Dict[str, Any]:
         """Deprecated: Use analyze_skills_gap_from_extracted() instead.
         This kept for backwards compatibility."""
-        logger.warning("analyze_skills_gap() called with resume_text - consider using analyze_skills_gap_from_extracted() with pre-extracted skills")
+        logger.warning(
+            "analyze_skills_gap() called with resume_text - consider using analyze_skills_gap_from_extracted() with pre-extracted skills")
         # Extract skills first
         extracted = self.extract_detailed_skills(resume_text)
         return self.analyze_skills_gap_from_extracted(extracted, target_role, experience_level)
-    
+
     def comprehensive_analysis(self, resume_text: str, use_cache: bool = True) -> Dict[str, Any]:
         """Perform comprehensive analysis of all resume aspects at once with priority ordering."""
         logger.info("Starting comprehensive resume analysis (all aspects)...")
-        
+
         # Check cache first
         if use_cache:
             cached_result = self.cache.get(resume_text, "comprehensive")
             if cached_result:
                 cached_result["cached"] = True
                 return cached_result
-        
+
         # Define comprehensive prompt for all analyses
         comprehensive_prompt = f"""Analyze this resume comprehensively and provide detailed feedback in the JSON format below.
 
@@ -1164,10 +1215,12 @@ Return a JSON object with this exact structure (no markdown, pure JSON):
     "skills": {{
         "summary": "overview of skill profile",
         "technical": [
-            {{"skill": "Python", "proficiency": "advanced|intermediate|beginner", "mentioned_context": "where in resume"}}
+            {{"skill": "Python", "proficiency": "advanced|intermediate|beginner",
+                "mentioned_context": "where in resume"}}
         ],
         "soft_skills": [
-            {{"skill": "Leadership", "proficiency": "advanced|intermediate|beginner", "mentioned_context": "where in resume"}}
+            {{"skill": "Leadership", "proficiency": "advanced|intermediate|beginner",
+                "mentioned_context": "where in resume"}}
         ]
     }},
     "suggestions": {{
@@ -1192,15 +1245,17 @@ Rules:
 - Ensure valid JSON only."""
 
         try:
-            prompt_tokens = self.token_counter.estimate_tokens(comprehensive_prompt)
-            
+            prompt_tokens = self.token_counter.estimate_tokens(
+                comprehensive_prompt)
+
             # Call Ollama with retry logic
             response_text = self._call_ollama_with_retry(comprehensive_prompt)
-            
+
             if not response_text:
-                logger.error("No response from Ollama for comprehensive analysis")
+                logger.error(
+                    "No response from Ollama for comprehensive analysis")
                 return {"error": "No response from Ollama. Check connection."}
-            
+
             # Parse the JSON response
             analysis_data = self._parse_response(response_text)
 
@@ -1214,32 +1269,35 @@ Rules:
             if "error" in analysis_data:
                 logger.error(f"Parse error: {analysis_data.get('error')}")
                 return analysis_data
-            
+
             response_tokens = self.token_counter.estimate_tokens(response_text)
-            self.token_counter.add_tokens(prompt_tokens, response_tokens, self.model)
-            
+            self.token_counter.add_tokens(
+                prompt_tokens, response_tokens, self.model)
+
             # Ensure proper structure with all fields
             comprehensive_result = {
                 "strengths": self._normalize_strengths(analysis_data.get("strengths", {})),
                 "weaknesses": self._normalize_weaknesses(analysis_data.get("weaknesses", {})),
                 "skills": analysis_data.get("skills", {"summary": "", "technical": [], "soft_skills": []}),
                 "suggestions": analysis_data.get("suggestions", {"summary": "", "priority_improvements": []}),
-                "cached": False
+                "cached": False,
+                "token_usage": self.token_counter.get_stats()
             }
 
             # Compute single overall score (0-100) using dedicated prompt
             try:
-                comprehensive_result["overall_score"] = self.get_overall_score(resume_text)
+                comprehensive_result["overall_score"] = self.get_overall_score(
+                    resume_text)
             except Exception:
                 comprehensive_result["overall_score"] = None
-            
+
             # Always cache the result after performing a new analysis
             # This ensures the latest analysis is cached for future use
             self.cache.set(resume_text, "comprehensive", comprehensive_result)
-            
+
             logger.info("Comprehensive analysis completed successfully")
             return comprehensive_result
-        
+
         except Exception as e:
             logger.error(f"Comprehensive analysis exception: {str(e)}")
             return {"error": f"Comprehensive analysis failed: {str(e)}"}
@@ -1266,7 +1324,7 @@ Rules:
             return max(0, min(100, val))
         except ValueError:
             return None
-    
+
     def get_token_stats(self) -> Dict[str, Any]:
         """Get token usage statistics."""
         return self.token_counter.get_stats()
@@ -1277,19 +1335,19 @@ Rules:
 if __name__ == "__main__":
     # Test the LLM analyzer
     analyzer = LLMAnalyzer()
-    
+
     # Test connection
     connection_status = analyzer.test_connection()
     print("\n" + "="*60)
     print("CONNECTION TEST")
     print("="*60)
     print(json.dumps(connection_status, indent=2))
-    
+
     if connection_status["status"] == "error":
         print("\n❌ Cannot proceed with analysis. Ollama is not running or not accessible.")
         print(f"Please ensure Ollama is running at {analyzer.ollama_host}")
         exit(1)
-    
+
     print("\n✅ Connection successful! Analyzer is ready for use.")
     print("\nTo test analysis, use the Streamlit GUI in the Resume Analysis page.")
     print("API is also available for programmatic use:")
@@ -1299,5 +1357,3 @@ if __name__ == "__main__":
     print("  - analyzer.get_improvements(resume_text)")
     print("  - analyzer.match_job(resume_text, job_description)")
     print("  - analyzer.comprehensive_analysis(resume_text)")
-
-

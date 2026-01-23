@@ -485,8 +485,14 @@ def analysis_page():
                 st.warning(f"⚠️ Analysis complete but could not save: {e}")
 
         # Show token stats
-        if analyzer is not None:
+        # Show token stats
+        stats = {}
+        if result and "token_usage" in result:
+            stats = result["token_usage"]
+        elif analyzer is not None:
             stats = analyzer.get_token_stats()
+
+        if stats:
             with st.expander("📈 Token Statistics"):
                 col1, col2, col3 = st.columns(3)
                 with col1:

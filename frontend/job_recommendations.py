@@ -226,7 +226,7 @@ def recommendations_page():
 
         try:
             status_text.info("Initializing Intelligence Agent...")
-            scraper = LinkedInJobScraper(user_id=user_id, headless=False)
+            scraper = LinkedInJobScraper(user_id=user_id)
             
             # Login
             import os

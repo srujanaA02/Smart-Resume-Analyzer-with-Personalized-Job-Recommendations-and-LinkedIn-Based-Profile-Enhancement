@@ -57,6 +57,8 @@ def registration_page():
             if not error:
                 success, message = register_user(full_name, email, password)
                 if success:
-                    st.success(message)
+                    st.success(message + " Redirecting to Login...")
+                    st.session_state['page'] = 'Login'
+                    st.rerun()
                 else:
                     st.error(message)

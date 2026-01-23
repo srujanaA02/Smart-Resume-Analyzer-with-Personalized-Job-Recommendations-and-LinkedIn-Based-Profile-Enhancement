@@ -104,8 +104,14 @@ def random_sleep(min_seconds=1.0, max_seconds=2.0):
 # LinkedIn Scraper Class
 # --------------------------------------------------
 class LinkedInJobScraper:
-    def __init__(self, user_id=None, headless=False):
+    def __init__(self, user_id=None, headless=None):
         self.user_id = user_id
+        
+        # Determine headless mode: Argument > Env Var > Default (True)
+        if headless is None:
+            headless_env = os.getenv("CHROME_HEADLESS", "true").lower()
+            headless = headless_env == "true"
+            
         self.driver = get_driver(headless=headless)
         self.wait = WebDriverWait(self.driver, 20)
         self.llm_analyzer = LLMAnalyzer()
@@ -234,32 +240,10 @@ class LinkedInJobScraper:
                 
                 if job_list_container:
                     container = job_list_container[0]
-                    last_height = self.driver.execute_script("return arguments[0].scrollHeight", container)
-                    
-                    # Try harder to load at least 25 or until no new content
-                    load_retries = 0
-                    while load_retries < 15: # Increased retries
-                        cards_count = len(self.driver.find_elements(By.CSS_SELECTOR, job_card_selector))
-                        # Optimize: Stop scrolling if we have enough jobs for the user's limit
-                        # or if we hit the page max (usually 25)
-                        if cards_count >= limit or cards_count >= 25:
-                            logger.info(f"Loaded {cards_count} jobs (Limit: {limit}).")
-                            break
-                            
-                        # Scroll to bottom of container
+                    # Force strict scrolling to load all items (approx 25)
+                    for _ in range(4):
                         self.driver.execute_script("arguments[0].scrollTop = arguments[0].scrollHeight;", container)
-                        time.sleep(2) # Increased wait time
-                        
-                        new_height = self.driver.execute_script("return arguments[0].scrollHeight", container)
-                        if new_height == last_height:
-                             load_retries += 1
-                             # Try a small scroll up and down to trigger update
-                             self.driver.execute_script("arguments[0].scrollTop = arguments[0].scrollTop - 200;", container)
-                             time.sleep(0.5)
-                             self.driver.execute_script("arguments[0].scrollTop = arguments[0].scrollHeight;", container)
-                        else:
-                             last_height = new_height
-                             load_retries = 0
+                        time.sleep(1.5)
                 else:
                     # Fallback for full page generic scroll - try multiple scrolls
                     for _ in range(5):
@@ -270,14 +254,20 @@ class LinkedInJobScraper:
                 
                 # Find all fully loaded job cards
                 job_cards = self.driver.find_elements(By.CSS_SELECTOR, job_card_selector)
-                
                 logger.info(f"Found {len(job_cards)} job cards on page {page}")
                 
-                current_page_scraped = 0
+                # STRICT PROCESSING LOGIC: Process jobs on this page up to 25
+                processed_on_this_page = 0
+                MAX_PER_PAGE = 25
+                
                 processed_urls_on_page = set()
                 
                 for i, card in enumerate(job_cards):
                     if len(scraped_jobs) >= limit:
+                        break
+                        
+                    if processed_on_this_page >= MAX_PER_PAGE:
+                        logger.info(f"Reached limit of {MAX_PER_PAGE} jobs for page {page}. Moving to next.")
                         break
 
                     try:
@@ -293,6 +283,7 @@ class LinkedInJobScraper:
                                 
                             if self.user_id and check_job_exists(self.user_id, pre_url):
                                 logger.info(f"Skipping already scraped job: {pre_url}")
+                                processed_on_this_page += 1 # Count as processed to advance logic
                                 continue
                                 
                             processed_urls_on_page.add(pre_url)
@@ -302,23 +293,26 @@ class LinkedInJobScraper:
 
                         # Scroll the individual card into view to ensure it's clickable
                         self.driver.execute_script("arguments[0].scrollIntoView({block: 'center', inline: 'nearest'});", card)
-                        random_sleep(0.5, 1) # Short pause
-                        
-
-                        # Extract basic info
-                        title_elem = card.find_element(By.CSS_SELECTOR, ".job-card-list__title, strong")
-                        job_title = title_elem.text.strip()
+                        random_sleep(0.3, 0.6)
                         
                         # Click to load details
-                        # Already scrolled into view above
                         try:
                             card.click()
                         except ElementClickInterceptedException:
                             self.driver.execute_script("arguments[0].click();", card)
                             
                         # Wait for details to load
-                        random_sleep(0.5, 1) # Wait for details pane to load
+                        random_sleep(0.8, 1.5) 
                         
+                        # Extract basic info (refresh reference in case of stale element)
+                        try:
+                             title_elem = self.driver.find_elements(By.CSS_SELECTOR, ".job-card-list__title, strong")[i] 
+                        except:
+                             # Fallback relative to card if still valid or just assume it's the active one
+                             title_elem = card.find_element(By.CSS_SELECTOR, ".job-card-list__title, strong")
+                             
+                        job_title = title_elem.text.strip()
+
                         # Parse details
                         job_details = self._extract_job_details_pane(job_title, search_location=search_location)
                         
@@ -327,23 +321,19 @@ class LinkedInJobScraper:
                             final_url = job_details.get("job_url")
                             if final_url and (self.user_id and check_job_exists(self.user_id, final_url)):
                                  logger.info("Skipping existing job (confirmed after click).")
+                                 processed_on_this_page += 1
                                  continue
                             
                             # Use LLM to structure the description
-                            # To save tokens/time, we can optionally skip LLM if just grabbing raw text is enough initially
-                            # But requirement says "Use LLM to parse"
-                            
                             logger.info(f"Parsing description for: {job_title}")
                             parsed_data = self.llm_analyzer.parse_job_description(job_details['raw_description'])
                             
                             # Merge parsed data
                             if "error" not in parsed_data:
                                 job_details["job_analysis"] = parsed_data
-                                # Also keep top-level fields if needed for immediate display without parsing JSON? 
-                                # But frontend uses extraction from DB which returns job_analysis dict.
-                                # So this is clean.
                             
                             scraped_jobs.append(job_details)
+                            processed_on_this_page += 1
                             
                             # Save immediately to DB if user_id is set
                             if self.user_id:
@@ -363,22 +353,20 @@ class LinkedInJobScraper:
                             if progress_callback:
                                 progress_callback(count, limit, eta_str)
 
-                                
                     except Exception as e:
                         logger.warning(f"Failed to scrape a job card: {e}")
                         continue
                 
-                # Pagination
+                # Pagination Logic
                 if len(scraped_jobs) >= limit:
                     break
                     
-                if page >= 10: # Safety limit to prevent very long execution
+                if page >= 10: 
                     logger.info("Reached maximum page limit (10). Stopping.")
                     break
 
-                # Look for "Next" button or numeric page button
+                # Look for "Next" button
                 try:
-                    # Try finding the 'Next' button specifically
                     next_selectors = [
                         "button[aria-label*='Next']",
                         ".artdeco-pagination__button--next",
@@ -399,6 +387,7 @@ class LinkedInJobScraper:
                         raise NoSuchElementException("Next button not found")
 
                     self.driver.execute_script("arguments[0].scrollIntoView();", next_button)
+                    time.sleep(0.5)
                     try:
                         next_button.click()
                     except ElementClickInterceptedException:
@@ -406,18 +395,10 @@ class LinkedInJobScraper:
 
                     page += 1
                     logger.info(f"Navigating to page {page}...")
-                    random_sleep(0.5, 1)
+                    random_sleep(2, 4)
                 except NoSuchElementException:
-                    # Try "See more jobs" for infinite scroll variants
-                    try:
-                        see_more = self.driver.find_element(By.XPATH, "//button[contains(text(), 'See more jobs')]")
-                        self.driver.execute_script("arguments[0].scrollIntoView();", see_more)
-                        self.driver.execute_script("arguments[0].click();", see_more)
-                        logger.info("Clicked 'See more jobs'...")
-                        random_sleep(0.5, 1)
-                    except NoSuchElementException:
-                        logger.info("No next page or load more button found. Scrape complete.")
-                        break
+                    logger.info("No next page button found. Scrape complete.")
+                    break
 
 
                     
@@ -710,7 +691,7 @@ if __name__ == "__main__":
         logger.error("Please set LINKEDIN_EMAIL and LINKEDIN_PASSWORD env vars.")
         exit(1)
         
-    scraper = LinkedInJobScraper(user_id=1, headless=False)
+    scraper = LinkedInJobScraper(user_id=1)
     try:
         if scraper.login(email, password):
             jobs = scraper.search_jobs("Python Developer", "Remote", limit=5)

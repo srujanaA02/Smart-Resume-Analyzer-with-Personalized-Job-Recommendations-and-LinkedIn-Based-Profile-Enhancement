@@ -424,60 +424,57 @@ Return ONLY valid JSON, no additional text."""
 
     # ============ LLM CALL METHODS ============
 
+    
     def _call_ollama_with_retry(self, prompt: str) -> Optional[str]:
-        """Call Ollama API (LangChain if enabled) with retry logic and error handling."""
-        if self.use_langchain and self.lc_model:
-            return self._call_langchain_with_retry(prompt)
+        """Call Gemini API with retry logic."""
+        try:
+            import streamlit as st
+            from google import genai
 
-        for attempt in range(self.max_retries):
-            try:
-                logger.info(f"Calling Ollama (attempt {
-                            attempt + 1}/{self.max_retries})...")
+            api_key = os.getenv("GEMINI_API_KEY", "")
 
-                response = requests.post(
-                    f"{self.ollama_host}/api/generate",
-                    json={
-                        "model": self.model,
-                        "prompt": prompt,
-                        "stream": False,
-                        "temperature": self.temperature,
-                        "num_predict": self.max_tokens
-                    },
-                    timeout=self.timeout
-                )
+            if not api_key:
+                try:
+                    api_key = st.secrets["GEMINI_API_KEY"]
+                except Exception:
+                    api_key = ""
 
-                if response.status_code == 200:
-                    data = response.json()
-                    logger.info("Ollama response received successfully")
-                    return data.get("response", "")
-                elif response.status_code == 429:
-                    logger.warning(f"Rate limited (429). Retrying in {
-                                   2 ** attempt}s...")
-                    time.sleep(2 ** attempt)
-                else:
-                    logger.error(f"Ollama returned status {
-                                 response.status_code}: {response.text}")
+            if not api_key:
+                logger.error("Gemini API key is missing.")
+                return None
+
+            if self.client is None:
+                self.client = genai.Client(api_key=api_key)
+
+            for attempt in range(self.max_retries):
+                try:
+                    response = self.client.models.generate_content(
+                        model=self.model,
+                        contents=prompt,
+                        config={
+                            "temperature": self.temperature,
+                            "max_output_tokens": self.max_tokens,
+                        },
+                    )
+
+                    if response.text:
+                        logger.info("Gemini response received successfully")
+                        return response.text
+
+                except Exception as e:
+                    logger.warning(
+                        "Gemini attempt %s/%s failed: %s",
+                        attempt + 1, self.max_retries, e
+                    )
                     if attempt < self.max_retries - 1:
                         time.sleep(2 ** attempt)
 
-            except requests.exceptions.Timeout:
-                logger.warning(f"Request timeout (attempt {
-                               attempt + 1}/{self.max_retries})")
-                if attempt < self.max_retries - 1:
-                    time.sleep(2 ** attempt)
-            except requests.exceptions.ConnectionError as e:
-                logger.warning(f"Connection error (attempt {
-                               attempt + 1}/{self.max_retries}): {e}")
-                if attempt < self.max_retries - 1:
-                    time.sleep(2 ** attempt)
-            except Exception as e:
-                logger.error(f"Unexpected error during API call: {e}")
-                if attempt < self.max_retries - 1:
-                    time.sleep(2 ** attempt)
+            return None
 
-        logger.error(f"Failed to get response from Ollama after {
-                     self.max_retries} attempts")
-        return None
+        except Exception as e:
+            logger.error("Gemini setup failed: %s", e)
+            return None
+
 
     def _call_langchain_with_retry(self, prompt: str) -> Optional[str]:
         """Call Ollama via LangChain ChatOllama with retry logic."""

@@ -1329,7 +1329,32 @@ Rules:
 
 # ============ TESTING ============
 
+    def test_connection(self) -> Dict[str, Any]:
+        """Test the Gemini API connection."""
+        response = self._call_ollama_with_retry(
+            "Reply with exactly: Gemini connection successful"
+        )
+
+        if response:
+            return {
+                "status": "success",
+                "message": "Gemini connected successfully.",
+                "model": self.model,
+            }
+
+        return {
+            "status": "error",
+            "message": (
+                "Gemini connection failed. Check your API key, "
+                "model availability, and API quota."
+            ),
+        }
+
+
 if __name__ == "__main__":
+    
+
+
     # Test the LLM analyzer
     analyzer = LLMAnalyzer()
 

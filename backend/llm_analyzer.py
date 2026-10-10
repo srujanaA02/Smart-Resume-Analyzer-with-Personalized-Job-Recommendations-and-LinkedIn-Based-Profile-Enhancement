@@ -139,7 +139,7 @@ class LLMAnalyzer:
     def __init__(self, model: Optional[str] = None):
 
         self.ollama_host = os.getenv("OLLAMA_HOST", "http://localhost:11434")
-        self.model = model or os.getenv("OLLAMA_MODEL", "mistral")
+        self.model = model or os.getenv("GEMINI_MODEL", "gemini-2.5-flash")
         self.max_retries = int(os.getenv("MAX_RETRIES", "2"))
         self.timeout = int(os.getenv("REQUEST_TIMEOUT", "240"))
         self.temperature = float(os.getenv("TEMPERATURE", "0.2"))
